@@ -79,10 +79,8 @@
             -webkit-touch-callout: none;
         }
         body {
-            background-color: #efeff4;
-        }
-        body.am-bg-white {
-            background-color: #fff;
+            background-color: black;
+            overflow: hidden;
         }
         body,
         input,
@@ -141,6 +139,206 @@
         .avatar {
             border-radius: 50%;
         }
+        /* glitch http://codepen.io/lbebber/pen/ypgql */
+        .glitch {
+            color: white;
+            font-size: 100px;
+            position: relative;
+            margin: 0 auto;
+            font-family: 'Varela', sans-serif;
+        }
+
+        @keyframes noise-anim {
+            0% {
+                clip: rect(53px, 9999px, 25px, 0);
+            }
+            5% {
+                clip: rect(85px, 9999px, 61px, 0);
+            }
+            10% {
+                clip: rect(52px, 9999px, 81px, 0);
+            }
+            15.0% {
+                clip: rect(29px, 9999px, 3px, 0);
+            }
+            20% {
+                clip: rect(38px, 9999px, 53px, 0);
+            }
+            25% {
+                clip: rect(35px, 9999px, 5px, 0);
+            }
+            30.0% {
+                clip: rect(56px, 9999px, 85px, 0);
+            }
+            35% {
+                clip: rect(24px, 9999px, 78px, 0);
+            }
+            40% {
+                clip: rect(48px, 9999px, 28px, 0);
+            }
+            45% {
+                clip: rect(13px, 9999px, 9px, 0);
+            }
+            50% {
+                clip: rect(96px, 9999px, 58px, 0);
+            }
+            55.0% {
+                clip: rect(31px, 9999px, 20px, 0);
+            }
+            60.0% {
+                clip: rect(85px, 9999px, 57px, 0);
+            }
+            65% {
+                clip: rect(38px, 9999px, 40px, 0);
+            }
+            70% {
+                clip: rect(74px, 9999px, 35px, 0);
+            }
+            75% {
+                clip: rect(19px, 9999px, 70px, 0);
+            }
+            80% {
+                clip: rect(32px, 9999px, 73px, 0);
+            }
+            85.0% {
+                clip: rect(8px, 9999px, 10px, 0);
+            }
+            90% {
+                clip: rect(29px, 9999px, 35px, 0);
+            }
+            95% {
+                clip: rect(23px, 9999px, 21px, 0);
+            }
+            100% {
+                clip: rect(13px, 9999px, 11px, 0);
+            }
+        }
+        .glitch:after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            text-shadow: -1px 0 red;
+            top: 0;
+            color: white;
+            background: black;
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: noise-anim 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes noise-anim-2 {
+            0% {
+                clip: rect(92px, 9999px, 83px, 0);
+            }
+            5% {
+                clip: rect(25px, 9999px, 88px, 0);
+            }
+            10% {
+                clip: rect(34px, 9999px, 44px, 0);
+            }
+            15.0% {
+                clip: rect(31px, 9999px, 29px, 0);
+            }
+            20% {
+                clip: rect(39px, 9999px, 32px, 0);
+            }
+            25% {
+                clip: rect(53px, 9999px, 36px, 0);
+            }
+            30.0% {
+                clip: rect(35px, 9999px, 92px, 0);
+            }
+            35% {
+                clip: rect(5px, 9999px, 72px, 0);
+            }
+            40% {
+                clip: rect(20px, 9999px, 27px, 0);
+            }
+            45% {
+                clip: rect(40px, 9999px, 1px, 0);
+            }
+            50% {
+                clip: rect(73px, 9999px, 19px, 0);
+            }
+            55.0% {
+                clip: rect(53px, 9999px, 83px, 0);
+            }
+            60.0% {
+                clip: rect(64px, 9999px, 38px, 0);
+            }
+            65% {
+                clip: rect(61px, 9999px, 49px, 0);
+            }
+            70% {
+                clip: rect(4px, 9999px, 72px, 0);
+            }
+            75% {
+                clip: rect(79px, 9999px, 89px, 0);
+            }
+            80% {
+                clip: rect(19px, 9999px, 86px, 0);
+            }
+            85.0% {
+                clip: rect(47px, 9999px, 77px, 0);
+            }
+            90% {
+                clip: rect(85px, 9999px, 75px, 0);
+            }
+            95% {
+                clip: rect(60px, 9999px, 41px, 0);
+            }
+            100% {
+                clip: rect(2px, 9999px, 17px, 0);
+            }
+        }
+        .glitch:before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: 1px 0 blue;
+            top: 0;
+            color: white;
+            background: black;
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: noise-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .ripple-inner, .ripple-outer {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 1px solid #87ceeb;
+            border-radius: 50%;
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            transform: scale(0);
+            -webkit-animation: ripple 2s ease-out;
+            animation: ripple 2s ease-out;
+            z-index: -1;
+        }
+
+        .ripple-inner {
+            -webkit-animation-delay: .3s;
+            animation-delay: .3s;
+        }
+
+        @-webkit-keyframes ripple {
+            to {
+                -webkit-transform: scale(3);
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes ripple {
+            to {
+                -webkit-transform: scale(3);
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -148,10 +346,15 @@
         <div id="header">
             <img alt="" class="avatar" data-user="2549840" height="230" src="https://avatars1.githubusercontent.com/u/2549840?v=3&amp;s=460" width="230">
         </div>
+        <div class="glitch" data-text="ICELI">ICELI</div>
         <ul id="menus">
             <li><a href="html/menus.html">metro-menus</a></li>
         </ul>
     </div>
+    <script src='http://s.codepen.io/assets/libs/prefixfree.min.js'></script>
+    <script src='./static/js/jquery-2.1.1.min.js'></script>
+    <script src='./static/js/randomColor.js'></script>
+    <script src='./static/js/index.js'></script>
 </body>
 </html>
 
