@@ -1,3 +1,4 @@
+//by https://idiotwu.me/study/ripple/
 (function ($) {
     var count = 0;
     var max = 0;
