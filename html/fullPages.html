@@ -1,0 +1,260 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+    <title>fullpage</title></head>
+<style>
+
+    *, *:before, *:after {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        box-sizing: border-box
+    }
+
+    *:focus {
+        outline: none
+    }
+
+    body, p, img {
+        margin: 0;
+        padding: 0
+    }
+
+    html {
+        background-color: #F2F2F2;
+    }
+
+    body, html {
+        min-height: 100%;
+        height: 100%;
+        background-position: 0 0;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+
+    a, img {
+        -webkit-touch-callout: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    body {
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    .full-page-container {
+        min-height: 100%;
+        display: -webkit-box;
+        display: box;
+        -webkit-box-orient: vertical;
+        box-orient: vertical;
+    }
+
+    .full-page-layout-body {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .full-page-bg {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-size: 100% auto;
+        background-position: 0 0;
+    }
+
+    /*<!--  可以删除 下面 demo css  -->*/
+    .demo-head {
+        margin: 10px;
+        padding: 10px;
+        background: #FFF;
+        text-align: center;
+    }
+
+    .demo-body {
+        margin: 10px;
+        padding: 10px;
+        background: #FFF;
+        text-align: left;
+    }
+
+    .demo-foot {
+        margin: 10px;
+        padding: 10px;
+        background: #FFF;
+        text-align: center;
+    }
+
+
+</style>
+<body>
+<div class="full-page-container" id="full-page-container">
+    <div class="full-page-layout-header" id="full-page-layout-header">
+        <div class="demo-head"><img src="https://i.alipayobjects.com/e/201308/xLy6TIhRl.png"></div>
+    </div>
+    <div class="full-page-layout-body" id="full-page-layout-body">
+        <div class="demo-body"> 这里是 动态的，可以配置占比。 <br> 加内容就往下压 <br> 内容过多，会自动 overflow: auto;（-webkit-overflow-scrolling:
+            touch 低版本）<br> 注意：IOS5 系统以前的 -webkit-overflow-scrolling: touch 不可靠，有缺陷。 如果这里内容预计会超出，请自行处理。
+        </div>
+    </div>
+    <div class="full-page-layout-footer" id="full-page-layout-footer"> ，
+        <div class="demo-foot"> &copy; 支付宝 | 2015</div>
+    </div>
+</div>
+<div class="full-page-bg" id="full-page-bg"></div>
+<script>
+
+    /*
+     * 【单页面全屏 - 模板】
+     * Author ：元外
+     * Created ：2015/04/10
+     * Updated ：2015/04/19
+     *
+     * 说明：
+     * 【适用场景】：单页面、全屏。支持 layout 伸缩，支持全屏背景（可以无图）
+     * 【优化点】
+     *   1、先加载小背景，再延迟加载大背景。
+     *   2、
+     *
+     * */
+
+    //定义
+    (function () {
+        var _FullPage = {
+            config: {
+                // 大小图 如果一样
+                // 常屏幕 ，
+                // demo 完善
+                // 中间过长
+                // vm 版本 cms 通用模板
+
+                //周报截图，详细一点 ，价值
+
+
+                // [ 'image url' | null  ] 背景大图，放在 <body/>背景 ，如果置为 null， 则背景图片依赖于 css
+                bgImage: 'http://i3.download.fd.pchome.net/t_640x1136/g1/M00/0A/04/ooYBAFPRwMiIcs0KAAKOXy6OyPQAABx8wF5OsQAAo53124.jpg?大图',
+
+                //[ 'image url' | null  ] 背景小图，预先加载（扯大、模糊），放在 <html/>背景 ，如果置为 null， 则背景图片依赖于 css
+                bgImageSmall: 'http://i3.download.fd.pchome.net/t_640x1136/g1/M00/0A/04/ooYBAFPRwMiIcs0KAAKOXy6OyPQAABx8wF5OsQAAo53124.jpg?小图',
+
+                // [ true | false ]  是否只有一屏。这里是 主观判断
+                isSinglePage: true,
+
+                // 头部，中间，尾部 三个区域是否伸缩布局
+                boxFlex: {
+                    header: 0, // [num] 如果 为 0 ，则依赖于具体内容 ，如果大于 0 ，则 这三个 div 按照百分比
+                    body: 1, // [num]
+                    footer: 0  // [num]
+                }
+            }
+        };
+
+        _FullPage.init = function (opt) {
+            var self = this,
+                    opts = {},
+                    html = document.getElementsByTagName('html')[0];
+
+            opts = self.config;
+
+            //处理高度
+            document.getElementById('full-page-container').style.height = window.innerHeight + 'px';
+
+            //给 <html/> 增加小背景，提升网速比较慢的用户体验(大小图地址不一样时)
+            if (opts.bgImageSmall && opts.bgImageSmall != opts.bgImage) {
+                html.style.backgroundImage = 'url("' + opts.bgImageSmall + '")';
+            }
+
+            //延迟 给 <body/> 增加大背景，让别的资源 先加载
+            if (opts.bgImage) {
+                setTimeout(function () {
+                    document.getElementById('full-page-bg').style.backgroundImage = 'url("' + opts.bgImage + '")';
+                    setTimeout(function () {
+                        _FullPage.getImageSize();
+                    }, 2500);
+                }, 100);
+            }
+
+            //如果不只是一屏内容
+            if (!opts.isSinglePage) {
+                document.body.style.height = 'auto';
+            }
+
+            //是否 伸缩布局
+            if (opts.boxFlex) {
+                for (var i in opts.boxFlex) {
+                    var boxFlex = opts.boxFlex[i],
+                            layoutBox = document.getElementById('full-page-layout-' + i);
+                    if (layoutBox && boxFlex) {
+                        layoutBox.style.webkitBoxFlex = boxFlex;
+                        layoutBox.style.boxFlex = boxFlex;
+                    }
+                }
+            }
+
+        };
+
+        /*
+         * 处理背景大图，和屏幕适应
+         * */
+        _FullPage.getImageSize = function () {
+            var self = this
+                    , bgImageUrl = self.config.bgImageSmall || self.config.bgImage || '';
+
+            if (!bgImageUrl) {
+                return;
+            }
+            var bgImage = new Image();
+            bgImage.onload = function () {
+                self.fitScreen(bgImage.width, bgImage.height);
+            };
+            bgImage.src = bgImageUrl;
+
+        };
+
+        /*
+         * 处理背景大图，和屏幕适应
+         * */
+        _FullPage.fitScreen = function (width, height) {
+            var winWidth = window.innerWidth,
+                    winHeight = window.innerHeight,
+                    domBg = document.getElementById('full-page-bg');
+            // function resizeImage(maxWidth, maxHeight, objImg){
+            var needRadio = winWidth / winHeight;
+
+            var ratio = width / height;
+            var outWidth, outHeight, marginTop = 0, marginLeft = 0;
+
+            //长条形
+            if (ratio >= needRadio) {
+                outHeight = winHeight;
+                outWidth = outHeight * ratio;
+                domBg.style.backgroundSize = 'auto 100% ';
+
+
+            } else {
+                outWidth = winWidth;
+                outHeight = outWidth / ratio;
+                //domBg.style.backgroundSize = ' 100% auto'; css 默认这样
+
+            }
+
+        };
+
+        _FullPage.init();
+    })();
+
+
+</script>
+</body>
+</html>
