@@ -27,7 +27,7 @@
 </select>
 <input type="text" id="e10" class="w100" tabindex="-1" title="">
 <input type="text" id="e7" class="w100" tabindex="-1" title="" style="width: 600px">
-<select id="e4" style="width: 300px;" class="populate" tabindex="-1" title="">
+<select id="e4" style="width: 100px;" class="populate" tabindex="-1" title="">
     <optgroup label="Alaskan/Hawaiian Time Zone">
         <option value="AK" class="red">Alaska</option>
         <option value="HI">Hawaii</option>
@@ -180,9 +180,8 @@
         if (!state.id) return ''; // optgroup
         return "<img class='flag' src='images/flags/" + state.id.toLowerCase() + ".png'/>" + state.text;
     }
-    $("#e4").find('optgroup option:first-child').addClass('red');
-    $("#e4").find('optgroup option').appendTo($("#e4"))
-    $("#e4").select2();
+    $("#e4").find('optgroup option:first-child').addClass('red').end().find('optgroup option').appendTo($("#e4"))
+    $("#e4").select2({dropdownAutoWidth: true});
 </script>
 </body>
 </html>
