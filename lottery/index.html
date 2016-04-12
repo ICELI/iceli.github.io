@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lottery</title>
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap-theme.css"/>
+    <link rel="stylesheet" href="static/css/common.css"/>
+    <link rel="stylesheet" href="static/css/lottery.css"/>
+</head>
+<body>
+<div id="header" class="layout">
+</div>
+<div id="content" class="layout">
+    <div class="lt-condition-wrap row">
+        <div class="fn-left lt-arrays col-md-6">
+            <div class="lt-wrap">
+                <div class="lt-header lt-arrays-header clearfix">
+                    <button type="button" class="btn btn-primary btn-sm fn-right J_addArrBtn"><i class="glyphicon glyphicon-plus"></i> 添加数组</button>
+                    <h3>基础数据</h3>
+                </div>
+                <ul class="lt-list array-list form-horizontal">
+                </ul>
+            </div>
+        </div>
+        <div class="fn-left lt-groups col-md-6">
+            <div class="lt-wrap">
+                <div class="lt-header lt-groups-header clearfix">
+                    <button type="button" class="btn btn-primary btn-sm fn-right J_addGrpBtn"><i class="glyphicon glyphicon-plus"></i> 添加条件</button>
+                    <h3>基础条件</h3>
+                </div>
+
+                <div class="lt-list group-list form-inline">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lt-result-btn clearfix">
+        <div class="form-inline fn-left lt-group-filter">
+            <div class="form-group">
+                <label class="control-label">筛选条件：</label>
+                <input type="text" min="1" max="30" placeholder="按组编号个数筛选" class="form-control J_groupFilter"/>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success btn-lg J_getResultBtn"><i class="glyphicon glyphicon-play"></i> 生成结果</button>
+    </div>
+    <div class="lt-result-wrap">
+        <div class="lt-wrap">
+            <textarea class="form-control J_resultTextarea" rows="10" placeholder="结果"></textarea>
+        </div>
+    </div>
+</div>
+<div id="footer" class="layout"></div>
+
+<script id="J_arrayTpl" type="text/x-handlebars-template">
+    <li class="form-group">
+        <label class="col-md-2 control-label">数组{{index}}</label>
+        <div class="col-md-10"><input type="text" min="1" max="33" placeholder="数字间使用逗号“,”分隔" class="form-control arr"/></div>
+    </li>
+</script>
+<script id="J_groupTpl" type="text/x-handlebars-template">
+    <div class="form-group">
+        <label class="control-label">题{{index}}</label>
+        <input type="text" min="1" max="33" placeholder="空格分隔" class="form-control grp"/>
+    </div>
+</script>
+
+<script src="static/js/jquery-1.11.3.min.js"></script>
+<script src="static/bootstrap/js/bootstrap.js"></script>
+<script src="static/js/lottery.js"></script>
+</body>
+</html>
