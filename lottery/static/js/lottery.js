@@ -3,7 +3,7 @@
  */
 
 (function ($) {
-    $(function(){
+    $(function () {
         // 乐透
         var LT = {
             arr: [],
@@ -55,42 +55,72 @@
                 var that = this;
                 var tpl = that.tpl;
                 var ele = that.elements;
-                var grp = that.grp;
-
-
-                ele.$addGrpBtn.on('click', function() {
-                    var index = grp.length;
-
-                    ele.$groupList.append(tpl.grpTpl.replace('{{index}}', index + 1));
-                    grp[index] = '';
-                }).trigger('click');
-            },
-            onAddGrp: function () {
-                var that = this;
-                var tpl = that.tpl;
-                var ele = that.elements;
                 var arr = that.arr;
 
-
-                ele.$addArrBtn.on('click', function() {
+                ele.$addArrBtn.on('click', function () {
                     var index = arr.length;
 
                     ele.$arrayList.append(tpl.arrTpl.replace('{{index}}', index + 1));
                     arr[index] = '';
                 }).trigger('click').trigger('click').trigger('click');
             },
+            onAddGrp: function () {
+                var that = this;
+                var ele = that.elements;
+                var arr = that.arr;
+                var count = 0;
+
+                ele.$addGrpBtn.on('click', function () {
+                    var grpVal = [];
+                    var filter = $.trim(ele.$groupFiltertn.val());
+                    var numbers = new Array(arr.length);
+
+                    $(numbers).each(function (i, v) {
+                        numbers[i] = i + 1;
+                    });
+
+                    if(filter == 1) {
+                        grpVal = numbers;
+                    } else {
+                        count = 0;
+                        that.grp = [];
+                        perm(numbers, +filter);
+                        $(that.grp).each(function (i, v) {
+                            grpVal.push(v.join(' '));
+                        });
+                    }
+
+                    ele.$groupList.find('textarea.grp').val(grpVal.join('\r'));
+                });
+
+                function perm(arr, m) {
+                    if(arr.length == m) {
+                        that.grp[count] = arr;
+                        count++;
+                    } else {
+                        $(arr).each(function (i, v) {
+                            var tmpArr = arr.concat();
+                            tmpArr.splice(i, 1);
+
+                            perm(tmpArr, m);
+                        });
+                    }
+
+                    window.console && console.log(that.grp)
+                }
+            },
             onArrListKeyUp: function () {
                 var that = this;
                 var ele = that.elements;
 
-                ele.$arrayList.on('keyup.arr', 'input.arr', function(e) {
+                ele.$arrayList.on('keyup.arr', 'input.arr', function (e) {
                     var me = $(this);
                     var val = $.trim(me.val());
                     var idx = me.parents('li').index();
 
                     me.parents('li').removeClass('has-error');
 
-                    if(!val) {
+                    if (!val) {
                         return false;
                     }
                     var arr = val.split(',');
@@ -107,24 +137,33 @@
                 var that = this;
                 var ele = that.elements;
 
-                ele.$groupList.on('keyup.grp', 'input.grp', function(e) {
+                ele.$groupList.on('keyup.grp', 'textarea.grp', function (e) {
                     var me = $(this);
                     var val = $.trim(me.val());
-                    var idx = me.parent().index();
 
+                    that.grp = [];
                     me.parent().removeClass('has-error');
 
-                    if(!val) {
+                    if (!val) {
                         return false;
                     }
-                    var arr = val.split(' ');
+                    var newVal = val.replace(/(\r(\n)?|\n)/g, '-');
+                    var newArr = newVal.split('-');
 
-                    try {
-                        that.checkNumber(arr, 1, 30);
-                        that.grp[idx] = arr;
-                    } catch (e) {
-                        me.parent().addClass('has-error');
-                    }
+                    $(newArr).each(function(index, value){
+                        if (!value) {
+                            return false;
+                        }
+
+                        var arr = value.split(' ');
+
+                        try {
+                            that.checkNumber(arr, 1, 30);
+                            that.grp[index] = arr;
+                        } catch (e) {
+                            me.parent().addClass('has-error');
+                        }
+                    });
                 });
 
             },
@@ -132,13 +171,13 @@
                 var that = this;
                 var ele = that.elements;
 
-                ele.$groupFiltertn.on('keyup.filter', function(e) {
+                ele.$groupFiltertn.on('keyup.filter', function (e) {
                     var me = $(this);
                     var val = $.trim(me.val());
 
                     me.parent().removeClass('has-error');
 
-                    if(!val) {
+                    if (!val) {
                         return false;
                     }
                     var arr = val.split(' ');
@@ -154,48 +193,45 @@
             onGetResult: function () {
                 var that = this;
                 var ele = that.elements;
-                var arr = that.arr;
-                var grp = that.grp;
                 var numbers = new Array(33);
 
-                $(numbers).each(function(i,v){
+                $(numbers).each(function (i, v) {
                     numbers[i] = i + 1;
                 });
 
-                ele.$getResultBtn.on('click', function() {
+                ele.$getResultBtn.on('click', function () {
+                    var arr = that.arr;
+                    var grp = that.grp;
                     var result = '';
-                    var filter = $.trim(ele.$groupFiltertn.val());
 
-                    $(grp).each(function(i, v){
-                        if(!filter || v.length == filter) {
-                            var tmpArr = [];
-                            var tmpNum = numbers.concat();
+                    $(grp).each(function (i, v) {
+                        var tmpArr = [];
+                        var tmpNum = numbers.concat();
 
-                            $(v).each(function(idx, val){
-                                tmpArr = tmpArr.concat(arr[val - 1]);
+                        $(v).each(function (idx, val) {
+                            tmpArr = tmpArr.concat(arr[val - 1]);
+                        });
+
+                        $(tmpArr).each(function (idx, val) {
+                            $(tmpNum).each(function (index, value) {
+                                if (val == value) {
+                                    tmpNum.splice(index, 1);
+                                }
                             });
+                        });
 
-                            $(tmpArr).each(function(idx, val){
-                                $(tmpNum).each(function(index, value){
-                                    if(val == value) {
-                                        tmpNum.splice(index,1);
-                                    }
-                                });
-                            });
-
-                            result += '题' + (i + 1) + '的结果：' + tmpNum.join(',') + '\r\n';
-                        }
+                        result += '题' + (i + 1) + '的结果：' + tmpNum.join(',') + '\r\n';
 
                     });
 
                     ele.$resultTextarea.val(result);
                 });
             },
-            checkNumber: function(arr, min, max) {
-                var regex = max == 30 ? /^([1-9]|[1-2]\d|30)$/ : /^([1-9]|[1-2]\d|3[0-3])$/;
+            checkNumber: function (arr, min, max) {
+                var regex = max == 30 ? /^(0?[1-9]|[1-2]\d|30)$/ : /^(0?[1-9]|[1-2]\d|3[0-3])$/;
 
-                $(arr).each(function(index, value) {
-                    if(!regex.test(value) && value !== '') {
+                $(arr).each(function (index, value) {
+                    if (!regex.test(value) && value !== '') {
                         throw {
                             name: 'TypeError',
                             message: '包含非法参数'
