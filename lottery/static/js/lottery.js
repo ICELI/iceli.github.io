@@ -72,25 +72,32 @@
 
                 ele.$addGrpBtn.on('click', function () {
                     var grpVal = [];
-                    var filter = $.trim(ele.$groupFiltertn.val());
+                    var filter = +$.trim(ele.$groupFiltertn.val());
                     var numbers = new Array(arr.length);
 
                     $(numbers).each(function (i, v) {
                         numbers[i] = i + 1;
                     });
 
-                    if(filter == 1) {
-                        grpVal = numbers;
-                    } else {
-                        count = 0;
-                        that.grp = [];
-                        perm(numbers, +filter);
-                        $(that.grp).each(function (i, v) {
-                            grpVal.push(v.join(' '));
-                        });
+                    that.grp = [];
+                    if(filter) {
+                        if(filter == 1) {
+                            $(numbers).each(function (i, v) {
+                                that.grp[i] = [v];
+                            });
+                            grpVal = numbers;
+                        } else {
+                            count = 0;
+                            perm(numbers, filter);
+                            $(that.grp).each(function (i, v) {
+                                grpVal.push(v.join(' '));
+                            });
+                        }
                     }
 
                     ele.$groupList.find('textarea.grp').val(grpVal.join('\r'));
+
+                    window.console && console.log(that.grp)
                 });
 
                 function perm(arr, m) {
@@ -105,8 +112,6 @@
                             perm(tmpArr, m);
                         });
                     }
-
-                    window.console && console.log(that.grp)
                 }
             },
             onArrListKeyUp: function () {
