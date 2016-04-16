@@ -80,26 +80,30 @@
                         numbers[i] = i + 1;
                     });
 
-                    that.grp = [];
-                    if(filter) {
-                        if(filter == 1) {
-                            $.each(numbers, function (i, v) {
-                                that.grp[i] = [v];
-                            });
-                            grpVal = numbers;
-                        } else {
-                            count = 0;
-                            obj = {};
-                            perm(numbers, filter);
-                            $.each(that.grp, function (i, v) {
-                                grpVal.push(v.join(' '));
-                            });
+                    ele.$addGrpBtn.attr('disabled', true).html('<i class="glyphicon glyphicon-refresh"></i> 计算中…');
+                    setTimeout(function() {
+                        that.grp = [];
+                        if(filter) {
+                            if(filter == 1) {
+                                $.each(numbers, function (i, v) {
+                                    that.grp[i] = [v];
+                                });
+                                grpVal = numbers;
+                            } else {
+                                count = 0;
+                                obj = {};
+                                perm(numbers, filter);
+                                $.each(that.grp, function (i, v) {
+                                    grpVal.push(v.join(' '));
+                                });
+                            }
                         }
-                    }
 
-                    ele.$groupList.find('textarea.grp').val(grpVal.join('\r'));
+                        ele.$groupList.find('textarea.grp').val(grpVal.join('\r'));
+                        ele.$addGrpBtn.attr('disabled', false).html('<i class="glyphicon glyphicon-plus"></i> 添加条件');
 
-                    window.console && console.log(that.grp)
+                        window.console && console.log(that.grp)
+                    }, 300);
                 });
                 // 递归链接算法
                 function perm(arr, m) {
@@ -218,29 +222,33 @@
                     var grp = that.grp;
                     var result = '';
 
-                    $(this).prop('disabled', true);
-                    $.each(grp, function (i, v) {
-                        var tmpArr = [];
-                        var tmpNum = numbers.concat();
+                    ele.$getResultBtn.attr('disabled', true).html('<i class="glyphicon glyphicon-refresh"></i> 计算中…');
+                    setTimeout(function(){
 
-                        $.each(v, function (idx, val) {
-                            tmpArr = tmpArr.concat(arr[val - 1]);
-                        });
+                        $.each(grp, function (i, v) {
+                            var tmpArr = [];
+                            var tmpNum = numbers.concat();
 
-                        $.each(tmpArr, function (idx, val) {
-                            $.each(tmpNum, function (index, value) {
-                                if (val == value) {
-                                    tmpNum.splice(index, 1);
-                                }
+                            $.each(v, function (idx, val) {
+                                tmpArr = tmpArr.concat(arr[val - 1]);
                             });
+
+                            $.each(tmpArr, function (idx, val) {
+                                $.each(tmpNum, function (index, value) {
+                                    if (val == value) {
+                                        tmpNum.splice(index, 1);
+                                    }
+                                });
+                            });
+
+                            result += '题' + (i + 1) + '的结果：' + tmpNum.join(',') + '\r\n';
+
                         });
 
-                        result += '题' + (i + 1) + '的结果：' + tmpNum.join(',') + '\r\n';
+                        ele.$resultTextarea.val(result);
+                        ele.$getResultBtn.attr('disabled', false).html('<i class="glyphicon glyphicon-play"></i> 生成结果');
 
-                    });
-
-                    ele.$resultTextarea.val(result);
-                    $(this).prop('disabled', false);
+                    }, 300);
                 });
             },
             checkNumber: function (arr, min, max) {
