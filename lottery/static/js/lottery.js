@@ -69,27 +69,29 @@
                 var ele = that.elements;
                 var arr = that.arr;
                 var count = 0;
+                var obj = {};
 
                 ele.$addGrpBtn.on('click', function () {
                     var grpVal = [];
                     var filter = +$.trim(ele.$groupFiltertn.val());
                     var numbers = new Array(arr.length);
 
-                    $(numbers).each(function (i, v) {
+                    $.each(numbers, function (i, v) {
                         numbers[i] = i + 1;
                     });
 
                     that.grp = [];
                     if(filter) {
                         if(filter == 1) {
-                            $(numbers).each(function (i, v) {
+                            $.each(numbers, function (i, v) {
                                 that.grp[i] = [v];
                             });
                             grpVal = numbers;
                         } else {
                             count = 0;
+                            obj = {};
                             perm(numbers, filter);
-                            $(that.grp).each(function (i, v) {
+                            $.each(that.grp, function (i, v) {
                                 grpVal.push(v.join(' '));
                             });
                         }
@@ -99,19 +101,26 @@
 
                     window.console && console.log(that.grp)
                 });
-
+                // 递归链接算法
                 function perm(arr, m) {
-                    if(arr.length == m) {
-                        that.grp[count] = arr;
-                        count++;
-                    } else {
-                        $(arr).each(function (i, v) {
-                            var tmpArr = arr.concat();
-                            tmpArr.splice(i, 1);
+                    (function fn(leftArr, lastArr) {
+                        if(leftArr.length == m) {
+                            var leftStr = leftArr.sort(function(a, b) {
+                                return a - b;
+                            }).join('-');
 
-                            perm(tmpArr, m);
-                        });
-                    }
+                            if(obj[leftStr]) {
+                                return false;
+                            }
+                            that.grp[count] = leftArr;
+                            obj[leftStr] = true;
+                            count++;
+                        } else {
+                            for(var i = 0, l = lastArr.length; i < l; i++) {
+                                fn(leftArr.concat(lastArr[i]), lastArr.slice(0, i).concat(lastArr.slice(i + 1)));
+                            }
+                        }
+                    })((arr.length == m ? arr : []), arr);
                 }
             },
             onArrListKeyUp: function () {
@@ -155,7 +164,7 @@
                     var newVal = val.replace(/(\r(\n)?|\n)/g, '-');
                     var newArr = newVal.split('-');
 
-                    $(newArr).each(function(index, value){
+                    $.each(newArr, function(index, value){
                         if (!value) {
                             return false;
                         }
@@ -200,7 +209,7 @@
                 var ele = that.elements;
                 var numbers = new Array(33);
 
-                $(numbers).each(function (i, v) {
+                $.each(numbers, function (i, v) {
                     numbers[i] = i + 1;
                 });
 
@@ -209,16 +218,17 @@
                     var grp = that.grp;
                     var result = '';
 
-                    $(grp).each(function (i, v) {
+                    $(this).prop('disabled', true);
+                    $.each(grp, function (i, v) {
                         var tmpArr = [];
                         var tmpNum = numbers.concat();
 
-                        $(v).each(function (idx, val) {
+                        $.each(v, function (idx, val) {
                             tmpArr = tmpArr.concat(arr[val - 1]);
                         });
 
-                        $(tmpArr).each(function (idx, val) {
-                            $(tmpNum).each(function (index, value) {
+                        $.each(tmpArr, function (idx, val) {
+                            $.each(tmpNum, function (index, value) {
                                 if (val == value) {
                                     tmpNum.splice(index, 1);
                                 }
@@ -230,12 +240,13 @@
                     });
 
                     ele.$resultTextarea.val(result);
+                    $(this).prop('disabled', false);
                 });
             },
             checkNumber: function (arr, min, max) {
                 var regex = max == 30 ? /^(0?[1-9]|[1-2]\d|30)$/ : /^(0?[1-9]|[1-2]\d|3[0-3])$/;
 
-                $(arr).each(function (index, value) {
+                $.each(arr, function (index, value) {
                     if (!regex.test(value) && value !== '') {
                         throw {
                             name: 'TypeError',
