@@ -36,8 +36,9 @@
                 ele.$groupList = $('.group-list');
                 ele.$addArrBtn = $('.J_addArrBtn');
                 ele.$addGrpBtn = $('.J_addGrpBtn');
+                ele.$resultNumber = $('.J_resultNumber');
+                ele.$groupFilter = $('.J_groupFilter');
                 ele.$getResultBtn = $('.J_getResultBtn');
-                ele.$groupFiltertn = $('.J_groupFilter');
                 ele.$resultTextarea = $('.J_resultTextarea');
 
             },
@@ -73,7 +74,7 @@
 
                 ele.$addGrpBtn.on('click', function () {
                     var grpVal = [];
-                    var filter = +$.trim(ele.$groupFiltertn.val());
+                    var filter = +$.trim(ele.$groupFilter.val());
                     var numbers = new Array(arr.length);
 
                     $.each(numbers, function (i, v) {
@@ -103,7 +104,7 @@
                         ele.$addGrpBtn.attr('disabled', false).html('<i class="glyphicon glyphicon-plus"></i> 添加条件');
 
                         window.console && console.log(that.grp)
-                    }, 300);
+                    }, 200);
                 });
                 // 递归链接算法
                 function perm(arr, m) {
@@ -121,7 +122,7 @@
                             count++;
                         } else {
                             for(var i = 0, l = lastArr.length; i < l; i++) {
-                                fn(leftArr.concat(lastArr[i]), lastArr.slice(0, i).concat(lastArr.slice(i + 1)));
+                                fn(leftArr.concat(lastArr[i]), lastArr.slice(i + 1));
                             }
                         }
                     })((arr.length == m ? arr : []), arr);
@@ -189,7 +190,7 @@
                 var that = this;
                 var ele = that.elements;
 
-                ele.$groupFiltertn.on('keyup.filter', function (e) {
+                ele.$groupFilter.on('keyup.filter', function (e) {
                     var me = $(this);
                     var val = $.trim(me.val());
 
@@ -220,7 +221,7 @@
                 ele.$getResultBtn.on('click', function () {
                     var arr = that.arr;
                     var grp = that.grp;
-                    var result = '';
+                    var result = [];
 
                     ele.$getResultBtn.attr('disabled', true).html('<i class="glyphicon glyphicon-refresh"></i> 计算中…');
                     setTimeout(function(){
@@ -241,14 +242,15 @@
                                 });
                             });
 
-                            result += '题' + (i + 1) + '的结果：' + tmpNum.join(',') + '\r\n';
+                            result.push(tmpNum.join(','));
 
                         });
 
-                        ele.$resultTextarea.val(result);
+                        ele.$resultTextarea.val(result.join('\r\n'));
+                        ele.$resultNumber.text(result.length);
                         ele.$getResultBtn.attr('disabled', false).html('<i class="glyphicon glyphicon-play"></i> 生成结果');
 
-                    }, 300);
+                    }, 200);
                 });
             },
             checkNumber: function (arr, min, max) {
