@@ -72,7 +72,20 @@
                 var count = 0;
                 var obj = {};
 
+                ele.$groupFilter.on('keyup', function (e) {
+                    e = e.which || e.keyCode;
+
+                    if (e == 13) {
+                        addGrp();
+                    }
+                });
+
                 ele.$addGrpBtn.on('click', function () {
+                    addGrp();
+                });
+
+                // addGrp
+                function addGrp () {
                     var grpVal = [];
                     var filter = +$.trim(ele.$groupFilter.val());
                     var numbers = new Array(arr.length);
@@ -82,10 +95,10 @@
                     });
 
                     ele.$addGrpBtn.attr('disabled', true).html('<i class="glyphicon glyphicon-refresh"></i> 计算中…');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         that.grp = [];
-                        if(filter) {
-                            if(filter == 1) {
+                        if (filter) {
+                            if (filter == 1) {
                                 $.each(numbers, function (i, v) {
                                     that.grp[i] = [v];
                                 });
@@ -105,24 +118,29 @@
 
                         window.console && console.log(that.grp)
                     }, 200);
-                });
+                }
+
                 // 递归链接算法
                 function perm(arr, m) {
                     (function fn(leftArr, lastArr) {
-                        if(leftArr.length == m) {
-                            var leftStr = leftArr.sort(function(a, b) {
+                        if (leftArr.length == m) {
+                            var leftStr = leftArr.sort(function (a, b) {
                                 return a - b;
                             }).join('-');
 
-                            if(obj[leftStr]) {
+                            if (obj[leftStr]) {
                                 return false;
                             }
                             that.grp[count] = leftArr;
                             obj[leftStr] = true;
                             count++;
                         } else {
-                            for(var i = 0, l = lastArr.length; i < l; i++) {
-                                fn(leftArr.concat(lastArr[i]), lastArr.slice(i + 1));
+                            for (var i = 0, l = lastArr.length; i < l; i++) {
+
+                                window.console && console.log(leftArr.length, leftArr.length + l - i >= m, l - i, 'l:' + l, 'i:' + i);
+                                if (leftArr.length + l - i >= m) {
+                                    fn(leftArr.concat(lastArr[i]), lastArr.slice(i + 1));
+                                }
                             }
                         }
                     })((arr.length == m ? arr : []), arr);
@@ -169,7 +187,7 @@
                     var newVal = val.replace(/(\r(\n)?|\n)/g, '-');
                     var newArr = newVal.split('-');
 
-                    $.each(newArr, function(index, value){
+                    $.each(newArr, function (index, value) {
                         if (!value) {
                             return false;
                         }
@@ -224,7 +242,7 @@
                     var result = [];
 
                     ele.$getResultBtn.attr('disabled', true).html('<i class="glyphicon glyphicon-refresh"></i> 计算中…');
-                    setTimeout(function(){
+                    setTimeout(function () {
 
                         $.each(grp, function (i, v) {
                             var tmpArr = [];
