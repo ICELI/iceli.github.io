@@ -32,7 +32,6 @@
                 var ele = that.elements;
 
                 tpl.arrTpl = $('#J_arrayTpl').html();
-                tpl.grpTpl = $('#J_groupTpl').html();
                 ele.$arrayList = $('.array-list');
                 ele.$groupList = $('.group-list');
                 ele.$addArrBtn = $('.J_addArrBtn');
@@ -140,7 +139,7 @@
                 var that = this;
                 var ele = that.elements;
 
-                ele.$arrayList.on('keyup.arr', 'input.arr', function (e) {
+                ele.$arrayList.on('keyup.arr', 'input.arr', function () {
                     var me = $(this);
                     var val = $.trim(me.val());
                     var idx = me.parents('li').index();
@@ -164,7 +163,7 @@
                 var that = this;
                 var ele = that.elements;
 
-                ele.$groupList.on('keyup.grp', 'textarea.grp', function (e) {
+                ele.$groupList.on('keyup.grp', 'textarea.grp', function () {
                     var me = $(this);
                     var val = $.trim(me.val());
 
@@ -198,7 +197,7 @@
                 var that = this;
                 var ele = that.elements;
 
-                ele.$groupFilter.on('keyup.filter', function (e) {
+                ele.$groupFilter.on('keyup.filter', function () {
                     var me = $(this);
                     var val = $.trim(me.val());
 
