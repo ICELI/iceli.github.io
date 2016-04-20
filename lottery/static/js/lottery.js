@@ -15,6 +15,7 @@
                 max: 33
             },
             init: function () {
+                this.arr33 = this.getArrByLength(33);
                 this.render();
                 this.bindEvents();
 
@@ -88,11 +89,7 @@
                 function addGrp () {
                     var grpVal = [];
                     var filter = +$.trim(ele.$groupFilter.val());
-                    var numbers = new Array(arr.length);
-
-                    $.each(numbers, function (i, v) {
-                        numbers[i] = i + 1;
-                    });
+                    var numbers = that.arr33.slice(0, arr.length);
 
                     ele.$addGrpBtn.attr('disabled', true).html('<i class="glyphicon glyphicon-refresh"></i> 计算中…');
                     setTimeout(function () {
@@ -116,7 +113,7 @@
                         ele.$groupList.find('textarea.grp').val(grpVal.join('\r'));
                         ele.$addGrpBtn.attr('disabled', false).html('<i class="glyphicon glyphicon-plus"></i> 添加条件');
 
-                        window.console && console.log(that.grp)
+                        //window.console && console.log(that.grp)
                     }, 200);
                 }
 
@@ -124,23 +121,16 @@
                 function perm(arr, m) {
                     (function fn(leftArr, lastArr) {
                         if (leftArr.length == m) {
-                            var leftStr = leftArr.sort(function (a, b) {
-                                return a - b;
-                            }).join('-');
-
-                            if (obj[leftStr]) {
-                                return false;
-                            }
                             that.grp[count] = leftArr;
-                            obj[leftStr] = true;
                             count++;
                         } else {
                             for (var i = 0, l = lastArr.length; i < l; i++) {
 
-                                window.console && console.log(leftArr.length, leftArr.length + l - i >= m, l - i, 'l:' + l, 'i:' + i);
-                                if (leftArr.length + l - i >= m) {
-                                    fn(leftArr.concat(lastArr[i]), lastArr.slice(i + 1));
+                                if (leftArr.length + l - i < m) {
+                                    continue;
                                 }
+
+                                fn(leftArr.concat(lastArr[i]), lastArr.slice(i + 1));
                             }
                         }
                     })((arr.length == m ? arr : []), arr);
@@ -230,11 +220,6 @@
             onGetResult: function () {
                 var that = this;
                 var ele = that.elements;
-                var numbers = new Array(33);
-
-                $.each(numbers, function (i, v) {
-                    numbers[i] = i + 1;
-                });
 
                 ele.$getResultBtn.on('click', function () {
                     var arr = that.arr;
@@ -246,7 +231,7 @@
 
                         $.each(grp, function (i, v) {
                             var tmpArr = [];
-                            var tmpNum = numbers.concat();
+                            var tmpNum = that.arr33.slice();
 
                             $.each(v, function (idx, val) {
                                 tmpArr = tmpArr.concat(arr[val - 1]);
@@ -281,6 +266,11 @@
                             message: '包含非法参数'
                         };
                     }
+                });
+            },
+            getArrByLength: function (length) {
+                return Array.apply(null, new Array(length)).map(function(item, index){
+                    return ++index;
                 });
             }
         };
