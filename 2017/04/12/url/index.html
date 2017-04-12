@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="FE," />
+  <meta name="keywords" content="FE,ng,angular,url," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="6年前端路，美工-&amp;gt;前端开发-&amp;gt;高级前端开发-&amp;gt;前端主管-&amp;gt;前端项目经理-&amp;gt;前端架构师，title一直在变，可我始终是一名前端。  小马过河 - 他人的经验永远不可能直接用于自己，前端知识需要自己去总结归纳。">
-<meta name="keywords" content="FE">
+<meta name="description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeStart事件，回调执行 initSearch()  #L16  搜索的的$locationChangeStart事件由执行$location.search(option)方法触发#">
+<meta name="keywords" content="FE,ng,angular,url">
 <meta property="og:type" content="article">
-<meta property="og:title" content="V2FE">
-<meta property="og:url" content="http://iceli.com/2017/04/05/V2FE/index.html">
+<meta property="og:title" content="Angularjs $location.search实现URL保存搜索条件">
+<meta property="og:url" content="http://iceli.com/2017/04/12/url/index.html">
 <meta property="og:site_name" content="Lost a li">
-<meta property="og:description" content="6年前端路，美工-&amp;gt;前端开发-&amp;gt;高级前端开发-&amp;gt;前端主管-&amp;gt;前端项目经理-&amp;gt;前端架构师，title一直在变，可我始终是一名前端。  小马过河 - 他人的经验永远不可能直接用于自己，前端知识需要自己去总结归纳。">
-<meta property="og:updated_time" content="2017-04-06T09:54:47.072Z">
+<meta property="og:description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeStart事件，回调执行 initSearch()  #L16  搜索的的$locationChangeStart事件由执行$location.search(option)方法触发#">
+<meta property="og:updated_time" content="2017-04-12T04:13:42.515Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="V2FE">
-<meta name="twitter:description" content="6年前端路，美工-&amp;gt;前端开发-&amp;gt;高级前端开发-&amp;gt;前端主管-&amp;gt;前端项目经理-&amp;gt;前端架构师，title一直在变，可我始终是一名前端。  小马过河 - 他人的经验永远不可能直接用于自己，前端知识需要自己去总结归纳。">
+<meta name="twitter:title" content="Angularjs $location.search实现URL保存搜索条件">
+<meta name="twitter:description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeStart事件，回调执行 initSearch()  #L16  搜索的的$locationChangeStart事件由执行$location.search(option)方法触发#">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://iceli.com/2017/04/05/V2FE/"/>
+  <link rel="canonical" href="http://iceli.com/2017/04/12/url/"/>
 
 
 
 
 
-  <title> V2FE | Lost a li </title>
+  <title> Angularjs $location.search实现URL保存搜索条件 | Lost a li </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/04/05/V2FE/">
+    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/04/12/url/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -325,7 +325,7 @@
             
             
               
-                V2FE
+                Angularjs $location.search实现URL保存搜索条件
               
             
           </h2>
@@ -340,8 +340,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-05T19:43:17+08:00">
-                2017-04-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-12T11:31:20+08:00">
+                2017-04-12
               </time>
             
 
@@ -351,6 +351,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -359,7 +381,7 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/04/05/V2FE/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/04/12/url/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -368,7 +390,7 @@
 
           
           
-             <span id="/2017/04/05/V2FE/" class="leancloud_visitors" data-flag-title="V2FE">
+             <span id="/2017/04/12/url/" class="leancloud_visitors" data-flag-title="Angularjs $location.search实现URL保存搜索条件">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -403,9 +425,18 @@
 
       
         <blockquote>
-<p>6年前端路，美工-&gt;前端开发-&gt;高级前端开发-&gt;前端主管-&gt;前端项目经理-&gt;前端架构师，title一直在变，可我始终是一名前端。</p>
+<p>当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。</p>
 </blockquote>
-<p>小马过河 - 他人的经验永远不可能直接用于自己，前端知识需要自己去总结归纳。</p>
+<ol>
+<li>页面刷新初始化一次查询<code>initSearch()</code> <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L37" target="_blank" rel="external">#L37</a></li>
+<li>搜索和浏览器前进后退的查询都用$locationChangeStart事件，回调执行 <code>initSearch()</code>  <a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js#L16" target="_blank" rel="external">#L16</a> </li>
+<li>搜索的的$locationChangeStart事件由执行<code>$location.search(option)</code>方法触发<a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L23" target="_blank" rel="external">#L23</a></li>
+<li>我们把查询事件的异常处理提取到<a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js" target="_blank" rel="external">jmSearch</a>服务当中，该服务由jmui管理</li>
+<li>需要保存搜索条件的页面在controller中注入jmSearch服务 <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L6" target="_blank" rel="external">#L6</a></li>
+<li>jmSearch需要传入当前<code>$scope</code>和查询的方法<code>initSearch</code> <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L39" target="_blank" rel="external">#L39</a></li>
+<li>页面路由需配置<code>reloadOnSearch: false</code>, 防止刷新页面 <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/router/search/search.js#L6" target="_blank" rel="external">search.js#L6</a></li>
+</ol>
+<p>参考：<a href="https://github.com/jm-team/ng-seed" target="_blank" rel="external">ng-seed </a> /search模块</p>
 
       
     </div>
@@ -458,6 +489,12 @@
           
             <a href="/tags/FE/" rel="tag"># FE</a>
           
+            <a href="/tags/ng/" rel="tag"># ng</a>
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+            <a href="/tags/url/" rel="tag"># url</a>
+          
         </div>
       
 
@@ -469,15 +506,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/12/url/" rel="next" title="Angularjs $location.search实现URL保存搜索条件">
-                <i class="fa fa-chevron-left"></i> Angularjs $location.search实现URL保存搜索条件
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/05/V2FE/" rel="prev" title="V2FE">
+                V2FE <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
