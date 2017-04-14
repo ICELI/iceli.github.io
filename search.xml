@@ -5,7 +5,7 @@
     <entry>
       <title><![CDATA[Angularjs $location.search实现URL保存搜索条件]]></title>
       <url>%2F2017%2F04%2F12%2Furl%2F</url>
-      <content type="text"><![CDATA[当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。 页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeStart事件，回调执行 initSearch() #L16 搜索的的$locationChangeStart事件由执行$location.search(option)方法触发#L23 我们把查询事件的异常处理提取到jmSearch服务当中，该服务由jmui管理 需要保存搜索条件的页面在controller中注入jmSearch服务 #L6 jmSearch需要传入当前$scope和查询的方法initSearch #L39 页面路由需配置reloadOnSearch: false, 防止刷新页面 search.js#L6 参考：ng-seed /search模块]]></content>
+      <content type="text"><![CDATA[当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。 页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch() #L16 搜索的$locationChangeSuccess事件由执行$location.search(option)方法触发#L23 我们把查询事件的异常处理提取到jmSearch服务当中，该服务由jmui管理 需要保存搜索条件的页面在controller中注入jmSearch服务 #L6 jmSearch需要传入当前$scope和查询的方法initSearch #L39 页面路由需配置reloadOnSearch: false, 防止刷新页面 search.js#L6 参考：ng-seed /search模块]]></content>
     </entry>
 
     

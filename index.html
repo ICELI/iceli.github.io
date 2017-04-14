@@ -419,8 +419,8 @@
 </blockquote>
 <ol>
 <li>页面刷新初始化一次查询<code>initSearch()</code> <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L37" target="_blank" rel="external">#L37</a></li>
-<li>搜索和浏览器前进后退的查询都用$locationChangeStart事件，回调执行 <code>initSearch()</code>  <a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js#L16" target="_blank" rel="external">#L16</a> </li>
-<li>搜索的的$locationChangeStart事件由执行<code>$location.search(option)</code>方法触发<a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L23" target="_blank" rel="external">#L23</a></li>
+<li>搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 <code>initSearch()</code>  <a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js#L16" target="_blank" rel="external">#L16</a> </li>
+<li>搜索的$locationChangeSuccess事件由执行<code>$location.search(option)</code>方法触发<a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L23" target="_blank" rel="external">#L23</a></li>
 <li>我们把查询事件的异常处理提取到<a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js" target="_blank" rel="external">jmSearch</a>服务当中，该服务由jmui管理</li>
 <li>需要保存搜索条件的页面在controller中注入jmSearch服务 <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L6" target="_blank" rel="external">#L6</a></li>
 <li>jmSearch需要传入当前<code>$scope</code>和查询的方法<code>initSearch</code> <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L39" target="_blank" rel="external">#L39</a></li>
