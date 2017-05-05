@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="FE,ng,angular,url," />
+  <meta name="keywords" content="vue2,vue," />
 
 
 
@@ -87,17 +87,20 @@
 
 
 
-<meta name="description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch()  #L16  搜索的$locationChangeSuccess事件由执行$location.search(option)方法">
-<meta name="keywords" content="FE,ng,angular,url">
+<meta name="description" content="把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。 每个组件实例都有相应的 watc">
+<meta name="keywords" content="vue2,vue">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Angularjs $location.search实现URL保存搜索条件">
-<meta property="og:url" content="http://iceli.com/2017/04/12/url/index.html">
+<meta property="og:title" content="Vue2源码：响应式原理">
+<meta property="og:url" content="http://iceli.com/2017/05/06/vue2/Vue2-reactivity/index.html">
 <meta property="og:site_name" content="Lost a li">
-<meta property="og:description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch()  #L16  搜索的$locationChangeSuccess事件由执行$location.search(option)方法">
-<meta property="og:updated_time" content="2017-04-14T07:39:36.355Z">
+<meta property="og:description" content="把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。 每个组件实例都有相应的 watc">
+<meta property="og:image" content="https://cn.vuejs.org/images/data.png">
+<meta property="og:image" content="https://cn.vuejs.org/images/lifecycle.png">
+<meta property="og:updated_time" content="2017-05-05T10:00:09.912Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Angularjs $location.search实现URL保存搜索条件">
-<meta name="twitter:description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch()  #L16  搜索的$locationChangeSuccess事件由执行$location.search(option)方法">
+<meta name="twitter:title" content="Vue2源码：响应式原理">
+<meta name="twitter:description" content="把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。 每个组件实例都有相应的 watc">
+<meta name="twitter:image" content="https://cn.vuejs.org/images/data.png">
 
 
 
@@ -125,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://iceli.com/2017/04/12/url/"/>
+  <link rel="canonical" href="http://iceli.com/2017/05/06/vue2/Vue2-reactivity/"/>
 
 
 
 
 
-  <title> Angularjs $location.search实现URL保存搜索条件 | Lost a li </title>
+  <title> Vue2源码：响应式原理 | Lost a li </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +307,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/04/12/url/">
+    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/06/vue2/Vue2-reactivity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -325,7 +328,7 @@
             
             
               
-                Angularjs $location.search实现URL保存搜索条件
+                Vue2源码：响应式原理
               
             
           </h2>
@@ -340,8 +343,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-12T11:31:20+08:00">
-                2017-04-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-06T13:05:07+08:00">
+                2017-05-06
               </time>
             
 
@@ -363,8 +366,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Angular/" itemprop="url" rel="index">
-                    <span itemprop="name">Angular</span>
+                  <a href="/categories/vue2/" itemprop="url" rel="index">
+                    <span itemprop="name">vue2</span>
                   </a>
                 </span>
 
@@ -381,7 +384,7 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/04/12/url/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/05/06/vue2/Vue2-reactivity/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -390,7 +393,7 @@
 
           
           
-             <span id="/2017/04/12/url/" class="leancloud_visitors" data-flag-title="Angularjs $location.search实现URL保存搜索条件">
+             <span id="/2017/05/06/vue2/Vue2-reactivity/" class="leancloud_visitors" data-flag-title="Vue2源码：响应式原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -425,18 +428,10 @@
 
       
         <blockquote>
-<p>当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。</p>
+<p>把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。</p>
+<p>每个组件实例都有相应的 watcher 实例对象，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。</p>
 </blockquote>
-<ol>
-<li>页面刷新初始化一次查询<code>initSearch()</code> <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L37" target="_blank" rel="external">#L37</a></li>
-<li>搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 <code>initSearch()</code>  <a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js#L16" target="_blank" rel="external">#L16</a> </li>
-<li>搜索的$locationChangeSuccess事件由执行<code>$location.search(option)</code>方法触发<a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L23" target="_blank" rel="external">#L23</a></li>
-<li>我们把查询事件的异常处理提取到<a href="https://github.com/jm-team/ng-seed/blob/master/src/component/search/index.js" target="_blank" rel="external">jmSearch</a>服务当中，该服务由jmui管理</li>
-<li>需要保存搜索条件的页面在controller中注入jmSearch服务 <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L6" target="_blank" rel="external">#L6</a></li>
-<li>jmSearch需要传入当前<code>$scope</code>和查询的方法<code>initSearch</code> <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/controller/searchCtrl.js#L39" target="_blank" rel="external">#L39</a></li>
-<li>页面路由需配置<code>reloadOnSearch: false</code>, 防止刷新页面 <a href="https://github.com/jm-team/ng-seed/blob/master/src/js/router/search/search.js#L6" target="_blank" rel="external">search.js#L6</a></li>
-</ol>
-<p>参考：<a href="https://github.com/jm-team/ng-seed" target="_blank" rel="external">ng-seed </a> /search模块</p>
+<p><img src="https://cn.vuejs.org/images/data.png" alt="img"><br><img src="https://cn.vuejs.org/images/lifecycle.png" alt="img"></p>
 
       
     </div>
@@ -487,13 +482,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/FE/" rel="tag"># FE</a>
+            <a href="/tags/vue2/" rel="tag"># vue2</a>
           
-            <a href="/tags/ng/" rel="tag"># ng</a>
-          
-            <a href="/tags/angular/" rel="tag"># angular</a>
-          
-            <a href="/tags/url/" rel="tag"># url</a>
+            <a href="/tags/vue/" rel="tag"># vue</a>
           
         </div>
       
@@ -506,14 +497,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/07/vue2/Vue2-Virtual Dom/" rel="next" title="Vue2源码：Virtual Dom">
+                <i class="fa fa-chevron-left"></i> Vue2源码：Virtual Dom
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/05/V2FE/" rel="prev" title="V2FE">
-                V2FE <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/05/vue2/Vue2-flow/" rel="prev" title="Vue2源码：准备">
+                Vue2源码：准备 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -617,7 +612,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -628,7 +623,7 @@
             
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -639,7 +634,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -3,8 +3,36 @@
   
     
     <entry>
+      <title><![CDATA[Vue2源码：Virtual Dom]]></title>
+      <url>%2F2017%2F05%2F07%2Fvue2%2FVue2-Virtual%20Dom%2F</url>
+      <content type="text"></content>
+    </entry>
+
+    
+    <entry>
+      <title><![CDATA[Vue2源码：响应式原理]]></title>
+      <url>%2F2017%2F05%2F06%2Fvue2%2FVue2-reactivity%2F</url>
+      <content type="text"><![CDATA[把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。 每个组件实例都有相应的 watcher 实例对象，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。]]></content>
+    </entry>
+
+    
+    <entry>
+      <title><![CDATA[Vue2源码：准备]]></title>
+      <url>%2F2017%2F05%2F05%2Fvue2%2FVue2-flow%2F</url>
+      <content type="text"><![CDATA[因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识]]></content>
+    </entry>
+
+    
+    <entry>
+      <title><![CDATA[vue2源码]]></title>
+      <url>%2F2017%2F05%2F04%2Fvue2%2FVue2%2F</url>
+      <content type="text"><![CDATA[版本：v2.3.0 ，先看这里CONTRIBUTING flow 进行静态代码检查 observer Vue 双向数据绑定实现 snabbdom Virtual Dom compiler render function SSR rollup vue学习开篇，学习计划]]></content>
+    </entry>
+
+    
+    <entry>
       <title><![CDATA[Angularjs $location.search实现URL保存搜索条件]]></title>
-      <url>%2F2017%2F04%2F12%2Furl%2F</url>
+      <url>%2F2017%2F04%2F12%2Fangular.js%2Furl%2F</url>
       <content type="text"><![CDATA[当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。 页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch() #L16 搜索的$locationChangeSuccess事件由执行$location.search(option)方法触发#L23 我们把查询事件的异常处理提取到jmSearch服务当中，该服务由jmui管理 需要保存搜索条件的页面在controller中注入jmSearch服务 #L6 jmSearch需要传入当前$scope和查询的方法initSearch #L39 页面路由需配置reloadOnSearch: false, 防止刷新页面 search.js#L6 参考：ng-seed /search模块]]></content>
     </entry>
 
