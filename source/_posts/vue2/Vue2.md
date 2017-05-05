@@ -7,7 +7,7 @@ tags:
  - vue
 ---
 
-> vue v2.3.0 https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md#project-structure
+> 版本：v2.3.0 ，先看这里[CONTRIBUTING](https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md#project-structure)
 
 - flow 进行静态代码检查
 - observer Vue 双向数据绑定实现
