@@ -1,5 +1,5 @@
 ---
-title: git submodule
+title: git submodule 子模块的使用
 date: 2017-05-06 22:03:39
 categories: git
 tags:
@@ -8,7 +8,7 @@ tags:
 
 > `git submodule` 有时候我们将一个项目分成多个子模块去维护，但是又想要有一个清晰的项目包含关系就可以通过父子模块来实现。
 
-比如我有一个nodejs学习的项目计划，但是每一个nodejs的小模块都有自己独立的依赖包，为了方便写demo我将他们分为nodejs-xxx系列的小项目。他们分散在github的仓库列表里。为了可以清晰的查看他们，我们可以通过git子模块去管理他们。
+比如我有一个nodejs学习的项目计划，包含很多个nodejs模块的学习，每一个小模块的demo都有自己独立的依赖包，为了方便写demo我将他们分为nodejs-xxx系列的小项目。他们分散在github的仓库列表里。为了可以清晰的查看他们，我们可以通过git子模块去管理他们。
 
 基本上通过《[Git-工具-子模块](https://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97)》这篇文章就可以掌握它的实现步骤。但是，关于子模块代码更新同步的地方没有讲清楚，这里写下我自己总结的步骤：
 
