@@ -25,8 +25,8 @@ tags:
 
 ## 从代码构建入手
 
-### 1. package.json scripts
-打包入口文件build/build.js
+### 1. package.json
+从scripts属性可看到打包入口文件build/build.js
 ```json
 {
 	...
@@ -35,7 +35,7 @@ tags:
 }
 ```
 
-可从package.json属性获取对应的版本，竟然还有ts版，不知是否可用？
+可从main、module等属性获取对应的版本，竟然还有ts版，不知是否可用？
 ```
 "main": "dist/vue.runtime.common.js", // webpack1
 "module": "dist/vue.runtime.esm.js", // webpack2 or rollup
@@ -56,11 +56,11 @@ tags:
 | **Runtime-only (production)** | vue.runtime.min.js | | |
 
 
-我们用vue-cli时，因为用了vue-loader，不需要compiler编译模板，同时使用ES6的import/export管理模块依赖。所以webpack2构建依赖的vue就是找的ES module规范的runtime版本：`vue.runtime.esm.js`。
+我们用vue-cli时，因为用了vue-loader，不需要compiler编译模板。同时使用了ES6的import/export管理模块依赖。所以webpack2构建时所依赖的vue，就是基于ES module规范的runtime版本：`vue.runtime.esm.js`。
 
 
 ### 3. build/config.js 项目构建配置文件
-dist目录下的文件就是根据这个rollup配置生成的
+dist目录下的文件就是根据这个rollup配置生成的，其中`vue.runtime.esm.js`对应配置如下：
 ```
 'web-runtime-esm': {
     entry: resolve('web/runtime.js'),
@@ -69,10 +69,10 @@ dist目录下的文件就是根据这个rollup配置生成的
     banner
   },
 ```
-rollup入口文件`web/runtime.js`
+找到rollup入口文件`web/runtime.js`
 
 ### 4. build/alias.js
-通过别名快速定位文件依赖
+通过别名快速定位文件依赖，就是webstorm不能`ctrl+点击`跳转了,有点坑
 ```
 module.exports = {
   vue: path.resolve(__dirname, '../src/platforms/web/runtime-with-compiler'),
@@ -87,8 +87,8 @@ module.exports = {
 }
 ```
 
-### 5. ../src/platforms/web/runtime.js
+### 5. ../src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。
 
-### 6. ../src/platforms/web/runtime/index.js
+### 6. ../src/platforms/web/runtime/index.js 这才是真身。。。
 
-### 
+### 7. 
