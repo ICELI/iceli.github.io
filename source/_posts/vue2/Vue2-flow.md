@@ -87,8 +87,51 @@ module.exports = {
 }
 ```
 
-### 5. ../src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。
+### 5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。
 
-### 6. ../src/platforms/web/runtime/index.js 这才是真身。。。
+### 6. src/platforms/web/runtime/index.js 这才是真身。。。
 
-### 7. 
+### 7. src/core/index.js 顺着`import Vue from xxx`我们一路来到了core目录
+
+### 8. src/core/instance/index.js
+终于见到你，还好我没放弃
+```js
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' &&
+    !(this instanceof Vue)) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  this._init(options)
+}
+```
+Vue构造函数就是在此定义，内部执行初始化方法`_init`，该方法在`initMixin`中定义
+```
+initLifecycle(vm)
+initEvents(vm)
+initRender(vm)
+callHook(vm, 'beforeCreate')
+initInjections(vm) // resolve injections before data/props
+initState(vm)
+initProvide(vm) // resolve provide after data/props
+callHook(vm, 'created')
+```
+
+最后，当实例化传入`el`时，自动挂载实例至此DOM元素。
+```js
+if (vm.$options.el) {
+      vm.$mount(vm.$options.el)
+    }
+```
+
+同时在原型上挂载了state、event、lifecycle、render方法
+
+内置私有方法或属性前加下划线`_`, 暴露给外部调用的方法或属性前加美元符号`$`
+
+我们可以查看flow静态类型检查的配置文件`flow/component.js`
+基本上包含了一个组件的所有属性和方法。
+
+### 9. src/core/global-api/index.js
+挂载各种方法
+
+
+> 阅读源码全程忽略`process.env.NODE_ENV !== 'production'`条件里的代码，一般只是代码警告提示
