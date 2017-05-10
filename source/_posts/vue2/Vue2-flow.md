@@ -90,6 +90,8 @@ module.exports = {
 ### 5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。
 
 ### 6. src/platforms/web/runtime/index.js 这才是真身。。。
+vue启动方法`$mount`在此定义，挂载至el，该参数可以是string 或者 Element，如果是字符串就调用document.querySelector方法返回DOM
+
 
 ### 7. src/core/index.js 顺着`import Vue from xxx`我们一路来到了core目录
 
@@ -124,6 +126,10 @@ if (vm.$options.el) {
 ```
 
 同时在原型上挂载了state、event、lifecycle、render方法
+几个在$mount用到的方法：
+renderMixin: _render
+lifecycleMixin: _update
+Watcher: _watcher
 
 内置私有方法或属性前加下划线`_`, 暴露给外部调用的方法或属性前加美元符号`$`
 
