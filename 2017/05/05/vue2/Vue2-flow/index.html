@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://iceli.com/2017/05/05/vue2/Vue2-flow/index.html">
 <meta property="og:site_name" content="Lost a li">
 <meta property="og:description" content="因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识  flow https://flow.org/ http://www.imooc.com/m/wap/article/detail.html?aid=15855  rollup Tree-shaking, 对于lib而言 rollup更适合用。  用 webpack 打包，还是会">
-<meta property="og:updated_time" content="2017-05-10T13:33:26.579Z">
+<meta property="og:updated_time" content="2017-05-10T13:39:47.248Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2源码：准备">
 <meta name="twitter:description" content="因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识  flow https://flow.org/ http://www.imooc.com/m/wap/article/detail.html?aid=15855  rollup Tree-shaking, 对于lib而言 rollup更适合用。  用 webpack 打包，还是会">
@@ -488,7 +488,7 @@
 <p>最后，当实例化传入<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">      vm.$mount(vm.$options.el)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>同时在原型上挂载了state、event、lifecycle、render方法</p>
 <p>内置私有方法或属性前加下划线<code>_</code>, 暴露给外部调用的方法或属性前加美元符号<code>$</code></p>
-<p>我们可以查看flow静态类型检查的配置文件<code>flow/component.js</code><br>基本上包含了一个组件的所有属性和方法。</p>
+<p>我们可以查看组件的接口配置文件<code>flow/component.js</code><br>基本上包含了一个组件的所有属性和方法。</p>
 <h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
 <blockquote>
 <p>阅读源码全程忽略<code>process.env.NODE_ENV !== &#39;production&#39;</code>条件里的代码，一般只是代码警告提示</p>
