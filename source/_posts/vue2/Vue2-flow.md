@@ -127,7 +127,7 @@ if (vm.$options.el) {
 
 内置私有方法或属性前加下划线`_`, 暴露给外部调用的方法或属性前加美元符号`$`
 
-我们可以查看flow静态类型检查的配置文件`flow/component.js`
+我们可以查看组件的接口配置文件`flow/component.js`
 基本上包含了一个组件的所有属性和方法。
 
 ### 9. src/core/global-api/index.js
