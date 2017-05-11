@@ -23,6 +23,29 @@ tags:
 - 尤小右 https://www.zhihu.com/question/37861778/answer/73847503
 - 小爵 https://zhuanlan.zhihu.com/p/25276769
 
+### API 分类
+- Global Config
+- Global API
+- Options
+	- Data
+	- DOM
+	- Lifecycle Hooks
+	- Assets
+	- composition
+	- Misc
+- Instance Properties
+- Instance Methods
+	- Data
+	- Events
+	- Lifecycle
+- Directives
+- Special Attributes
+- Built-In Component
+- VNode Interface
+- Server-side Rendering
+
+> 阅读源码时，可以看到这些方法是在哪个阶段定义的，代码看完你找到了吗？
+
 ## 从代码构建入手
 
 ### 1. package.json
@@ -106,7 +129,7 @@ function Vue (options) {
   this._init(options)
 }
 ```
-Vue构造函数就是在此定义，内部执行初始化方法`_init`，该方法在`initMixin`中定义
+Vue构造函数就是在此定义，内部执行初始化方法`_init`，该方法在`initMixin`中定义`Vue.prototype._init`
 ```
 initLifecycle(vm)
 initEvents(vm)
@@ -124,14 +147,19 @@ if (vm.$options.el) {
       vm.$mount(vm.$options.el)
     }
 ```
-
-同时在原型上挂载了state、event、lifecycle、render方法
-几个在$mount用到的方法：
+几个在mountComponent用到的方法：
 renderMixin: _render
 lifecycleMixin: _update
 Watcher: _watcher
 
-内置私有方法或属性前加下划线`_`, 暴露给外部调用的方法或属性前加美元符号`$`
+
+在initMixin之后，又对state、event、lifecycle、render进行混合
+ 
+>要理清命名的规则，便于理解每一步的作用
+- xxxMixin -- 给Vue类添加原型方法
+- initXxx -- 给vm添加初始化属性
+- vm -- 对应Vue的实例
+- 内置私有方法或属性前加下划线`_`, 暴露给外部调用的方法或属性前加美元符号`$`
 
 我们可以查看组件的接口配置文件`flow/component.js`
 基本上包含了一个组件的所有属性和方法。
@@ -140,4 +168,4 @@ Watcher: _watcher
 挂载各种方法
 
 
-> 阅读源码全程忽略`process.env.NODE_ENV !== 'production'`条件里的代码，一般只是代码警告提示
+> 阅读源码全程忽略`process.env.NODE_ENV !== 'production'`条件里的代码，先了解主流程
