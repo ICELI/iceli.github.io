@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="FE,ng,angular,url," />
+  <meta name="keywords" content="vue2,vue," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch()  #L16  搜索的$locationChangeSuccess事件由执行$location.search(option)方法">
-<meta name="keywords" content="FE,ng,angular,url">
+<meta name="description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
+<meta name="keywords" content="vue2,vue">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Angularjs $location.search实现URL保存搜索条件">
-<meta property="og:url" content="http://iceli.com/2017/04/12/angular.js/url/index.html">
+<meta property="og:title" content="Vue2源码：源码速读">
+<meta property="og:url" content="http://iceli.com/2017/05/12/vue2/Vue2-instance/index.html">
 <meta property="og:site_name" content="Lost a li">
-<meta property="og:description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch()  #L16  搜索的$locationChangeSuccess事件由执行$location.search(option)方法">
-<meta property="og:updated_time" content="2017-05-05T04:17:35.759Z">
+<meta property="og:description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
+<meta property="og:updated_time" content="2017-05-12T05:38:03.470Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Angularjs $location.search实现URL保存搜索条件">
-<meta name="twitter:description" content="当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。   页面刷新初始化一次查询initSearch() #L37 搜索和浏览器前进后退的查询都用$locationChangeSuccess事件，回调执行 initSearch()  #L16  搜索的$locationChangeSuccess事件由执行$location.search(option)方法">
+<meta name="twitter:title" content="Vue2源码：源码速读">
+<meta name="twitter:description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://iceli.com/2017/04/12/angular.js/url/"/>
+  <link rel="canonical" href="http://iceli.com/2017/05/12/vue2/Vue2-instance/"/>
 
 
 
 
 
-  <title> Angularjs $location.search实现URL保存搜索条件 | Lost a li </title>
+  <title> Vue2源码：源码速读 | Lost a li </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -304,7 +304,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/04/12/angular.js/url/">
+    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/12/vue2/Vue2-instance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -325,7 +325,7 @@
             
             
               
-                Angularjs $location.search实现URL保存搜索条件
+                Vue2源码：源码速读
               
             
           </h2>
@@ -340,8 +340,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-12T11:31:20+08:00">
-                2017-04-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T00:05:00+08:00">
+                2017-05-12
               </time>
             
 
@@ -363,8 +363,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Angular/" itemprop="url" rel="index">
-                    <span itemprop="name">Angular</span>
+                  <a href="/categories/vue2/" itemprop="url" rel="index">
+                    <span itemprop="name">vue2</span>
                   </a>
                 </span>
 
@@ -381,7 +381,7 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2017/04/12/angular.js/url/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2017/05/12/vue2/Vue2-instance/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -390,7 +390,7 @@
 
           
           
-             <span id="/2017/04/12/angular.js/url/" class="leancloud_visitors" data-flag-title="Angularjs $location.search实现URL保存搜索条件">
+             <span id="/2017/05/12/vue2/Vue2-instance/" class="leancloud_visitors" data-flag-title="Vue2源码：源码速读">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -425,18 +425,71 @@
 
       
         <blockquote>
-<p>当查询条件较少且固定时，推荐使用路由方式比较简便。当搜索条件多且不定的情况下，可使用该方法。</p>
-</blockquote>
+<p>基本思路:</p>
 <ol>
-<li>页面刷新初始化一次查询<code>initSearch()</code> <a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/src/page/components/search/search.controller.js#L37" target="_blank" rel="external">#L37</a></li>
-<li>搜索和浏览器前进后退的查询都用<code>$locationChangeSuccess</code>事件，回调执行 <code>initSearch()</code>  <a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/dep/jmui/search/index.js#L16" target="_blank" rel="external">#L16</a> </li>
-<li>搜索的<code>$locationChangeSuccess</code>事件由执行<code>$location.search(option)</code>方法触发<a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/src/page/components/search/search.controller.js#L23" target="_blank" rel="external">#L23</a></li>
-<li>我们把查询事件的异常处理提取到<a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/dep/jmui/search/index.js" target="_blank" rel="external">jmSearch</a>服务当中，该服务由jmui管理</li>
-<li>需要保存搜索条件的页面在controller中注入jmSearch服务 <a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/src/page/components/search/search.controller.js#L6" target="_blank" rel="external">#L6</a></li>
-<li>jmSearch需要传入当前<code>$scope</code>和查询的方法<code>initSearch</code> <a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/src/page/components/search/search.controller.js#L39" target="_blank" rel="external">#L39</a></li>
-<li>页面路由需配置<code>reloadOnSearch: false</code>, 防止刷新页面 <a href="https://github.com/jm-team/ng-seed/blob/v0.7.0/src/page/components/search/search.router.js#L6" target="_blank" rel="external">search.js#L6</a></li>
+<li>首先通过模块依赖关系找到Vue类在哪定义</li>
+<li>Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系</li>
+<li>Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的</li>
+<li>Vue实例化时，组件模板是如何渲染并更新到<code>el</code>上的</li>
+<li>Vue实例，vm的Data响应式是怎么实现的</li>
+<li>阅读源码全程忽略<code>process.env.NODE_ENV !== &#39;production&#39;</code>条件里的代码，先了解主流程</li>
 </ol>
-<p>参考：<a href="https://github.com/jm-team/ng-seed" target="_blank" rel="external">ng-seed </a> /search模块</p>
+</blockquote>
+<h3 id="要理清命名的规则，便于理解每一步的作用"><a href="#要理清命名的规则，便于理解每一步的作用" class="headerlink" title="要理清命名的规则，便于理解每一步的作用"></a>要理清命名的规则，便于理解每一步的作用</h3><ul>
+<li>xxxMixin(Vue) – 给Vue类添加原型方法</li>
+<li>initXxx(vm) – 给vm添加初始化属性</li>
+<li>vm – 对应Vue的实例</li>
+<li>内置私有方法或属性前加下划线<code>_</code>, 暴露给外部调用的方法或属性前加美元符号<code>$</code></li>
+</ul>
+<p>我们可以查看组件的接口配置文件<code>flow/component.js</code>，基本上包含了一个组件的所有属性和方法。</p>
+<h2 id="从代码构建入手"><a href="#从代码构建入手" class="headerlink" title="从代码构建入手"></a>从代码构建入手</h2><h3 id="1-package-json"><a href="#1-package-json" class="headerlink" title="1. package.json"></a>1. package.json</h3><p>从scripts属性可看到打包入口文件build/build.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	...</div><div class="line">	<span class="string">"build"</span>: <span class="string">"node build/build.js"</span></div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可从main、module等属性获取对应的版本，竟然还有ts版，不知是否可用？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">"main"</span>: <span class="string">"dist/vue.runtime.common.js"</span>, <span class="comment">// webpack1</span></div><div class="line"><span class="string">"module"</span>: <span class="string">"dist/vue.runtime.esm.js"</span>, <span class="comment">// webpack2 or rollup</span></div><div class="line"><span class="string">"unpkg"</span>: <span class="string">"dist/vue.js"</span>, <span class="comment">// 直接&lt;script&gt;引入vue文件</span></div><div class="line"><span class="string">"typings"</span>: <span class="string">"types/index.d.ts"</span>, <span class="comment">// typescript版 具体进度未知？？？</span></div></pre></td></tr></table></figure></p>
+<h3 id="2-dist-构建后的文件存放目录"><a href="#2-dist-构建后的文件存放目录" class="headerlink" title="2. dist 构建后的文件存放目录"></a>2. dist 构建后的文件存放目录</h3><p>查看<a href="https://github.com/vuejs/vue/blob/dev/dist/README.md" target="_blank" rel="external">README.md</a></p>
+<h4 id="Explanation-of-Build-Files"><a href="#Explanation-of-Build-Files" class="headerlink" title="Explanation of Build Files"></a>Explanation of Build Files</h4><table>
+<thead>
+<tr>
+<th></th>
+<th>UMD</th>
+<th>CommonJS</th>
+<th>ES Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full</strong></td>
+<td>vue.js</td>
+<td>vue.common.js</td>
+<td>vue.esm.js</td>
+</tr>
+<tr>
+<td><strong>Runtime-only</strong></td>
+<td>vue.runtime.js</td>
+<td>vue.runtime.common.js</td>
+<td>vue.runtime.esm.js</td>
+</tr>
+<tr>
+<td><strong>Full (production)</strong></td>
+<td>vue.min.js</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Runtime-only (production)</strong></td>
+<td>vue.runtime.min.js</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>我们用vue-cli时，因为用了vue-loader，不需要compiler编译模板。同时使用了ES6的import/export管理模块依赖。所以webpack2构建时所依赖的vue，就是基于ES module规范的runtime版本：<code>vue.runtime.esm.js</code>。</p>
+<h3 id="3-build-config-js-项目构建配置文件"><a href="#3-build-config-js-项目构建配置文件" class="headerlink" title="3. build/config.js 项目构建配置文件"></a>3. build/config.js 项目构建配置文件</h3><p>dist目录下文件的rollup配置都在此文件中定义，其中<code>vue.runtime.esm.js</code>对应配置如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">'web-runtime-esm'</span>: &#123;</div><div class="line">    <span class="attr">entry</span>: resolve(<span class="string">'web/runtime.js'</span>),</div><div class="line">    <span class="attr">dest</span>: resolve(<span class="string">'dist/vue.runtime.esm.js'</span>),</div><div class="line">    <span class="attr">format</span>: <span class="string">'es'</span>,</div><div class="line">    banner</div><div class="line">  &#125;,</div></pre></td></tr></table></figure></p>
+<p>找到rollup入口文件<code>web/runtime.js</code></p>
+<h3 id="4-build-alias-js"><a href="#4-build-alias-js" class="headerlink" title="4. build/alias.js"></a>4. build/alias.js</h3><p>通过别名快速定位文件依赖，就是webstorm不能<code>ctrl+点击</code>跳转了,有点坑<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">vue</span>: path.resolve(__dirname, <span class="string">'../src/platforms/web/runtime-with-compiler'</span>),</div><div class="line">  <span class="attr">compiler</span>: path.resolve(__dirname, <span class="string">'../src/compiler'</span>),</div><div class="line">  <span class="attr">core</span>: path.resolve(__dirname, <span class="string">'../src/core'</span>),</div><div class="line">  <span class="attr">shared</span>: path.resolve(__dirname, <span class="string">'../src/shared'</span>),</div><div class="line">  <span class="attr">web</span>: path.resolve(__dirname, <span class="string">'../src/platforms/web'</span>),</div><div class="line">  <span class="attr">weex</span>: path.resolve(__dirname, <span class="string">'../src/platforms/weex'</span>),</div><div class="line">  <span class="attr">server</span>: path.resolve(__dirname, <span class="string">'../src/server'</span>),</div><div class="line">  <span class="attr">entries</span>: path.resolve(__dirname, <span class="string">'../src/entries'</span>),</div><div class="line">  <span class="attr">sfc</span>: path.resolve(__dirname, <span class="string">'../src/sfc'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。"><a href="#5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。" class="headerlink" title="5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。"></a>5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。</h3><h3 id="6-src-platforms-web-runtime-index-js-这才是真身。。。"><a href="#6-src-platforms-web-runtime-index-js-这才是真身。。。" class="headerlink" title="6. src/platforms/web/runtime/index.js 这才是真身。。。"></a>6. src/platforms/web/runtime/index.js 这才是真身。。。</h3><p>vue启动方法<code>$mount</code>在此定义，挂载至el，该参数可以是string 或者 Element，如果是字符串就调用document.querySelector方法返回DOM</p>
+<h3 id="7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><a href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录" class="headerlink" title="7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录"></a>7. src/core/index.js 顺着<code>import Vue from xxx</code>我们一路来到了core目录</h3><h3 id="8-src-core-instance-index-js"><a href="#8-src-core-instance-index-js" class="headerlink" title="8. src/core/instance/index.js"></a>8. src/core/instance/index.js</h3><p>终于见到你，还好我没放弃<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</div><div class="line">    !(<span class="keyword">this</span> <span class="keyword">instanceof</span> Vue)) &#123;</div><div class="line">    warn(<span class="string">'Vue is a constructor and should be called with the `new` keyword'</span>)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">this</span>._init(options)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Vue构造函数就是在此定义，内部执行初始化方法<code>_init</code>，该方法在<code>initMixin</code>中定义<code>Vue.prototype._init</code><br>先在内部执行一系列初始化方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">initLifecycle(vm)</div><div class="line">initEvents(vm)</div><div class="line">initRender(vm)</div><div class="line">callHook(vm, <span class="string">'beforeCreate'</span>)</div><div class="line">initInjections(vm) <span class="comment">// resolve injections before data/props</span></div><div class="line">initState(vm)</div><div class="line">initProvide(vm) <span class="comment">// resolve provide after data/props</span></div><div class="line">callHook(vm, <span class="string">'created'</span>)</div></pre></td></tr></table></figure></p>
+<p>最后，当实例化参数有<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">  vm.$mount(vm.$options.el)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>几个在mountComponent用到的方法：<br>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: _watcher</p>
+<h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
 
       
     </div>
@@ -487,13 +540,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/FE/" rel="tag"># FE</a>
+            <a href="/tags/vue2/" rel="tag"># vue2</a>
           
-            <a href="/tags/ng/" rel="tag"># ng</a>
-          
-            <a href="/tags/angular/" rel="tag"># angular</a>
-          
-            <a href="/tags/url/" rel="tag"># url</a>
+            <a href="/tags/vue/" rel="tag"># vue</a>
           
         </div>
       
@@ -506,18 +555,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/04/vue2/Vue2/" rel="next" title="vue2源码">
-                <i class="fa fa-chevron-left"></i> vue2源码
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/05/V2FE/" rel="prev" title="V2FE">
-                V2FE <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/07/vue2/Vue2-Virtual Dom/" rel="prev" title="Vue2源码：Virtual Dom">
+                Vue2源码：Virtual Dom <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -605,8 +650,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -702,6 +756,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#要理清命名的规则，便于理解每一步的作用"><span class="nav-number">1.</span> <span class="nav-text">要理清命名的规则，便于理解每一步的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从代码构建入手"><span class="nav-number"></span> <span class="nav-text">从代码构建入手</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-package-json"><span class="nav-number">1.</span> <span class="nav-text">1. package.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-dist-构建后的文件存放目录"><span class="nav-number">2.</span> <span class="nav-text">2. dist 构建后的文件存放目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Explanation-of-Build-Files"><span class="nav-number">2.1.</span> <span class="nav-text">Explanation of Build Files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-build-config-js-项目构建配置文件"><span class="nav-number">3.</span> <span class="nav-text">3. build/config.js 项目构建配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-build-alias-js"><span class="nav-number">4.</span> <span class="nav-text">4. build/alias.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。"><span class="nav-number">5.</span> <span class="nav-text">5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-src-platforms-web-runtime-index-js-这才是真身。。。"><span class="nav-number">6.</span> <span class="nav-text">6. src/platforms/web/runtime/index.js 这才是真身。。。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><span class="nav-number">7.</span> <span class="nav-text">7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-src-core-instance-index-js"><span class="nav-number">8.</span> <span class="nav-text">8. src/core/instance/index.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-src-core-global-api-index-js"><span class="nav-number">9.</span> <span class="nav-text">9. src/core/global-api/index.js</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

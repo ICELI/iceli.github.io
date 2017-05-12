@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://iceli.com/2017/05/05/vue2/Vue2-flow/index.html">
 <meta property="og:site_name" content="Lost a li">
 <meta property="og:description" content="因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识  flow https://flow.org/ http://www.imooc.com/m/wap/article/detail.html?aid=15855  rollup Tree-shaking, 对于lib而言 rollup更适合用。  用 webpack 打包，还是会">
-<meta property="og:updated_time" content="2017-05-10T13:39:47.248Z">
+<meta property="og:updated_time" content="2017-05-12T05:38:03.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2源码：准备">
 <meta name="twitter:description" content="因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识  flow https://flow.org/ http://www.imooc.com/m/wap/article/detail.html?aid=15855  rollup Tree-shaking, 对于lib而言 rollup更适合用。  用 webpack 打包，还是会">
@@ -441,57 +441,33 @@
 <li>尤小右 <a href="https://www.zhihu.com/question/37861778/answer/73847503" target="_blank" rel="external">https://www.zhihu.com/question/37861778/answer/73847503</a></li>
 <li>小爵 <a href="https://zhuanlan.zhihu.com/p/25276769" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/25276769</a></li>
 </ul>
-<h2 id="从代码构建入手"><a href="#从代码构建入手" class="headerlink" title="从代码构建入手"></a>从代码构建入手</h2><h3 id="1-package-json"><a href="#1-package-json" class="headerlink" title="1. package.json"></a>1. package.json</h3><p>从scripts属性可看到打包入口文件build/build.js<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	...</div><div class="line">	"build": "node build/build.js"</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>可从main、module等属性获取对应的版本，竟然还有ts版，不知是否可用？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;main&quot;: &quot;dist/vue.runtime.common.js&quot;, // webpack1</div><div class="line">&quot;module&quot;: &quot;dist/vue.runtime.esm.js&quot;, // webpack2 or rollup</div><div class="line">&quot;unpkg&quot;: &quot;dist/vue.js&quot;, // 直接&lt;script&gt;引入vue文件</div><div class="line">&quot;typings&quot;: &quot;types/index.d.ts&quot;, // typescript版 具体进度未知？？？</div></pre></td></tr></table></figure></p>
-<h3 id="2-dist-构建后的文件存放目录"><a href="#2-dist-构建后的文件存放目录" class="headerlink" title="2. dist 构建后的文件存放目录"></a>2. dist 构建后的文件存放目录</h3><p>查看<a href="https://github.com/vuejs/vue/blob/dev/dist/README.md" target="_blank" rel="external">README.md</a></p>
-<h4 id="Explanation-of-Build-Files"><a href="#Explanation-of-Build-Files" class="headerlink" title="Explanation of Build Files"></a>Explanation of Build Files</h4><table>
-<thead>
-<tr>
-<th></th>
-<th>UMD</th>
-<th>CommonJS</th>
-<th>ES Module</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Full</strong></td>
-<td>vue.js</td>
-<td>vue.common.js</td>
-<td>vue.esm.js</td>
-</tr>
-<tr>
-<td><strong>Runtime-only</strong></td>
-<td>vue.runtime.js</td>
-<td>vue.runtime.common.js</td>
-<td>vue.runtime.esm.js</td>
-</tr>
-<tr>
-<td><strong>Full (production)</strong></td>
-<td>vue.min.js</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Runtime-only (production)</strong></td>
-<td>vue.runtime.min.js</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>我们用vue-cli时，因为用了vue-loader，不需要compiler编译模板。同时使用了ES6的import/export管理模块依赖。所以webpack2构建时所依赖的vue，就是基于ES module规范的runtime版本：<code>vue.runtime.esm.js</code>。</p>
-<h3 id="3-build-config-js-项目构建配置文件"><a href="#3-build-config-js-项目构建配置文件" class="headerlink" title="3. build/config.js 项目构建配置文件"></a>3. build/config.js 项目构建配置文件</h3><p>dist目录下的文件就是根据这个rollup配置生成的，其中<code>vue.runtime.esm.js</code>对应配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&apos;web-runtime-esm&apos;: &#123;</div><div class="line">    entry: resolve(&apos;web/runtime.js&apos;),</div><div class="line">    dest: resolve(&apos;dist/vue.runtime.esm.js&apos;),</div><div class="line">    format: &apos;es&apos;,</div><div class="line">    banner</div><div class="line">  &#125;,</div></pre></td></tr></table></figure></p>
-<p>找到rollup入口文件<code>web/runtime.js</code></p>
-<h3 id="4-build-alias-js"><a href="#4-build-alias-js" class="headerlink" title="4. build/alias.js"></a>4. build/alias.js</h3><p>通过别名快速定位文件依赖，就是webstorm不能<code>ctrl+点击</code>跳转了,有点坑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">module.exports = &#123;</div><div class="line">  vue: path.resolve(__dirname, &apos;../src/platforms/web/runtime-with-compiler&apos;),</div><div class="line">  compiler: path.resolve(__dirname, &apos;../src/compiler&apos;),</div><div class="line">  core: path.resolve(__dirname, &apos;../src/core&apos;),</div><div class="line">  shared: path.resolve(__dirname, &apos;../src/shared&apos;),</div><div class="line">  web: path.resolve(__dirname, &apos;../src/platforms/web&apos;),</div><div class="line">  weex: path.resolve(__dirname, &apos;../src/platforms/weex&apos;),</div><div class="line">  server: path.resolve(__dirname, &apos;../src/server&apos;),</div><div class="line">  entries: path.resolve(__dirname, &apos;../src/entries&apos;),</div><div class="line">  sfc: path.resolve(__dirname, &apos;../src/sfc&apos;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。"><a href="#5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。" class="headerlink" title="5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。"></a>5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。</h3><h3 id="6-src-platforms-web-runtime-index-js-这才是真身。。。"><a href="#6-src-platforms-web-runtime-index-js-这才是真身。。。" class="headerlink" title="6. src/platforms/web/runtime/index.js 这才是真身。。。"></a>6. src/platforms/web/runtime/index.js 这才是真身。。。</h3><h3 id="7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><a href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录" class="headerlink" title="7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录"></a>7. src/core/index.js 顺着<code>import Vue from xxx</code>我们一路来到了core目录</h3><h3 id="8-src-core-instance-index-js"><a href="#8-src-core-instance-index-js" class="headerlink" title="8. src/core/instance/index.js"></a>8. src/core/instance/index.js</h3><p>终于见到你，还好我没放弃<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</div><div class="line">    !(<span class="keyword">this</span> <span class="keyword">instanceof</span> Vue)) &#123;</div><div class="line">    warn(<span class="string">'Vue is a constructor and should be called with the `new` keyword'</span>)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">this</span>._init(options)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Vue构造函数就是在此定义，内部执行初始化方法<code>_init</code>，该方法在<code>initMixin</code>中定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">initLifecycle(vm)</div><div class="line">initEvents(vm)</div><div class="line">initRender(vm)</div><div class="line">callHook(vm, &apos;beforeCreate&apos;)</div><div class="line">initInjections(vm) // resolve injections before data/props</div><div class="line">initState(vm)</div><div class="line">initProvide(vm) // resolve provide after data/props</div><div class="line">callHook(vm, &apos;created&apos;)</div></pre></td></tr></table></figure></p>
-<p>最后，当实例化传入<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">      vm.$mount(vm.$options.el)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<p>同时在原型上挂载了state、event、lifecycle、render方法</p>
-<p>内置私有方法或属性前加下划线<code>_</code>, 暴露给外部调用的方法或属性前加美元符号<code>$</code></p>
-<p>我们可以查看组件的接口配置文件<code>flow/component.js</code><br>基本上包含了一个组件的所有属性和方法。</p>
-<h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
+<h3 id="API-分类"><a href="#API-分类" class="headerlink" title="API 分类"></a>API 分类</h3><ul>
+<li>Global Config</li>
+<li>Global API</li>
+<li>Options<ul>
+<li>Data</li>
+<li>DOM</li>
+<li>Lifecycle Hooks</li>
+<li>Assets</li>
+<li>composition</li>
+<li>Misc</li>
+</ul>
+</li>
+<li>Instance Properties</li>
+<li>Instance Methods<ul>
+<li>Data</li>
+<li>Events</li>
+<li>Lifecycle</li>
+</ul>
+</li>
+<li>Directives</li>
+<li>Special Attributes</li>
+<li>Built-In Component</li>
+<li>VNode Interface</li>
+<li>Server-side Rendering</li>
+</ul>
 <blockquote>
-<p>阅读源码全程忽略<code>process.env.NODE_ENV !== &#39;production&#39;</code>条件里的代码，一般只是代码警告提示</p>
+<p>阅读源码时，可以看到这些API是在哪个阶段定义的，代码看完你找到了吗？</p>
 </blockquote>
 
       
@@ -682,7 +658,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -773,7 +749,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#flow"><span class="nav-number">1.</span> <span class="nav-text">flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rollup"><span class="nav-number">2.</span> <span class="nav-text">rollup</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从代码构建入手"><span class="nav-number"></span> <span class="nav-text">从代码构建入手</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-package-json"><span class="nav-number">1.</span> <span class="nav-text">1. package.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-dist-构建后的文件存放目录"><span class="nav-number">2.</span> <span class="nav-text">2. dist 构建后的文件存放目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Explanation-of-Build-Files"><span class="nav-number">2.1.</span> <span class="nav-text">Explanation of Build Files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-build-config-js-项目构建配置文件"><span class="nav-number">3.</span> <span class="nav-text">3. build/config.js 项目构建配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-build-alias-js"><span class="nav-number">4.</span> <span class="nav-text">4. build/alias.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。"><span class="nav-number">5.</span> <span class="nav-text">5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-src-platforms-web-runtime-index-js-这才是真身。。。"><span class="nav-number">6.</span> <span class="nav-text">6. src/platforms/web/runtime/index.js 这才是真身。。。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><span class="nav-number">7.</span> <span class="nav-text">7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-src-core-instance-index-js"><span class="nav-number">8.</span> <span class="nav-text">8. src/core/instance/index.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-src-core-global-api-index-js"><span class="nav-number">9.</span> <span class="nav-text">9. src/core/global-api/index.js</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#flow"><span class="nav-number">1.</span> <span class="nav-text">flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rollup"><span class="nav-number">2.</span> <span class="nav-text">rollup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-分类"><span class="nav-number">3.</span> <span class="nav-text">API 分类</span></a></li></ol></div>
             
 
           </div>
