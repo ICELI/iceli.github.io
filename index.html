@@ -90,7 +90,7 @@
 <meta name="description" content="点滴积累~ 贵在坚持!">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Lost a li">
-<meta property="og:url" content="http://iceli.com/index.html">
+<meta property="og:url" content="http://lostali.com/index.html">
 <meta property="og:site_name" content="Lost a li">
 <meta property="og:description" content="点滴积累~ 贵在坚持!">
 <meta name="twitter:card" content="summary">
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://iceli.com/"/>
+  <link rel="canonical" href="http://lostali.com/"/>
 
 
 
@@ -304,7 +304,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/12/vue2/Vue2-instance/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/12/vue2/Vue2-instance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -478,7 +478,9 @@
 <h3 id="7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><a href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录" class="headerlink" title="7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录"></a>7. src/core/index.js 顺着<code>import Vue from xxx</code>我们一路来到了core目录</h3><h3 id="8-src-core-instance-index-js"><a href="#8-src-core-instance-index-js" class="headerlink" title="8. src/core/instance/index.js"></a>8. src/core/instance/index.js</h3><p>终于见到你，还好我没放弃<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</div><div class="line">    !(<span class="keyword">this</span> <span class="keyword">instanceof</span> Vue)) &#123;</div><div class="line">    warn(<span class="string">'Vue is a constructor and should be called with the `new` keyword'</span>)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">this</span>._init(options)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>Vue构造函数就是在此定义，内部执行初始化方法<code>_init</code>，该方法在<code>initMixin</code>中定义<code>Vue.prototype._init</code><br>先在内部执行一系列初始化方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">initLifecycle(vm)</div><div class="line">initEvents(vm)</div><div class="line">initRender(vm)</div><div class="line">callHook(vm, <span class="string">'beforeCreate'</span>)</div><div class="line">initInjections(vm) <span class="comment">// resolve injections before data/props</span></div><div class="line">initState(vm)</div><div class="line">initProvide(vm) <span class="comment">// resolve provide after data/props</span></div><div class="line">callHook(vm, <span class="string">'created'</span>)</div></pre></td></tr></table></figure></p>
 <p>最后，当实例化参数有<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">  vm.$mount(vm.$options.el)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>几个在mountComponent用到的方法：<br>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: _watcher</p>
+<h4 id="initLifecycle"><a href="#initLifecycle" class="headerlink" title="initLifecycle"></a>initLifecycle</h4><p>除了一般状态的初始化，包含一个特殊的判断：是否为抽象组件<br>将当前vm挂载第一个非抽象的父组件<br>抽象组件自身不会渲染一个 DOM 元素，也不会出现在父组件链中。<br>内置抽象组件：keep-live, transition</p>
+<p>几个在mountComponent用到的方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vm.$el = el</div></pre></td></tr></table></figure></p>
+<p>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: _watcher</p>
 <h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
 
           
@@ -523,7 +525,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/07/vue2/Vue2-Virtual Dom/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/07/vue2/Vue2-Virtual Dom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -676,7 +678,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/06/submodule/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/06/submodule/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -855,7 +857,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/06/vue2/Vue2-reactivity/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/06/vue2/Vue2-reactivity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -1013,7 +1015,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/05/vue2/Vue2-flow/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/05/vue2/Vue2-flow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -1211,7 +1213,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/05/04/vue2/Vue2/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/04/vue2/Vue2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -1376,7 +1378,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/04/12/angular.js/url/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/04/12/angular.js/url/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
@@ -1542,7 +1544,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://iceli.com/2017/04/05/V2FE/">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/04/05/V2FE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ICELI">
