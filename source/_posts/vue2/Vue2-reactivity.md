@@ -15,3 +15,4 @@ tags:
 ![img](https://cn.vuejs.org/images/data.png)
 ![img](https://cn.vuejs.org/images/lifecycle.png)
 
+### src/core/instance/state.js
