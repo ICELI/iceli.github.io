@@ -125,7 +125,17 @@ if (vm.$options.el) {
   vm.$mount(vm.$options.el)
 }
 ```
+
+#### initLifecycle
+除了一般状态的初始化，包含一个特殊的判断：是否为抽象组件 
+将当前vm挂载第一个非抽象的父组件
+抽象组件自身不会渲染一个 DOM 元素，也不会出现在父组件链中。
+内置抽象组件：keep-live, transition
+
 几个在mountComponent用到的方法：
+```js
+vm.$el = el
+```
 renderMixin: _render
 lifecycleMixin: _update
 Watcher: _watcher
