@@ -130,6 +130,20 @@ renderMixin: _render
 lifecycleMixin: _update
 Watcher: _watcher
 
+initEvent
+
+开始不明白为什么在这里要判断`listeners`，因为`vm.$options._parentListeners`是在initRender之后才能获得，
+后来发现在initInternalComponent 内部组件初始化时会用到，为了达到优化的目的直接复制对象过去，跳过merge options。
+```
+// init parent attached events
+  const listeners = vm.$options._parentListeners
+  if (listeners) {
+    updateComponentListeners(vm, listeners)
+  }
+```
+
+initRender
+
 
 ### 9. src/core/global-api/index.js
 挂载各种方法
