@@ -138,7 +138,7 @@ vm.$el = el
 ```
 renderMixin: _render
 lifecycleMixin: _update
-Watcher: _watcher
+Watcher: Watcher
 
 initEvent
 
@@ -162,6 +162,12 @@ createComponentInstanceForVnode  = componentVNodeHooks => createComponent => i(v
 到这里vdom的内容也看了大半了,顺带来看了initGlobalAPI的核心API
 `
 initRender
+在实例上添加了2个方法，用于将渲染函数转换为vnode，内外部方法的区别只有最后一个参数，类型为boolean
+- `_c` - `createElement(vm, a, b, c, d, false)`
+- `$createElement`  - `createElement(vm, a, b, c, d, true)`
+createElement 只是`_createElement`的一个包装，通过最后一个参数来控制normalizationType的值，
+
+normalizationType决定组件转换函数。[simple]NormalizeChildren()
 
 
 ### 9. src/core/global-api/index.js
