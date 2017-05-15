@@ -35,9 +35,9 @@ tags:
 	- Misc
 - Instance Properties
 - Instance Methods
-	- Data
-	- Events
-	- Lifecycle
+	- Data //stateMixin src/core/instance/state.js
+	- Events //eventMixin src/core/instance/events.js
+	- Lifecycle //除了$mount方法被分到runtime.js中定义，最终还是调用的`mountComponent`
 - Directives
 - Special Attributes
 - Built-In Component

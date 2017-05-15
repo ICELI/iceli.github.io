@@ -140,6 +140,29 @@ renderMixin: _render
 lifecycleMixin: _update
 Watcher: _watcher
 
+initEvent
+
+
+```
+// init parent attached events
+  const listeners = vm.$options._parentListeners
+  if (listeners) {
+    updateComponentListeners(vm, listeners)
+  }
+```
+开始不明白为什么在这里要判断`listeners`，因为`vm.$options._parentListeners`是在initRender之后才能获得，好像永远没有这属性了
+后来发现在initInternalComponent 内部组件初始化时会用定义，内部组件为了达到优化的目的直接复制对象过去，跳过merge options。
+
+initInternalComponent有一个条件就是_isComponent, 它又是在什么时候定义的呢
+先定义的组件vue.component => new Vue() => mountComponent => new Watcher => updateComponent => _render() => _update => __path__ => createPatchFunction => createElm =>
+createComponentInstanceForVnode  = componentVNodeHooks => createComponent => i(vnode, false /* hydrating */, parentElm, refElm);
+初始化vnode组件实例时vnode.componentInstance，返回的是new vnodeComponentOptions.Ctor(options)，Ctor它指向Vue.component定义组件时返回的Sub构造函数，通过Vue.extend拷贝继承Vue。
+所以，在实例化子组件时和实例化Vue很像。
+![img](../../images/vue-call-stack.png)
+到这里vdom的内容也看了大半了,顺带来看了initGlobalAPI的核心API
+`
+initRender
+
 
 ### 9. src/core/global-api/index.js
 挂载各种方法
