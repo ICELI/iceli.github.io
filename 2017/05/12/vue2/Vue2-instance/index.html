@@ -94,10 +94,12 @@
 <meta property="og:url" content="http://lostali.com/2017/05/12/vue2/Vue2-instance/index.html">
 <meta property="og:site_name" content="Lost a li">
 <meta property="og:description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
-<meta property="og:updated_time" content="2017-05-12T08:39:03.305Z">
+<meta property="og:image" content="http://lostali.com/2017/05/12/images/vue-call-stack.png">
+<meta property="og:updated_time" content="2017-05-15T11:27:38.107Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2源码：源码速读">
 <meta name="twitter:description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
+<meta name="twitter:image" content="http://lostali.com/2017/05/12/images/vue-call-stack.png">
 
 
 
@@ -490,7 +492,16 @@
 <p>最后，当实例化参数有<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">  vm.$mount(vm.$options.el)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h4 id="initLifecycle"><a href="#initLifecycle" class="headerlink" title="initLifecycle"></a>initLifecycle</h4><p>除了一般状态的初始化，包含一个特殊的判断：是否为抽象组件<br>将当前vm挂载第一个非抽象的父组件<br>抽象组件自身不会渲染一个 DOM 元素，也不会出现在父组件链中。<br>内置抽象组件：keep-live, transition</p>
 <p>几个在mountComponent用到的方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vm.$el = el</div></pre></td></tr></table></figure></p>
-<p>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: _watcher</p>
+<p>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: Watcher</p>
+<p>initEvent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// init parent attached events</div><div class="line">  const listeners = vm.$options._parentListeners</div><div class="line">  if (listeners) &#123;</div><div class="line">    updateComponentListeners(vm, listeners)</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>开始不明白为什么在这里要判断<code>listeners</code>，因为<code>vm.$options._parentListeners</code>是在initRender之后才能获得，好像永远没有这属性了<br>后来发现在initInternalComponent 内部组件初始化时会用定义，内部组件为了达到优化的目的直接复制对象过去，跳过merge options。</p>
+<p>initInternalComponent有一个条件就是_isComponent, 它又是在什么时候定义的呢<br>先定义的组件vue.component =&gt; new Vue() =&gt; mountComponent =&gt; new Watcher =&gt; updateComponent =&gt; _render() =&gt; _update =&gt; <strong>path</strong> =&gt; createPatchFunction =&gt; createElm =&gt;<br>createComponentInstanceForVnode  = componentVNodeHooks =&gt; createComponent =&gt; i(vnode, false /<em> hydrating </em>/, parentElm, refElm);<br>初始化vnode组件实例时vnode.componentInstance，返回的是new vnodeComponentOptions.Ctor(options)，Ctor它指向Vue.component定义组件时返回的Sub构造函数，通过Vue.extend拷贝继承Vue。<br>所以，在实例化子组件时和实例化Vue很像。<br><img src="../../images/vue-call-stack.png" alt="img"><br>到这里vdom的内容也看了大半了,顺带来看了initGlobalAPI的核心API<br>`<br>initRender<br>在实例上添加了2个方法，用于将渲染函数转换为vnode，内外部方法的区别只有最后一个参数，类型为boolean</p>
+<ul>
+<li><code>_c</code> - <code>createElement(vm, a, b, c, d, false)</code></li>
+<li><code>$createElement</code>  - <code>createElement(vm, a, b, c, d, true)</code><br>createElement 只是<code>_createElement</code>的一个包装，通过最后一个参数来控制normalizationType的值，</li>
+</ul>
+<p>normalizationType决定组件转换函数。[simple]NormalizeChildren()</p>
 <h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
 
       

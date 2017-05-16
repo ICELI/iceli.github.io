@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="点滴积累~ 贵在坚持!">
+<meta name="description" content="src/core/vdom/vnode.js123456789constructor (    tag?: string,    data?: VNodeData,    children?: ?Array&amp;lt;VNode&amp;gt;,    text?: string,    elm?: Node,    context?: Component,    componentOptions?: VNo">
 <meta name="keywords" content="vue2,vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue2源码：Virtual Dom">
 <meta property="og:url" content="http://lostali.com/2017/05/07/vue2/Vue2-Virtual Dom/index.html">
 <meta property="og:site_name" content="Lost a li">
-<meta property="og:description" content="点滴积累~ 贵在坚持!">
-<meta property="og:updated_time" content="2017-05-12T05:38:03.469Z">
+<meta property="og:description" content="src/core/vdom/vnode.js123456789constructor (    tag?: string,    data?: VNodeData,    children?: ?Array&amp;lt;VNode&amp;gt;,    text?: string,    elm?: Node,    context?: Component,    componentOptions?: VNo">
+<meta property="og:updated_time" content="2017-05-15T02:28:53.244Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2源码：Virtual Dom">
-<meta name="twitter:description" content="点滴积累~ 贵在坚持!">
+<meta name="twitter:description" content="src/core/vdom/vnode.js123456789constructor (    tag?: string,    data?: VNodeData,    children?: ?Array&amp;lt;VNode&amp;gt;,    text?: string,    elm?: Node,    context?: Component,    componentOptions?: VNo">
 
 
 
@@ -424,7 +424,9 @@
       
 
       
-        
+        <h3 id="src-core-vdom-vnode-js"><a href="#src-core-vdom-vnode-js" class="headerlink" title="src/core/vdom/vnode.js"></a>src/core/vdom/vnode.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">constructor</span> (</div><div class="line">    tag?: string,</div><div class="line">    data?: VNodeData,</div><div class="line">    children?: ?Array&lt;VNode&gt;,</div><div class="line">    text?: string,</div><div class="line">    elm?: Node,</div><div class="line">    context?: Component,</div><div class="line">    componentOptions?: VNodeComponentOptions</div><div class="line">  )</div></pre></td></tr></table></figure>
+<h3 id="src-core-vdom-create-component-js"><a href="#src-core-vdom-create-component-js" class="headerlink" title="src/core/vdom/create-component.js"></a>src/core/vdom/create-component.js</h3><p>componentOptions组件参数只在创建组件时才需传入，包含<code>Ctor, propsData, listeners, tag, children</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> vnode = <span class="keyword">new</span> VNode(</div><div class="line">	<span class="string">`vue-component-<span class="subst">$&#123;Ctor.cid&#125;</span><span class="subst">$&#123;name ? <span class="string">`-<span class="subst">$&#123;name&#125;</span>`</span> : <span class="string">''</span>&#125;</span>`</span>,</div><div class="line">	data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</div><div class="line">	&#123; Ctor, propsData, listeners, tag, children &#125;</div><div class="line">)</div></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -588,8 +590,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -685,6 +696,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#src-core-vdom-vnode-js"><span class="nav-number">1.</span> <span class="nav-text">src/core/vdom/vnode.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#src-core-vdom-create-component-js"><span class="nav-number">2.</span> <span class="nav-text">src/core/vdom/create-component.js</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

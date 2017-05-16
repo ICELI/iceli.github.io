@@ -96,7 +96,7 @@
 <meta property="og:description" content="把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。 每个组件实例都有相应的 watc">
 <meta property="og:image" content="https://cn.vuejs.org/images/data.png">
 <meta property="og:image" content="https://cn.vuejs.org/images/lifecycle.png">
-<meta property="og:updated_time" content="2017-05-12T05:38:03.480Z">
+<meta property="og:updated_time" content="2017-05-15T01:56:43.308Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2源码：响应式原理">
 <meta name="twitter:description" content="把一个普通 JavaScript 对象传给 Vue 实例的 data 选项，Vue 将遍历此对象所有的属性，并使用 Object.defineProperty 把这些属性全部转为 getter/setter。Object.defineProperty 是仅 ES5 支持，且无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。 每个组件实例都有相应的 watc">
@@ -432,7 +432,7 @@
 <p>每个组件实例都有相应的 watcher 实例对象，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。</p>
 </blockquote>
 <p><img src="https://cn.vuejs.org/images/data.png" alt="img"><br><img src="https://cn.vuejs.org/images/lifecycle.png" alt="img"></p>
-
+<h3 id="src-core-instance-state-js"><a href="#src-core-instance-state-js" class="headerlink" title="src/core/instance/state.js"></a>src/core/instance/state.js</h3>
       
     </div>
 
@@ -596,8 +596,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -693,6 +702,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#src-core-instance-state-js"><span class="nav-number">1.</span> <span class="nav-text">src/core/instance/state.js</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

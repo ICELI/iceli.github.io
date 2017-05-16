@@ -480,7 +480,16 @@
 <p>最后，当实例化参数有<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">  vm.$mount(vm.$options.el)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h4 id="initLifecycle"><a href="#initLifecycle" class="headerlink" title="initLifecycle"></a>initLifecycle</h4><p>除了一般状态的初始化，包含一个特殊的判断：是否为抽象组件<br>将当前vm挂载第一个非抽象的父组件<br>抽象组件自身不会渲染一个 DOM 元素，也不会出现在父组件链中。<br>内置抽象组件：keep-live, transition</p>
 <p>几个在mountComponent用到的方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vm.$el = el</div></pre></td></tr></table></figure></p>
-<p>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: _watcher</p>
+<p>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: Watcher</p>
+<p>initEvent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// init parent attached events</div><div class="line">  const listeners = vm.$options._parentListeners</div><div class="line">  if (listeners) &#123;</div><div class="line">    updateComponentListeners(vm, listeners)</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>开始不明白为什么在这里要判断<code>listeners</code>，因为<code>vm.$options._parentListeners</code>是在initRender之后才能获得，好像永远没有这属性了<br>后来发现在initInternalComponent 内部组件初始化时会用定义，内部组件为了达到优化的目的直接复制对象过去，跳过merge options。</p>
+<p>initInternalComponent有一个条件就是_isComponent, 它又是在什么时候定义的呢<br>先定义的组件vue.component =&gt; new Vue() =&gt; mountComponent =&gt; new Watcher =&gt; updateComponent =&gt; _render() =&gt; _update =&gt; <strong>path</strong> =&gt; createPatchFunction =&gt; createElm =&gt;<br>createComponentInstanceForVnode  = componentVNodeHooks =&gt; createComponent =&gt; i(vnode, false /<em> hydrating </em>/, parentElm, refElm);<br>初始化vnode组件实例时vnode.componentInstance，返回的是new vnodeComponentOptions.Ctor(options)，Ctor它指向Vue.component定义组件时返回的Sub构造函数，通过Vue.extend拷贝继承Vue。<br>所以，在实例化子组件时和实例化Vue很像。<br><img src="../../images/vue-call-stack.png" alt="img"><br>到这里vdom的内容也看了大半了,顺带来看了initGlobalAPI的核心API<br>`<br>initRender<br>在实例上添加了2个方法，用于将渲染函数转换为vnode，内外部方法的区别只有最后一个参数，类型为boolean</p>
+<ul>
+<li><code>_c</code> - <code>createElement(vm, a, b, c, d, false)</code></li>
+<li><code>$createElement</code>  - <code>createElement(vm, a, b, c, d, true)</code><br>createElement 只是<code>_createElement</code>的一个包装，通过最后一个参数来控制normalizationType的值，</li>
+</ul>
+<p>normalizationType决定组件转换函数。[simple]NormalizeChildren()</p>
 <h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
 
           
@@ -635,7 +644,9 @@
       
         
           
-            
+            <h3 id="src-core-vdom-vnode-js"><a href="#src-core-vdom-vnode-js" class="headerlink" title="src/core/vdom/vnode.js"></a>src/core/vdom/vnode.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">constructor</span> (</div><div class="line">    tag?: string,</div><div class="line">    data?: VNodeData,</div><div class="line">    children?: ?Array&lt;VNode&gt;,</div><div class="line">    text?: string,</div><div class="line">    elm?: Node,</div><div class="line">    context?: Component,</div><div class="line">    componentOptions?: VNodeComponentOptions</div><div class="line">  )</div></pre></td></tr></table></figure>
+<h3 id="src-core-vdom-create-component-js"><a href="#src-core-vdom-create-component-js" class="headerlink" title="src/core/vdom/create-component.js"></a>src/core/vdom/create-component.js</h3><p>componentOptions组件参数只在创建组件时才需传入，包含<code>Ctor, propsData, listeners, tag, children</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> vnode = <span class="keyword">new</span> VNode(</div><div class="line">	<span class="string">`vue-component-<span class="subst">$&#123;Ctor.cid&#125;</span><span class="subst">$&#123;name ? <span class="string">`-<span class="subst">$&#123;name&#125;</span>`</span> : <span class="string">''</span>&#125;</span>`</span>,</div><div class="line">	data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</div><div class="line">	&#123; Ctor, propsData, listeners, tag, children &#125;</div><div class="line">)</div></pre></td></tr></table></figure></p>
+
           
         
       
@@ -972,7 +983,7 @@
 <p>每个组件实例都有相应的 watcher 实例对象，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 setter 被调用时，会通知 watcher 重新计算，从而致使它关联的组件得以更新。</p>
 </blockquote>
 <p><img src="https://cn.vuejs.org/images/data.png" alt="img"><br><img src="https://cn.vuejs.org/images/lifecycle.png" alt="img"></p>
-
+<h3 id="src-core-instance-state-js"><a href="#src-core-instance-state-js" class="headerlink" title="src/core/instance/state.js"></a>src/core/instance/state.js</h3>
           
         
       
@@ -1156,9 +1167,9 @@
 </li>
 <li>Instance Properties</li>
 <li>Instance Methods<ul>
-<li>Data</li>
-<li>Events</li>
-<li>Lifecycle</li>
+<li>Data //stateMixin src/core/instance/state.js</li>
+<li>Events //eventMixin src/core/instance/events.js</li>
+<li>Lifecycle //除了$mount方法被分到runtime.js中定义，最终还是调用的<code>mountComponent</code></li>
 </ul>
 </li>
 <li>Directives</li>
@@ -1633,7 +1644,7 @@
         
           
             <blockquote>
-<p>6年前端路，美工-&gt;前端开发-&gt;高级前端开发-&gt;前端主管-&gt;前端项目经理-&gt;前端架构师，title一直在变，可我始终是一名前端。</p>
+<p>6年前端路，全站flash美工-&gt;前端开发-&gt;高级前端开发-&gt;前端主管-&gt;前端项目经理-&gt;前端架构师，title一直在变，可我始终是一名前端。</p>
 </blockquote>
 <p><img src="../images/horse.jpg" alt="img"><br>小马过河 - 他人的经验永远不可能直接用于自己，前端知识需要自己去总结归纳。</p>
 

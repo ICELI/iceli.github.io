@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://lostali.com/2017/05/05/vue2/Vue2-flow/index.html">
 <meta property="og:site_name" content="Lost a li">
 <meta property="og:description" content="因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识  flow https://flow.org/ http://www.imooc.com/m/wap/article/detail.html?aid=15855  rollup Tree-shaking, 对于lib而言 rollup更适合用。  用 webpack 打包，还是会">
-<meta property="og:updated_time" content="2017-05-12T05:38:03.470Z">
+<meta property="og:updated_time" content="2017-05-15T01:34:54.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2源码：准备">
 <meta name="twitter:description" content="因为vue2使用了flow进行静态代码检查，rollup进行代码构建，所以在进行源码阅读之前，还需要补充下这几块知识  flow https://flow.org/ http://www.imooc.com/m/wap/article/detail.html?aid=15855  rollup Tree-shaking, 对于lib而言 rollup更适合用。  用 webpack 打包，还是会">
@@ -455,9 +455,9 @@
 </li>
 <li>Instance Properties</li>
 <li>Instance Methods<ul>
-<li>Data</li>
-<li>Events</li>
-<li>Lifecycle</li>
+<li>Data //stateMixin src/core/instance/state.js</li>
+<li>Events //eventMixin src/core/instance/events.js</li>
+<li>Lifecycle //除了$mount方法被分到runtime.js中定义，最终还是调用的<code>mountComponent</code></li>
 </ul>
 </li>
 <li>Directives</li>
