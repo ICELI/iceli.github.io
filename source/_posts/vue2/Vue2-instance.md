@@ -140,7 +140,7 @@ renderMixin: _render
 lifecycleMixin: _update
 Watcher: Watcher
 
-initEvent
+#### initEvent
 
 
 ```
@@ -161,14 +161,112 @@ createComponentInstanceForVnode  = componentVNodeHooks => createComponent => i(v
 ![img](../../images/vue-call-stack.png)
 到这里vdom的内容也看了大半了,顺带来看了initGlobalAPI的核心API
 `
-initRender
+#### initRender
 在实例上添加了2个方法，用于将渲染函数转换为vnode，内外部方法的区别只有最后一个参数，类型为boolean
 - `_c` - `createElement(vm, a, b, c, d, false)`
 - `$createElement`  - `createElement(vm, a, b, c, d, true)`
 createElement 只是`_createElement`的一个包装，通过最后一个参数来控制normalizationType的值，
 
-normalizationType决定组件转换函数。[simple]NormalizeChildren()
+normalizationType决定组件转换函数。[simple]NormalizeChildren()，处理后返回 Array<VNode>。
+关于转换函数的用法与区别，在代码中有一大段注释，可以感受一下。
+```js
+// The template compiler attempts to minimize the need for normalization by
+// statically analyzing the template at compile time.
+//
+// For plain HTML markup, normalization can be completely skipped because the
+// generated render function is guaranteed to return Array<VNode>. There are
+// two cases where extra normalization is needed:
 
+// 1. When the children contains components - because a functional component
+// may return an Array instead of a single root. In this case, just a simple
+// normalization is needed - if any child is an Array, we flatten the whole
+// thing with Array.prototype.concat. It is guaranteed to be only 1-level deep
+// because functional components already normalize their own children.
+
+// 2. When the children contains constructs that always generated nested Arrays,
+// e.g. <template>, <slot>, v-for, or when the children is provided by user
+// with hand-written render functions / JSX. In such cases a full normalization
+// is needed to cater to all possible types of children values.
+```
+1. 包含功能组件时，本身就返回Array<VNode>,通过Array.prototype.concat.apply([], children)简单的将2级深度数组转为1级.
+2. <template>, <slot>, v-for 和用户自己写的渲染函数，子组件比较复杂需要判断所有的类型进行格式化，以返回Array<VNode>格式
+normalizeChildren => createElement(vm, a, b, c, d, true) => vm.$createElement => render.call(vm._renderProxy, vm.$createElement)
+3. 普通的html无需处理，因为在compiler后直接返回的就是Array<VNode>格式。
+> 这块对后续理解虚拟DOM非常有用
+
+#### initInjections
+初始化注入对象，可以是数组或对象 Array<string> | { [key: string]: string | Symbol }
+作者不建议在普通应用中使用。
+defineReactive 第一次出现了，对inject做了劫持，以达到响应式的目的
+
+#### initState
+- initProps
+- initMethods
+- initData
+- initComputed
+- initWatch
+
+##### initProps
+```
+// root instance props should be converted 
+observerState.shouldConvert = isRoot
+...
+validateProp(key, propsOptions, propsData, vm)
+...
+	prop = propOptions[key]
+    value = getPropDefaultValue(vm, prop, key)
+	observe(value)
+	为对象添加 __ob__属性，值就是Oberve实例
+
+```js
+defineReactive(props, key, value)
+
+if (!(key in vm)) {
+  proxy(vm, `_props`, key)
+}
+```
+通过`proxy`将props全部挂到vm实例上，这样只要能拿到实例，就可以拿到prop上的属性值了
+
+##### initMethods
+```js
+vm[key] = methods[key] == null ? noop : bind(methods[key], vm)
+```
+将methods包含的方法都挂到实例上，这里要注意methods名称不能和props名称相同。
+
+##### initData
+```js
+proxy(vm, `_data`, keys[i])
+// observe data
+observe(data, true /* asRootData */)
+```
+对data进行劫持
+
+##### initComputed
+```js
+// create internal watcher for the computed property.
+watchers[key] = new Watcher(vm, getter, noop, computedWatcherOptions)
+defineComputed(vm, key, userDef)
+
+函数将用作vm属性的getter
+```
+
+##### initWatch
+```js
+createWatcher(vm: Component, key: string, handler: any)
+// ||
+vm.$watch(key, handler, options)
+// ||
+new Watcher(vm, expOrFn, cb, options)
+```
+注意这里的key只能是string了
+
+#### initProvide
+初始化实例属性 vm._provided
+```js
+vm._provided = typeof provide === 'function'
+      ? provide.call(vm)
+      : provide
+```
 
 ### 9. src/core/global-api/index.js
 挂载各种方法
