@@ -37,6 +37,5 @@ setTimeout(function() {
     element.style.transition = "left .5s";
     ```
 
-> 参考：
-[临时无视CSS3的transition直接设置样式](https://www.web-tinker.com/article/20286.html)
+> 参考：[临时无视CSS3的transition直接设置样式](https://www.web-tinker.com/article/20286.html)
 demo：http://plnkr.co/edit/HGAIP45kU2Ooia6zH98z?p=preview
