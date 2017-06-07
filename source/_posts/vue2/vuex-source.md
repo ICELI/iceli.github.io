@@ -78,8 +78,58 @@ export {
 ### 进入Store
 
 ### install
+如果是浏览器环境，就自动安装Vuex
+```js
+// auto install in dist mode
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+}
+
+```
+通过判断变量Vue来是否已经安装过，因为Vue是在此处赋值的。
+```js
+if (Vue) {	
+  return
+}
+Vue =_Vue
+applyMixin(Vue)
+```
+
+applyMixin(Vue)
+
+```js
+if (version >= 2) {
+	const usesInit = Vue.config._lifecycleHooks.indexOf('init') > -1
+	Vue.mixin(usesInit ? { init: vuexInit } : { beforeCreate: vuexInit })
+} else {
+	// override init and inject vuex init procedure
+	// for 1.x backwards compatibility.
+	const _init = Vue.prototype._init
+	Vue.prototype._init = function (options = {}) {
+	  options.init = options.init
+		? [vuexInit].concat(options.init)
+		: vuexInit
+	  _init.call(this, options)
+	}
+}
+```
+Vue.mixin
+Vue2的通过`beforeCreate`钩子将vuex注入到Vue实例上`this.$store`。在v2.0.0-alpha.7之前`beforeCreate`钩子对应为`init`
+注：在2.3.0以后，options.store可以为function，目的是解决store为对象时引起的副作用问题。
+```js
+this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store
+```
+
+
+
 
 ### version 占位符
+构建时会替换为package.json里的version
+```js
+version: '__VERSION__',
+```
 
 ### 辅助函数
 - mapState
