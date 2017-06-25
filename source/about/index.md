@@ -22,3 +22,6 @@ http://naotu.baidu.com/file/03bfd895fb8064c90cb56acaf5e284fc?token=b33503f432779
 
 ### blog
 http://lostali.com
+
+### 有道笔记
+http://note.youdao.com/noteshare?id=78beb4e3688eddbf86b529e1decd5d74
