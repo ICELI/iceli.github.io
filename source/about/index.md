@@ -1,7 +1,6 @@
 ---
-title: me
-date: 2017-06-25 23:00:26
-tags:
+title: about
+date: 2017-06-25 23:12:48
 ---
 
 ### Github
@@ -9,6 +8,9 @@ https://github.com/iceli
 
 ### jsfiddle
 https://jsfiddle.net/user/iceli
+
+### 知乎
+https://zhihu.com/people/iceli
 
 ### 百度脑图
 - 前端架构图
@@ -20,6 +22,3 @@ http://naotu.baidu.com/file/03bfd895fb8064c90cb56acaf5e284fc?token=b33503f432779
 
 ### blog
 http://lostali.com
-
-### 知乎
-https://zhihu.com/people/iceli

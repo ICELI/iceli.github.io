@@ -40,7 +40,7 @@ seo: true
 menu:
   home: /
 #  categories: /categories
-#  about: /about
+  about: /about
   archives: /archives
   tags: /tags
 #  sitemap: /sitemap.xml
@@ -533,7 +533,7 @@ vendors:
   # Internal version: 1.0.0
   # https://github.com/hustcc/canvas-nest.js
   canvas_nest:
-  
+
   #three
   three:
   three_waves:
