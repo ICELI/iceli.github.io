@@ -42,13 +42,13 @@ Enable transformation of ES6 module syntax to another module type.
 Setting this to false will not transform modules.
 ```
 
-将modules改为umd后，babel为模块提供了运行环境，umd包装的模块即可正常运行。
+将modules配置项删除（改为commonjs），babel为模块提供了运行环境，umd包装的模块即可正常运行。
 ```js
   "presets": [
     [
       "env",
       {
-        "modules": "umd"
+        "modules": "commonjs"
       }
     ],
     "stage-2"
