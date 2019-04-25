@@ -1,0 +1,1267 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="vue2,vue,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
+<meta name="keywords" content="vue2,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue2源码：源码速读">
+<meta property="og:url" content="http://lostali.com/2017/05/12/vue2/Vue2-instance/index.html">
+<meta property="og:site_name" content="Lost a li">
+<meta property="og:description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lostali.com/2017/05/12/images/vue-call-stack.png">
+<meta property="og:updated_time" content="2019-04-25T13:18:32.809Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue2源码：源码速读">
+<meta name="twitter:description" content="基本思路:  首先通过模块依赖关系找到Vue类在哪定义 Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系 Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的 Vue实例化时，组件模板是如何渲染并更新到el上的 Vue实例，vm的Data响应式是怎么实现的 阅读源码全程忽略process.env.NODE_ENV !== &amp;#39;production&amp;#39;">
+<meta name="twitter:image" content="http://lostali.com/2017/05/12/images/vue-call-stack.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lostali.com/2017/05/12/vue2/Vue2-instance/">
+
+
+
+
+
+  <title> Vue2源码：源码速读 | Lost a li </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b5391b3c8e4065be5127569473516b18";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lost a li</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">NOENDING</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2017/05/12/vue2/Vue2-instance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ICELI">
+      <meta itemprop="description" content="点滴积累~ 贵在坚持!">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lost a li">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue2源码：源码速读
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T00:05:00+08:00">
+                2017-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue2/" itemprop="url" rel="index">
+                    <span itemprop="name">vue2</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/05/12/vue2/Vue2-instance/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/05/12/vue2/Vue2-instance/" class="leancloud_visitors" data-flag-title="Vue2源码：源码速读">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>基本思路:</p>
+<ol>
+<li>首先通过模块依赖关系找到Vue类在哪定义</li>
+<li>Vue类的属性及方法在哪个阶段定义的，理清添加的顺序及依赖关系</li>
+<li>Vue实例化初始化方法的执行顺序，找到生命周期钩子在哪些对应方法中触发的</li>
+<li>Vue实例化时，组件模板是如何渲染并更新到<code>el</code>上的</li>
+<li>Vue实例，vm的Data响应式是怎么实现的</li>
+<li>阅读源码全程忽略<code>process.env.NODE_ENV !== &#39;production&#39;</code>条件里的代码，先了解主流程</li>
+</ol>
+</blockquote>
+<h3 id="要理清命名的规则，便于理解每一步的作用"><a href="#要理清命名的规则，便于理解每一步的作用" class="headerlink" title="要理清命名的规则，便于理解每一步的作用"></a>要理清命名的规则，便于理解每一步的作用</h3><ul>
+<li>xxxMixin(Vue) – 给Vue类添加原型方法</li>
+<li>initXxx(vm) – 给vm添加初始化属性</li>
+<li>vm – 对应Vue的实例</li>
+<li>内置私有方法或属性前加下划线<code>_</code>, 暴露给外部调用的方法或属性前加美元符号<code>$</code></li>
+</ul>
+<p>我们可以查看组件的接口配置文件<code>flow/component.js</code>，基本上包含了一个组件的所有属性和方法。</p>
+<h2 id="从代码构建入手"><a href="#从代码构建入手" class="headerlink" title="从代码构建入手"></a>从代码构建入手</h2><h3 id="1-package-json"><a href="#1-package-json" class="headerlink" title="1. package.json"></a>1. package.json</h3><p>从scripts属性可看到打包入口文件build/build.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="string">"build"</span>: <span class="string">"node build/build.js"</span></span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可从main、module等属性获取对应的版本，竟然还有ts版，不知是否可用？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"main"</span>: <span class="string">"dist/vue.runtime.common.js"</span>, <span class="comment">// webpack1</span></span><br><span class="line"><span class="string">"module"</span>: <span class="string">"dist/vue.runtime.esm.js"</span>, <span class="comment">// webpack2 or rollup</span></span><br><span class="line"><span class="string">"unpkg"</span>: <span class="string">"dist/vue.js"</span>, <span class="comment">// 直接&lt;script&gt;引入vue文件</span></span><br><span class="line"><span class="string">"typings"</span>: <span class="string">"types/index.d.ts"</span>, <span class="comment">// typescript版 具体进度未知？？？</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-dist-构建后的文件存放目录"><a href="#2-dist-构建后的文件存放目录" class="headerlink" title="2. dist 构建后的文件存放目录"></a>2. dist 构建后的文件存放目录</h3><p>查看<a href="https://github.com/vuejs/vue/blob/dev/dist/README.md" target="_blank" rel="noopener">README.md</a></p>
+<h4 id="Explanation-of-Build-Files"><a href="#Explanation-of-Build-Files" class="headerlink" title="Explanation of Build Files"></a>Explanation of Build Files</h4><table>
+<thead>
+<tr>
+<th></th>
+<th>UMD</th>
+<th>CommonJS</th>
+<th>ES Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full</strong></td>
+<td>vue.js</td>
+<td>vue.common.js</td>
+<td>vue.esm.js</td>
+</tr>
+<tr>
+<td><strong>Runtime-only</strong></td>
+<td>vue.runtime.js</td>
+<td>vue.runtime.common.js</td>
+<td>vue.runtime.esm.js</td>
+</tr>
+<tr>
+<td><strong>Full (production)</strong></td>
+<td>vue.min.js</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Runtime-only (production)</strong></td>
+<td>vue.runtime.min.js</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>我们用vue-cli时，因为用了vue-loader，不需要compiler编译模板。同时使用了ES6的import/export管理模块依赖。所以webpack2构建时所依赖的vue，就是基于ES module规范的runtime版本：<code>vue.runtime.esm.js</code>。</p>
+<h3 id="3-build-config-js-项目构建配置文件"><a href="#3-build-config-js-项目构建配置文件" class="headerlink" title="3. build/config.js 项目构建配置文件"></a>3. build/config.js 项目构建配置文件</h3><p>dist目录下文件的rollup配置都在此文件中定义，其中<code>vue.runtime.esm.js</code>对应配置如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'web-runtime-esm'</span>: &#123;</span><br><span class="line">    entry: resolve(<span class="string">'web/runtime.js'</span>),</span><br><span class="line">    dest: resolve(<span class="string">'dist/vue.runtime.esm.js'</span>),</span><br><span class="line">    format: <span class="string">'es'</span>,</span><br><span class="line">    banner</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>找到rollup入口文件<code>web/runtime.js</code></p>
+<h3 id="4-build-alias-js"><a href="#4-build-alias-js" class="headerlink" title="4. build/alias.js"></a>4. build/alias.js</h3><p>通过别名快速定位文件依赖，就是webstorm不能<code>ctrl+点击</code>跳转了,有点坑<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  vue: path.resolve(__dirname, <span class="string">'../src/platforms/web/runtime-with-compiler'</span>),</span><br><span class="line">  compiler: path.resolve(__dirname, <span class="string">'../src/compiler'</span>),</span><br><span class="line">  core: path.resolve(__dirname, <span class="string">'../src/core'</span>),</span><br><span class="line">  shared: path.resolve(__dirname, <span class="string">'../src/shared'</span>),</span><br><span class="line">  web: path.resolve(__dirname, <span class="string">'../src/platforms/web'</span>),</span><br><span class="line">  weex: path.resolve(__dirname, <span class="string">'../src/platforms/weex'</span>),</span><br><span class="line">  server: path.resolve(__dirname, <span class="string">'../src/server'</span>),</span><br><span class="line">  entries: path.resolve(__dirname, <span class="string">'../src/entries'</span>),</span><br><span class="line">  sfc: path.resolve(__dirname, <span class="string">'../src/sfc'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。"><a href="#5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。" class="headerlink" title="5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。"></a>5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。</h3><h3 id="6-src-platforms-web-runtime-index-js-这才是真身。。。"><a href="#6-src-platforms-web-runtime-index-js-这才是真身。。。" class="headerlink" title="6. src/platforms/web/runtime/index.js 这才是真身。。。"></a>6. src/platforms/web/runtime/index.js 这才是真身。。。</h3><p>vue启动方法<code>$mount</code>在此定义，挂载至el，该参数可以是string 或者 Element，如果是字符串就调用document.querySelector方法返回DOM</p>
+<h3 id="7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><a href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录" class="headerlink" title="7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录"></a>7. src/core/index.js 顺着<code>import Vue from xxx</code>我们一路来到了core目录</h3><h3 id="8-src-core-instance-index-js"><a href="#8-src-core-instance-index-js" class="headerlink" title="8. src/core/instance/index.js"></a>8. src/core/instance/index.js</h3><p>终于见到你，还好我没放弃<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span> (<span class="params">options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</span><br><span class="line">    !(<span class="keyword">this</span> <span class="keyword">instanceof</span> Vue)) &#123;</span><br><span class="line">    warn(<span class="string">'Vue is a constructor and should be called with the `new` keyword'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._init(options)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Vue构造函数就是在此定义，内部执行初始化方法<code>_init</code>，该方法在<code>initMixin</code>中定义<code>Vue.prototype._init</code><br>先在内部执行一系列初始化方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">initLifecycle(vm)</span><br><span class="line">initEvents(vm)</span><br><span class="line">initRender(vm)</span><br><span class="line">callHook(vm, <span class="string">'beforeCreate'</span>)</span><br><span class="line">initInjections(vm) <span class="comment">// resolve injections before data/props</span></span><br><span class="line">initState(vm)</span><br><span class="line">initProvide(vm) <span class="comment">// resolve provide after data/props</span></span><br><span class="line">callHook(vm, <span class="string">'created'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>最后，当实例化参数有<code>el</code>时，自动挂载实例至此DOM元素。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (vm.$options.el) &#123;</span><br><span class="line">  vm.$mount(vm.$options.el)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="initLifecycle"><a href="#initLifecycle" class="headerlink" title="initLifecycle"></a>initLifecycle</h4><p>除了一般状态的初始化，包含一个特殊的判断：是否为抽象组件<br>将当前vm挂载第一个非抽象的父组件<br>抽象组件自身不会渲染一个 DOM 元素，也不会出现在父组件链中。<br>内置抽象组件：keep-live, transition</p>
+<p>几个在mountComponent用到的方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.$el = el</span><br></pre></td></tr></table></figure></p>
+<p>renderMixin: _render<br>lifecycleMixin: _update<br>Watcher: Watcher</p>
+<h4 id="initEvent"><a href="#initEvent" class="headerlink" title="initEvent"></a>initEvent</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// init parent attached events</span><br><span class="line">  const listeners = vm.$options._parentListeners</span><br><span class="line">  if (listeners) &#123;</span><br><span class="line">    updateComponentListeners(vm, listeners)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>开始不明白为什么在这里要判断<code>listeners</code>，因为<code>vm.$options._parentListeners</code>是在initRender之后才能获得，好像永远没有这属性了<br>后来发现在initInternalComponent 内部组件初始化时会用定义，内部组件为了达到优化的目的直接复制对象过去，跳过merge options。</p>
+<p>initInternalComponent有一个条件就是_isComponent, 它又是在什么时候定义的呢<br>先定义的组件vue.component =&gt; new Vue() =&gt; mountComponent =&gt; new Watcher =&gt; updateComponent =&gt; _render() =&gt; _update =&gt; <strong>path</strong> =&gt; createPatchFunction =&gt; createElm =&gt;<br>createComponentInstanceForVnode  = componentVNodeHooks =&gt; createComponent =&gt; i(vnode, false /<em> hydrating </em>/, parentElm, refElm);<br>初始化vnode组件实例时vnode.componentInstance，返回的是new vnodeComponentOptions.Ctor(options)，Ctor它指向Vue.component定义组件时返回的Sub构造函数，通过Vue.extend拷贝继承Vue。<br>所以，在实例化子组件时和实例化Vue很像。<br><img src="../../images/vue-call-stack.png" alt="img"><br>到这里vdom的内容也看了大半了,顺带来看了initGlobalAPI的核心API<br>`</p>
+<h4 id="initRender"><a href="#initRender" class="headerlink" title="initRender"></a>initRender</h4><p>在实例上添加了2个方法，用于将渲染函数转换为vnode，内外部方法的区别只有最后一个参数，类型为boolean</p>
+<ul>
+<li><code>_c</code> - <code>createElement(vm, a, b, c, d, false)</code></li>
+<li><code>$createElement</code>  - <code>createElement(vm, a, b, c, d, true)</code><br>createElement 只是<code>_createElement</code>的一个包装，通过最后一个参数来控制normalizationType的值，</li>
+</ul>
+<p>normalizationType决定组件转换函数。[simple]NormalizeChildren()，处理后返回 Array<vnode>。<br>关于转换函数的用法与区别，在代码中有一大段注释，可以感受一下。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The template compiler attempts to minimize the need for normalization by</span></span><br><span class="line"><span class="comment">// statically analyzing the template at compile time.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// For plain HTML markup, normalization can be completely skipped because the</span></span><br><span class="line"><span class="comment">// generated render function is guaranteed to return Array&lt;VNode&gt;. There are</span></span><br><span class="line"><span class="comment">// two cases where extra normalization is needed:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. When the children contains components - because a functional component</span></span><br><span class="line"><span class="comment">// may return an Array instead of a single root. In this case, just a simple</span></span><br><span class="line"><span class="comment">// normalization is needed - if any child is an Array, we flatten the whole</span></span><br><span class="line"><span class="comment">// thing with Array.prototype.concat. It is guaranteed to be only 1-level deep</span></span><br><span class="line"><span class="comment">// because functional components already normalize their own children.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. When the children contains constructs that always generated nested Arrays,</span></span><br><span class="line"><span class="comment">// e.g. &lt;template&gt;, &lt;slot&gt;, v-for, or when the children is provided by user</span></span><br><span class="line"><span class="comment">// with hand-written render functions / JSX. In such cases a full normalization</span></span><br><span class="line"><span class="comment">// is needed to cater to all possible types of children values.</span></span><br></pre></td></tr></table></figure></vnode></p>
+<ol>
+<li>包含功能组件时，本身就返回Array<vnode>,通过Array.prototype.concat.apply([], children)简单的将2级深度数组转为1级.</vnode></li>
+<li><template>, <slot>, v-for 和用户自己写的渲染函数，子组件比较复杂需要判断所有的类型进行格式化，以返回Array<vnode>格式<br>normalizeChildren =&gt; createElement(vm, a, b, c, d, true) =&gt; vm.$createElement =&gt; render.call(vm._renderProxy, vm.$createElement)</vnode></slot></template></li>
+<li>普通的html无需处理，因为在compiler后直接返回的就是Array<vnode>格式。<blockquote>
+<p>这块对后续理解虚拟DOM非常有用</p>
+</blockquote>
+</vnode></li>
+</ol>
+<h4 id="initInjections"><a href="#initInjections" class="headerlink" title="initInjections"></a>initInjections</h4><p>初始化注入对象，可以是数组或对象 Array<string> | { [key: string]: string | Symbol }<br>作者不建议在普通应用中使用。<br>defineReactive 第一次出现了，对inject做了劫持，以达到响应式的目的</string></p>
+<h4 id="initState"><a href="#initState" class="headerlink" title="initState"></a>initState</h4><ul>
+<li>initProps</li>
+<li>initMethods</li>
+<li>initData</li>
+<li>initComputed</li>
+<li>initWatch</li>
+</ul>
+<h5 id="initProps"><a href="#initProps" class="headerlink" title="initProps"></a>initProps</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// root instance props should be converted </span><br><span class="line">observerState.shouldConvert = isRoot</span><br><span class="line">...</span><br><span class="line">validateProp(key, propsOptions, propsData, vm)</span><br><span class="line">...</span><br><span class="line">	prop = propOptions[key]</span><br><span class="line">    value = getPropDefaultValue(vm, prop, key)</span><br><span class="line">	observe(value)</span><br><span class="line">	为对象添加 __ob__属性，值就是Oberve实例</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">defineReactive(props, key, value)</span><br><span class="line"></span><br><span class="line">if (!(key in vm)) &#123;</span><br><span class="line">  proxy(vm, `_props`, key)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>proxy</code>将props全部挂到vm实例上，这样只要能拿到实例，就可以拿到prop上的属性值了</p>
+<h5 id="initMethods"><a href="#initMethods" class="headerlink" title="initMethods"></a>initMethods</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm[key] = methods[key] == <span class="literal">null</span> ? noop : bind(methods[key], vm)</span><br></pre></td></tr></table></figure>
+<p>将methods包含的方法都挂到实例上，这里要注意methods名称不能和props名称相同。</p>
+<h5 id="initData"><a href="#initData" class="headerlink" title="initData"></a>initData</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">proxy(vm, <span class="string">`_data`</span>, keys[i])</span><br><span class="line"><span class="comment">// observe data</span></span><br><span class="line">observe(data, <span class="literal">true</span> <span class="comment">/* asRootData */</span>)</span><br></pre></td></tr></table></figure>
+<p>对data进行劫持</p>
+<h5 id="initComputed"><a href="#initComputed" class="headerlink" title="initComputed"></a>initComputed</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create internal watcher for the computed property.</span></span><br><span class="line">watchers[key] = <span class="keyword">new</span> Watcher(vm, getter, noop, computedWatcherOptions)</span><br><span class="line">defineComputed(vm, key, userDef)</span><br><span class="line"></span><br><span class="line">函数将用作vm属性的getter</span><br></pre></td></tr></table></figure>
+<h5 id="initWatch"><a href="#initWatch" class="headerlink" title="initWatch"></a>initWatch</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">createWatcher(vm: Component, <span class="attr">key</span>: string, <span class="attr">handler</span>: any)</span><br><span class="line"><span class="comment">// ||</span></span><br><span class="line">vm.$watch(key, handler, options)</span><br><span class="line"><span class="comment">// ||</span></span><br><span class="line"><span class="keyword">new</span> Watcher(vm, expOrFn, cb, options)</span><br></pre></td></tr></table></figure>
+<p>注意这里的key只能是string了</p>
+<h4 id="initProvide"><a href="#initProvide" class="headerlink" title="initProvide"></a>initProvide</h4><p>初始化实例属性 vm._provided<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vm._provided = <span class="keyword">typeof</span> provide === <span class="string">'function'</span></span><br><span class="line">      ? provide.call(vm)</span><br><span class="line">      : provide</span><br></pre></td></tr></table></figure></p>
+<h3 id="9-src-core-global-api-index-js"><a href="#9-src-core-global-api-index-js" class="headerlink" title="9. src/core/global-api/index.js"></a>9. src/core/global-api/index.js</h3><p>挂载各种方法</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/IMG_2704.JPG" alt="ICELI WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/IMG_2705.JPG" alt="ICELI Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue2/" rel="tag"># vue2</a>
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/07/vue2/Vue2-Virtual Dom/" rel="next" title="Vue2源码：Virtual Dom">
+                <i class="fa fa-chevron-left"></i> Vue2源码：Virtual Dom
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/20/angular.js/pv/" rel="prev" title="SPA 前端路由页面PV统计问题解决方案">
+                SPA 前端路由页面PV统计问题解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="ICELI">
+          <p class="site-author-name" itemprop="name">ICELI</p>
+           
+              <p class="site-description motion-element" itemprop="description">点滴积累~ 贵在坚持!</p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">101</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/iceli" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/iceli" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://github.com/jm-team" title="jm-team" target="_blank">jm-team</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#要理清命名的规则，便于理解每一步的作用"><span class="nav-number">1.</span> <span class="nav-text">要理清命名的规则，便于理解每一步的作用</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#从代码构建入手"><span class="nav-number"></span> <span class="nav-text">从代码构建入手</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-package-json"><span class="nav-number">1.</span> <span class="nav-text">1. package.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-dist-构建后的文件存放目录"><span class="nav-number">2.</span> <span class="nav-text">2. dist 构建后的文件存放目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Explanation-of-Build-Files"><span class="nav-number">2.1.</span> <span class="nav-text">Explanation of Build Files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-build-config-js-项目构建配置文件"><span class="nav-number">3.</span> <span class="nav-text">3. build/config.js 项目构建配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-build-alias-js"><span class="nav-number">4.</span> <span class="nav-text">4. build/alias.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-src-platforms-web-runtime-js-通过别名找到源文件，只有2行。。。"><span class="nav-number">5.</span> <span class="nav-text">5. src/platforms/web/runtime.js 通过别名找到源文件，只有2行。。。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-src-platforms-web-runtime-index-js-这才是真身。。。"><span class="nav-number">6.</span> <span class="nav-text">6. src/platforms/web/runtime/index.js 这才是真身。。。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-src-core-index-js-顺着import-Vue-from-xxx我们一路来到了core目录"><span class="nav-number">7.</span> <span class="nav-text">7. src/core/index.js 顺着import Vue from xxx我们一路来到了core目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-src-core-instance-index-js"><span class="nav-number">8.</span> <span class="nav-text">8. src/core/instance/index.js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#initLifecycle"><span class="nav-number">8.1.</span> <span class="nav-text">initLifecycle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#initEvent"><span class="nav-number">8.2.</span> <span class="nav-text">initEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#initRender"><span class="nav-number">8.3.</span> <span class="nav-text">initRender</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#initInjections"><span class="nav-number">8.4.</span> <span class="nav-text">initInjections</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#initState"><span class="nav-number">8.5.</span> <span class="nav-text">initState</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#initProps"><span class="nav-number">8.5.1.</span> <span class="nav-text">initProps</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#initMethods"><span class="nav-number">8.5.2.</span> <span class="nav-text">initMethods</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#initData"><span class="nav-number">8.5.3.</span> <span class="nav-text">initData</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#initComputed"><span class="nav-number">8.5.4.</span> <span class="nav-text">initComputed</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#initWatch"><span class="nav-number">8.5.5.</span> <span class="nav-text">initWatch</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#initProvide"><span class="nav-number">8.6.</span> <span class="nav-text">initProvide</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-src-core-global-api-index-js"><span class="nav-number">9.</span> <span class="nav-text">9. src/core/global-api/index.js</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div style="float: right; width:400px">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="298" height="52" src="//music.163.com/outchain/player?type=2&id=1344368486&auto=1&height=32"></iframe>
+</div>
+<div class="copyright">
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-ICELI"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ICELI</span>
+</div>
+<!--
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "f0c8dfc0ef2048c9abe489aed5aaeca3",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("G46AC9CPhmpwSCMnGAyj6vAT-gzGzoHsz", "Ez2AsQhLFv3K4QRL8aPC1jiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

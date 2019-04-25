@@ -1,0 +1,1133 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Blog, FrontEnd">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="123456789101112131415161718192021new webpack.optimize.CommonsChunkPlugin(&amp;#123;  name: &quot;main&quot;,  children: true,  minChunks: function (module, count) &amp;#123;    return module.context &amp;amp;&amp;amp; (module.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CommonsChunkPlugin">
+<meta property="og:url" content="http://lostali.com/2018/04/26/issues/CommonsChunkPlugin/index.html">
+<meta property="og:site_name" content="Lost a li">
+<meta property="og:description" content="123456789101112131415161718192021new webpack.optimize.CommonsChunkPlugin(&amp;#123;  name: &quot;main&quot;,  children: true,  minChunks: function (module, count) &amp;#123;    return module.context &amp;amp;&amp;amp; (module.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-25T16:19:01.022Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CommonsChunkPlugin">
+<meta name="twitter:description" content="123456789101112131415161718192021new webpack.optimize.CommonsChunkPlugin(&amp;#123;  name: &quot;main&quot;,  children: true,  minChunks: function (module, count) &amp;#123;    return module.context &amp;amp;&amp;amp; (module.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lostali.com/2018/04/26/issues/CommonsChunkPlugin/">
+
+
+
+
+
+  <title> CommonsChunkPlugin | Lost a li </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b5391b3c8e4065be5127569473516b18";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lost a li</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">NOENDING</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lostali.com/2018/04/26/issues/CommonsChunkPlugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ICELI">
+      <meta itemprop="description" content="点滴积累~ 贵在坚持!">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lost a li">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                CommonsChunkPlugin
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-26T21:17:10+08:00">
+                2018-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2018/04/26/issues/CommonsChunkPlugin/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/04/26/issues/CommonsChunkPlugin/" class="leancloud_visitors" data-flag-title="CommonsChunkPlugin">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">  name: <span class="string">"main"</span>,</span><br><span class="line">  children: <span class="literal">true</span>,</span><br><span class="line">  minChunks: <span class="function"><span class="keyword">function</span> (<span class="params">module, count</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">module</span>.context &amp;&amp; (<span class="built_in">module</span>.context.includes(<span class="string">"/src/components"</span>) || <span class="built_in">module</span>.context.includes(<span class="string">"/src/service"</span>)) || count == <span class="number">3</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;),</span><br><span class="line"><span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">  name: <span class="string">"vendors"</span>,</span><br><span class="line">  chunks: [<span class="string">"vendors"</span>, <span class="string">"main"</span>],</span><br><span class="line">  minChunks: <span class="literal">Infinity</span>,</span><br><span class="line">  <span class="comment">// children: true,</span></span><br><span class="line">  <span class="comment">// minChunks: function (module) &#123;</span></span><br><span class="line">  <span class="comment">//   return module.context &amp;&amp; module.context.includes("node_modules");</span></span><br><span class="line">  <span class="comment">// &#125;,</span></span><br><span class="line">  <span class="comment">// minChunks: 3</span></span><br><span class="line">&#125;),</span><br><span class="line"><span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">  name: <span class="string">"manifest"</span>,</span><br><span class="line">  minChunks: <span class="literal">Infinity</span></span><br><span class="line">&#125;),</span><br></pre></td></tr></table></figure>
+<h3 id="prod-config"><a href="#prod-config" class="headerlink" title="prod config"></a>prod config</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> autoprefixer = <span class="built_in">require</span>(<span class="string">'autoprefixer'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line"><span class="keyword">const</span> LodashModuleReplacementPlugin = <span class="built_in">require</span>(<span class="string">'lodash-webpack-plugin'</span>)</span><br><span class="line"><span class="keyword">const</span> BundleAnalyzerPlugin = <span class="built_in">require</span>(<span class="string">'webpack-bundle-analyzer'</span>).BundleAnalyzerPlugin</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> ExtractTextPlugin = <span class="built_in">require</span>(<span class="string">'extract-text-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> ManifestPlugin = <span class="built_in">require</span>(<span class="string">'webpack-manifest-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> InterpolateHtmlPlugin = <span class="built_in">require</span>(<span class="string">'react-dev-utils/InterpolateHtmlPlugin'</span>);</span><br><span class="line"><span class="keyword">const</span> SWPrecacheWebpackPlugin = <span class="built_in">require</span>(<span class="string">'sw-precache-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> eslintFormatter = <span class="built_in">require</span>(<span class="string">'react-dev-utils/eslintFormatter'</span>);</span><br><span class="line"><span class="keyword">const</span> ModuleScopePlugin = <span class="built_in">require</span>(<span class="string">'react-dev-utils/ModuleScopePlugin'</span>);</span><br><span class="line"><span class="keyword">const</span> paths = <span class="built_in">require</span>(<span class="string">'./paths'</span>);</span><br><span class="line"><span class="keyword">const</span> getClientEnvironment = <span class="built_in">require</span>(<span class="string">'./env'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Webpack uses `publicPath` to determine where the app is being served from.</span></span><br><span class="line"><span class="comment">// It requires a trailing slash, or the file assets will get an incorrect path.</span></span><br><span class="line"><span class="keyword">const</span> publicPath = paths.servedPath;</span><br><span class="line"><span class="comment">// Some apps do not use client-side routing with pushState.</span></span><br><span class="line"><span class="comment">// For these, "homepage" can be set to "." to enable relative asset paths.</span></span><br><span class="line"><span class="keyword">const</span> shouldUseRelativeAssetPaths = publicPath === <span class="string">'./'</span>;</span><br><span class="line"><span class="comment">// Source maps are resource heavy and can cause out of memory issue for large source files.</span></span><br><span class="line"><span class="comment">// const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';</span></span><br><span class="line"><span class="keyword">const</span> shouldUseSourceMap = <span class="literal">false</span>;</span><br><span class="line"><span class="comment">// `publicUrl` is just like `publicPath`, but we will provide it to our app</span></span><br><span class="line"><span class="comment">// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.</span></span><br><span class="line"><span class="comment">// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.</span></span><br><span class="line"><span class="keyword">const</span> publicUrl = publicPath.slice(<span class="number">0</span>, <span class="number">-1</span>);</span><br><span class="line"><span class="comment">// Get environment variables to inject into our app.</span></span><br><span class="line"><span class="keyword">const</span> env = getClientEnvironment(publicUrl);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Assert this just to be safe.</span></span><br><span class="line"><span class="comment">// Development builds of React are slow and not intended for production.</span></span><br><span class="line"><span class="keyword">if</span> (env.stringified[<span class="string">'process.env'</span>].NODE_ENV !== <span class="string">'"production"'</span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Production builds must have NODE_ENV=production.'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Note: defined here because it will be used more than once.</span></span><br><span class="line"><span class="keyword">const</span> cssFilename = <span class="string">'static/css/[name].[contenthash:8].css'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ExtractTextPlugin expects the build output to be flat.</span></span><br><span class="line"><span class="comment">// (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)</span></span><br><span class="line"><span class="comment">// However, our output is structured with css, js and media folders.</span></span><br><span class="line"><span class="comment">// To have this structure working with relative paths, we have to use custom options.</span></span><br><span class="line"><span class="keyword">const</span> extractTextPluginOptions = shouldUseRelativeAssetPaths</span><br><span class="line">  ? <span class="comment">// Making sure that the publicPath goes back to to build folder.</span></span><br><span class="line">  &#123; <span class="attr">publicPath</span>: <span class="built_in">Array</span>(cssFilename.split(<span class="string">'/'</span>).length).join(<span class="string">'../'</span>) &#125;</span><br><span class="line">  : &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is the production configuration.</span></span><br><span class="line"><span class="comment">// It compiles slowly and is focused on producing a fast and minimal bundle.</span></span><br><span class="line"><span class="comment">// The development configuration is different and lives in a separate file.</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// Don't attempt to continue if there are any errors.</span></span><br><span class="line">  bail: <span class="literal">true</span>,</span><br><span class="line">  <span class="comment">// We generate sourcemaps in production. This is slow but gives good results.</span></span><br><span class="line">  <span class="comment">// You can exclude the *.map files from the build during deployment.</span></span><br><span class="line">  devtool: shouldUseSourceMap ? <span class="string">'source-map'</span> : <span class="literal">false</span>,</span><br><span class="line">  <span class="comment">// In production, we only want to load the polyfills and the app code.</span></span><br><span class="line">  entry: &#123;</span><br><span class="line">    <span class="comment">// base: ["babel-polyfill", require.resolve('./polyfills')],</span></span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> dll</span></span><br><span class="line">    vendors: [</span><br><span class="line">      <span class="string">"babel-polyfill"</span>,</span><br><span class="line">      <span class="built_in">require</span>.resolve(<span class="string">'./polyfills'</span>),</span><br><span class="line">      <span class="string">'react'</span>,</span><br><span class="line">      <span class="string">'react-dom'</span>,</span><br><span class="line">      <span class="string">'react-router-dom'</span>,</span><br><span class="line">      <span class="string">'react-redux'</span>,</span><br><span class="line">      <span class="string">'redux-thunk'</span>,</span><br><span class="line">      <span class="string">'classnames'</span>,</span><br><span class="line">      <span class="comment">// 'lodash',</span></span><br><span class="line">      <span class="string">'moment'</span>,</span><br><span class="line">      <span class="string">'react-lazyload'</span>,</span><br><span class="line">      <span class="string">'react-addons-css-transition-group'</span>,</span><br><span class="line">      <span class="string">'react-redux-loading-bar'</span>,</span><br><span class="line">      <span class="string">'react-responsive-carousel'</span>,</span><br><span class="line">    ],</span><br><span class="line">    main: paths.appIndexJs</span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    <span class="comment">// The build folder.</span></span><br><span class="line">    path: paths.appBuild,</span><br><span class="line">    <span class="comment">// Generated JS file names (with nested folders).</span></span><br><span class="line">    <span class="comment">// There will be one main bundle, and one file per asynchronous chunk.</span></span><br><span class="line">    <span class="comment">// We don't currently advertise code splitting but Webpack supports it.</span></span><br><span class="line">    filename: <span class="string">'static/js/[name].[chunkhash:8].js'</span>,</span><br><span class="line">    chunkFilename: <span class="string">'static/js/[name].[chunkhash:8].chunk.js'</span>,</span><br><span class="line">    <span class="comment">// We inferred the "public path" (such as / or /my-project) from homepage.</span></span><br><span class="line">    publicPath: publicPath,</span><br><span class="line">    <span class="comment">// Point sourcemap entries to original disk location (format as URL on Windows)</span></span><br><span class="line">    devtoolModuleFilenameTemplate: <span class="function"><span class="params">info</span> =&gt;</span></span><br><span class="line">      path</span><br><span class="line">        .relative(paths.appSrc, info.absoluteResourcePath)</span><br><span class="line">        .replace(<span class="regexp">/\\/g</span>, <span class="string">'/'</span>),</span><br><span class="line">  &#125;,</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    <span class="comment">// This allows you to set a fallback for where Webpack should look for modules.</span></span><br><span class="line">    <span class="comment">// We placed these paths second because we want `node_modules` to "win"</span></span><br><span class="line">    <span class="comment">// if there are any conflicts. This matches Node resolution mechanism.</span></span><br><span class="line">    <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/253</span></span><br><span class="line">    modules: [<span class="string">'node_modules'</span>, paths.appNodeModules].concat(</span><br><span class="line">      <span class="comment">// It is guaranteed to exist because we tweak it in `env.js`</span></span><br><span class="line">      process.env.NODE_PATH.split(path.delimiter).filter(<span class="built_in">Boolean</span>)</span><br><span class="line">    ),</span><br><span class="line">    <span class="comment">// These are the reasonable defaults supported by the Node ecosystem.</span></span><br><span class="line">    <span class="comment">// We also include JSX as a common component filename extension to support</span></span><br><span class="line">    <span class="comment">// some tools, although we do not recommend using it, see:</span></span><br><span class="line">    <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/290</span></span><br><span class="line">    <span class="comment">// `web` extension prefixes have been added for better support</span></span><br><span class="line">    <span class="comment">// for React Native Web.</span></span><br><span class="line">    extensions: [<span class="string">'.web.js'</span>, <span class="string">'.mjs'</span>, <span class="string">'.js'</span>, <span class="string">'.json'</span>, <span class="string">'.web.jsx'</span>, <span class="string">'.jsx'</span>],</span><br><span class="line">    alias: &#123;</span><br><span class="line">      <span class="string">"@"</span>: path.join(__dirname, <span class="string">'../src/'</span>),</span><br><span class="line">      <span class="comment">// Support React Native Web</span></span><br><span class="line">      <span class="comment">// https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/</span></span><br><span class="line">      <span class="string">'react-native'</span>: <span class="string">'react-native-web'</span>,</span><br><span class="line">      <span class="string">'utils'</span>: path.join(__dirname, <span class="string">'../src/utils'</span>),</span><br><span class="line">      <span class="string">'configs'</span>: path.join(__dirname, <span class="string">'../src/config/'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">      <span class="comment">// Prevents users from importing files from outside of src/ (or node_modules/).</span></span><br><span class="line">      <span class="comment">// This often causes confusion because we only process files within src/ with babel.</span></span><br><span class="line">      <span class="comment">// To fix this, we prevent you from importing files out of src/ -- if you'd like to,</span></span><br><span class="line">      <span class="comment">// please link the files into your node_modules/ and let module-resolution kick in.</span></span><br><span class="line">      <span class="comment">// Make sure your source files are compiled, as they will not be processed in any way.</span></span><br><span class="line">      <span class="keyword">new</span> ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    strictExportPresence: <span class="literal">true</span>,</span><br><span class="line">    rules: [</span><br><span class="line">      <span class="comment">// <span class="doctag">TODO:</span> Disable require.ensure as it's not a standard language feature.</span></span><br><span class="line">      <span class="comment">// We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.</span></span><br><span class="line">      <span class="comment">// &#123; parser: &#123; requireEnsure: false &#125; &#125;,</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// First, run the linter.</span></span><br><span class="line">      <span class="comment">// It's important to do this before Babel processes the JS.</span></span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.(js|jsx|mjs)$/</span>,</span><br><span class="line">        enforce: <span class="string">'pre'</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            options: &#123;</span><br><span class="line">              formatter: eslintFormatter,</span><br><span class="line">              eslintPath: <span class="built_in">require</span>.resolve(<span class="string">'eslint'</span>),</span><br><span class="line"></span><br><span class="line">            &#125;,</span><br><span class="line">            loader: <span class="built_in">require</span>.resolve(<span class="string">'eslint-loader'</span>),</span><br><span class="line">          &#125;,</span><br><span class="line">        ],</span><br><span class="line">        include: paths.appSrc,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="comment">// "oneOf" will traverse all following loaders until one will</span></span><br><span class="line">        <span class="comment">// match the requirements. When no loader matches it will fall</span></span><br><span class="line">        <span class="comment">// back to the "file" loader at the end of the loader list.</span></span><br><span class="line">        oneOf: [</span><br><span class="line">          <span class="comment">// "url" loader works just like "file" loader but it also embeds</span></span><br><span class="line">          <span class="comment">// assets smaller than specified size as data URLs to avoid requests.</span></span><br><span class="line">          &#123;</span><br><span class="line">            test: [<span class="regexp">/\.bmp$/</span>, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.woff$/],</span><br><span class="line">            loader: <span class="built_in">require</span>.resolve(<span class="string">'url-loader'</span>),</span><br><span class="line">            options: &#123;</span><br><span class="line">              limit: <span class="number">10000</span>,</span><br><span class="line">              publicPath: <span class="string">"/x/"</span>,</span><br><span class="line">              name: <span class="string">'static/media/[name].[hash:8].[ext]'</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="comment">// Process JS with Babel.</span></span><br><span class="line">          &#123;</span><br><span class="line">            test: <span class="regexp">/\.(js|jsx|mjs)$/</span>,</span><br><span class="line">            include: paths.appSrc,</span><br><span class="line">            loader: <span class="built_in">require</span>.resolve(<span class="string">'babel-loader'</span>),</span><br><span class="line">            options: &#123;</span><br><span class="line">              plugins: [</span><br><span class="line">                <span class="string">'lodash'</span>,</span><br><span class="line">                <span class="string">'transform-react-jsx'</span>,</span><br><span class="line">                [<span class="string">"react-css-modules"</span>, &#123;</span><br><span class="line">                  <span class="string">"context"</span>: <span class="string">"./"</span>,</span><br><span class="line">                  <span class="string">"generateScopedName"</span>: <span class="string">"[hash:base64:15]"</span>,</span><br><span class="line">                  <span class="string">"filetypes"</span>: &#123;</span><br><span class="line">                    <span class="string">".scss"</span>: &#123;</span><br><span class="line">                      <span class="string">"syntax"</span>: <span class="string">"postcss-scss"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;, <span class="string">"babel-plugin-webpack-alias"</span>, &#123; <span class="string">"config"</span>: <span class="string">"$&#123;PWD&#125;/webpack.config.prod.js"</span> &#125;],</span><br><span class="line">                <span class="comment">// 为了解决react-css-modules中不识别别名的问题</span></span><br><span class="line">                [<span class="string">"module-resolver"</span>, &#123;</span><br><span class="line">                  <span class="string">"alias"</span>: &#123;</span><br><span class="line">                    <span class="string">"@"</span>: path.join(__dirname, <span class="string">'../src/'</span>)</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;]</span><br><span class="line">              ],</span><br><span class="line">              compact: <span class="literal">true</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="comment">// The notation here is somewhat confusing.</span></span><br><span class="line">          <span class="comment">// "postcss" loader applies autoprefixer to our CSS.</span></span><br><span class="line">          <span class="comment">// "css" loader resolves paths in CSS and adds assets as dependencies.</span></span><br><span class="line">          <span class="comment">// "style" loader normally turns CSS into JS modules injecting &lt;style&gt;,</span></span><br><span class="line">          <span class="comment">// but unlike in development configuration, we do something different.</span></span><br><span class="line">          <span class="comment">// `ExtractTextPlugin` first applies the "postcss" and "css" loaders</span></span><br><span class="line">          <span class="comment">// (second argument), then grabs the result CSS and puts it into a</span></span><br><span class="line">          <span class="comment">// separate file in our build process. This way we actually ship</span></span><br><span class="line">          <span class="comment">// a single CSS file in production instead of JS code injecting &lt;style&gt;</span></span><br><span class="line">          <span class="comment">// tags. If you use code splitting, however, any async bundles will still</span></span><br><span class="line">          <span class="comment">// use the "style" loader inside the async code so CSS from them won't be</span></span><br><span class="line">          <span class="comment">// in the main CSS file.</span></span><br><span class="line">          &#123;</span><br><span class="line">            test: <span class="regexp">/\.(css|scss|sass)$/</span>,</span><br><span class="line">            exclude: <span class="regexp">/node_modules|external/</span>,</span><br><span class="line">            loader: ExtractTextPlugin.extract(</span><br><span class="line">              <span class="built_in">Object</span>.assign(</span><br><span class="line">                &#123;</span><br><span class="line">                  fallback: &#123;</span><br><span class="line">                    loader: <span class="built_in">require</span>.resolve(<span class="string">'style-loader'</span>),</span><br><span class="line">                    options: &#123;</span><br><span class="line">                      hmr: <span class="literal">false</span>,</span><br><span class="line">                    &#125;,</span><br><span class="line">                  &#125;,</span><br><span class="line">                  use: [</span><br><span class="line">                    &#123;</span><br><span class="line">                      loader: <span class="built_in">require</span>.resolve(<span class="string">'css-loader'</span>),</span><br><span class="line">                      options: &#123;</span><br><span class="line">                        modules: <span class="literal">true</span>,</span><br><span class="line">                        localIdentName: <span class="string">"[hash:base64:15]"</span>,</span><br><span class="line">                        importLoaders: <span class="number">1</span>,</span><br><span class="line">                        minimize: <span class="literal">true</span>,</span><br><span class="line">                        sourceMap: shouldUseSourceMap,</span><br><span class="line">                      &#125;,</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      loader: <span class="built_in">require</span>.resolve(<span class="string">'postcss-loader'</span>),</span><br><span class="line">                      options: &#123;</span><br><span class="line">                        <span class="comment">// Necessary for external CSS imports to work</span></span><br><span class="line">                        <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/2677</span></span><br><span class="line">                        ident: <span class="string">'postcss'</span>,</span><br><span class="line">                        plugins: <span class="function"><span class="params">()</span> =&gt;</span> [</span><br><span class="line">                          <span class="built_in">require</span>(<span class="string">'postcss-flexbugs-fixes'</span>),</span><br><span class="line">                          autoprefixer(&#123;</span><br><span class="line">                            browsers: [</span><br><span class="line">                              <span class="string">'&gt;1%'</span>,</span><br><span class="line">                              <span class="string">'last 4 versions'</span>,</span><br><span class="line">                              <span class="string">'Firefox ESR'</span>,</span><br><span class="line">                              <span class="string">'not ie &lt; 9'</span>, <span class="comment">// React doesn't support IE8 anyway</span></span><br><span class="line">                            ],</span><br><span class="line">                            flexbox: <span class="string">'no-2009'</span>,</span><br><span class="line">                          &#125;),</span><br><span class="line">                        ],</span><br><span class="line">                      &#125;,</span><br><span class="line">                    &#125;,</span><br><span class="line">                    <span class="string">'sass-loader'</span></span><br><span class="line">                  ],</span><br><span class="line">                &#125;,</span><br><span class="line">                extractTextPluginOptions</span><br><span class="line">              )</span><br><span class="line">            ),</span><br><span class="line">            <span class="comment">// Note: this won't work without `new ExtractTextPlugin()` in `plugins`.</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">            include: <span class="regexp">/node_modules|external/</span>,</span><br><span class="line">            loader: ExtractTextPlugin.extract(</span><br><span class="line">              <span class="built_in">Object</span>.assign(</span><br><span class="line">                &#123;</span><br><span class="line">                  fallback: &#123;</span><br><span class="line">                    loader: <span class="built_in">require</span>.resolve(<span class="string">'style-loader'</span>),</span><br><span class="line">                    options: &#123;</span><br><span class="line">                      hmr: <span class="literal">false</span>,</span><br><span class="line">                    &#125;,</span><br><span class="line">                  &#125;,</span><br><span class="line">                  use: [</span><br><span class="line">                    &#123;</span><br><span class="line">                      loader: <span class="built_in">require</span>.resolve(<span class="string">'css-loader'</span>),</span><br><span class="line">                      options: &#123;</span><br><span class="line">                        importLoaders: <span class="number">1</span>,</span><br><span class="line">                        minimize: <span class="literal">true</span>,</span><br><span class="line">                        sourceMap: shouldUseSourceMap,</span><br><span class="line">                      &#125;,</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                      loader: <span class="built_in">require</span>.resolve(<span class="string">'postcss-loader'</span>),</span><br><span class="line">                      options: &#123;</span><br><span class="line">                        <span class="comment">// Necessary for external CSS imports to work</span></span><br><span class="line">                        <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/2677</span></span><br><span class="line">                        ident: <span class="string">'postcss'</span>,</span><br><span class="line">                        plugins: <span class="function"><span class="params">()</span> =&gt;</span> [</span><br><span class="line">                          <span class="built_in">require</span>(<span class="string">'postcss-flexbugs-fixes'</span>),</span><br><span class="line">                          autoprefixer(&#123;</span><br><span class="line">                            browsers: [</span><br><span class="line">                              <span class="string">'&gt;1%'</span>,</span><br><span class="line">                              <span class="string">'last 4 versions'</span>,</span><br><span class="line">                              <span class="string">'Firefox ESR'</span>,</span><br><span class="line">                              <span class="string">'not ie &lt; 9'</span>, <span class="comment">// React doesn't support IE8 anyway</span></span><br><span class="line">                            ],</span><br><span class="line">                            flexbox: <span class="string">'no-2009'</span>,</span><br><span class="line">                          &#125;),</span><br><span class="line">                        ],</span><br><span class="line">                      &#125;,</span><br><span class="line">                    &#125;,</span><br><span class="line">                  ],</span><br><span class="line">                &#125;,</span><br><span class="line">                extractTextPluginOptions</span><br><span class="line">              )</span><br><span class="line">            ),</span><br><span class="line">            <span class="comment">// Note: this won't work without `new ExtractTextPlugin()` in `plugins`.</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="comment">// "file" loader makes sure assets end up in the `build` folder.</span></span><br><span class="line">          <span class="comment">// When you `import` an asset, you get its filename.</span></span><br><span class="line">          <span class="comment">// This loader doesn't use a "test" so it will catch all modules</span></span><br><span class="line">          <span class="comment">// that fall through the other loaders.</span></span><br><span class="line">          &#123;</span><br><span class="line">            loader: <span class="built_in">require</span>.resolve(<span class="string">'file-loader'</span>),</span><br><span class="line">            <span class="comment">// Exclude `js` files to keep "css" loader working as it injects</span></span><br><span class="line">            <span class="comment">// it's runtime that would otherwise processed through "file" loader.</span></span><br><span class="line">            <span class="comment">// Also exclude `html` and `json` extensions so they get processed</span></span><br><span class="line">            <span class="comment">// by webpacks internal loaders.</span></span><br><span class="line">            exclude: [<span class="regexp">/\.(js|jsx|mjs)$/</span>, /\.html$/, /\.json$/],</span><br><span class="line">            options: &#123;</span><br><span class="line">              name: <span class="string">'static/media/[name].[hash:8].[ext]'</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="comment">// ** STOP ** Are you adding a new loader?</span></span><br><span class="line">          <span class="comment">// Make sure to add the new loader(s) before the "file" loader.</span></span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="comment">// Makes some environment variables available in index.html.</span></span><br><span class="line">    <span class="comment">// The public URL is available as %PUBLIC_URL% in index.html, e.g.:</span></span><br><span class="line">    <span class="comment">// &lt;link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"&gt;</span></span><br><span class="line">    <span class="comment">// In production, it will be an empty string unless you specify "homepage"</span></span><br><span class="line">    <span class="comment">// in `package.json`, in which case it will be the pathname of that URL.</span></span><br><span class="line">    <span class="keyword">new</span> InterpolateHtmlPlugin(env.raw),</span><br><span class="line">    <span class="comment">// Generates an `index.html` file with the &lt;script&gt; injected.</span></span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">      inject: <span class="literal">true</span>,</span><br><span class="line">      template: paths.appHtml,</span><br><span class="line">      minify: &#123;</span><br><span class="line">        removeComments: <span class="literal">true</span>,</span><br><span class="line">        collapseWhitespace: <span class="literal">true</span>,</span><br><span class="line">        removeRedundantAttributes: <span class="literal">true</span>,</span><br><span class="line">        useShortDoctype: <span class="literal">true</span>,</span><br><span class="line">        removeEmptyAttributes: <span class="literal">true</span>,</span><br><span class="line">        removeStyleLinkTypeAttributes: <span class="literal">true</span>,</span><br><span class="line">        keepClosingSlash: <span class="literal">true</span>,</span><br><span class="line">        minifyJS: <span class="literal">true</span>,</span><br><span class="line">        minifyCSS: <span class="literal">true</span>,</span><br><span class="line">        minifyURLs: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// // chunks: ['manifest', 'base', 'vendors', 'main'],</span></span><br><span class="line">      <span class="comment">// chunks: ['manifest', 'vendors', 'main'],</span></span><br><span class="line">      <span class="comment">// // chunk排序  'none' | 'auto' | 'dependency' | &#123;function&#125; - default: 'auto'</span></span><br><span class="line">      <span class="comment">// // 如果chunk之间无依赖关系（没有使用webpack的require），需要通过函数手动控制</span></span><br><span class="line">      <span class="comment">// chunksSortMode: function (chunk1, chunk2) &#123;</span></span><br><span class="line">      <span class="comment">//   // var order = ['manifest', 'base', 'vendors', 'main']; // 根据此数组索引进行排序</span></span><br><span class="line">      <span class="comment">//   var order = ['manifest', 'vendors', 'main']; // 根据此数组索引进行排序</span></span><br><span class="line">      <span class="comment">//   var order1 = order.indexOf(chunk1.names[0]);</span></span><br><span class="line">      <span class="comment">//   var order2 = order.indexOf(chunk2.names[0]);</span></span><br><span class="line">      <span class="comment">//   return order1 - order2;</span></span><br><span class="line">      <span class="comment">// &#125;,</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Makes some environment variables available to the JS code, for example:</span></span><br><span class="line">    <span class="comment">// if (process.env.NODE_ENV === 'production') &#123; ... &#125;. See `./env.js`.</span></span><br><span class="line">    <span class="comment">// It is absolutely essential that NODE_ENV was set to production here.</span></span><br><span class="line">    <span class="comment">// Otherwise React will be compiled in the very slow development mode.</span></span><br><span class="line">    <span class="keyword">new</span> webpack.DefinePlugin(env.stringified),</span><br><span class="line">    <span class="comment">// Minify the code.</span></span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.UglifyJsPlugin(&#123;</span><br><span class="line">      compress: &#123;</span><br><span class="line">        warnings: <span class="literal">false</span>,</span><br><span class="line">        <span class="comment">// Disabled because of an issue with Uglify breaking seemingly valid code:</span></span><br><span class="line">        <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/2376</span></span><br><span class="line">        <span class="comment">// Pending further investigation:</span></span><br><span class="line">        <span class="comment">// https://github.com/mishoo/UglifyJS2/issues/2011</span></span><br><span class="line">        comparisons: <span class="literal">false</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      mangle: &#123;</span><br><span class="line">        safari10: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      output: &#123;</span><br><span class="line">        comments: <span class="literal">false</span>,</span><br><span class="line">        <span class="comment">// Turned on because emoji and regex is not minified properly using default</span></span><br><span class="line">        <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/2488</span></span><br><span class="line">        ascii_only: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      sourceMap: shouldUseSourceMap,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.</span></span><br><span class="line">    <span class="keyword">new</span> ExtractTextPlugin(&#123;</span><br><span class="line">      filename: cssFilename,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Generate a manifest file which contains a mapping of all asset filenames</span></span><br><span class="line">    <span class="comment">// to their corresponding output file so that tools can pick it up without</span></span><br><span class="line">    <span class="comment">// having to parse `index.html`.</span></span><br><span class="line">    <span class="keyword">new</span> ManifestPlugin(&#123;</span><br><span class="line">      fileName: <span class="string">'asset-manifest.json'</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Generate a service worker script that will precache, and keep up to date,</span></span><br><span class="line">    <span class="comment">// the HTML &amp; assets that are part of the Webpack build.</span></span><br><span class="line">    <span class="keyword">new</span> SWPrecacheWebpackPlugin(&#123;</span><br><span class="line">      <span class="comment">// By default, a cache-busting query parameter is appended to requests</span></span><br><span class="line">      <span class="comment">// used to populate the caches, to ensure the responses are fresh.</span></span><br><span class="line">      <span class="comment">// If a URL is already hashed by Webpack, then there is no concern</span></span><br><span class="line">      <span class="comment">// about it being stale, and the cache-busting can be skipped.</span></span><br><span class="line">      dontCacheBustUrlsMatching: <span class="regexp">/\.\w&#123;8&#125;\./</span>,</span><br><span class="line">      filename: <span class="string">'service-worker.js'</span>,</span><br><span class="line">      logger(message) &#123;</span><br><span class="line">        <span class="keyword">if</span> (message.indexOf(<span class="string">'Total precache size is'</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="comment">// This message occurs for every build and is a bit too noisy.</span></span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (message.indexOf(<span class="string">'Skipping static resource'</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="comment">// This message obscures real errors so we ignore it.</span></span><br><span class="line">          <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/2612</span></span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(message);</span><br><span class="line">      &#125;,</span><br><span class="line">      minify: <span class="literal">true</span>,</span><br><span class="line">      <span class="comment">// For unknown URLs, fallback to the index page</span></span><br><span class="line">      navigateFallback: publicUrl + <span class="string">'/index.html'</span>,</span><br><span class="line">      <span class="comment">// Ignores URLs starting from /__ (useful for Firebase):</span></span><br><span class="line">      <span class="comment">// https://github.com/facebookincubator/create-react-app/issues/2237#issuecomment-302693219</span></span><br><span class="line">      navigateFallbackWhitelist: [<span class="regexp">/^(?!\/__).*/</span>],</span><br><span class="line">      <span class="comment">// Don't precache sourcemaps (they're large) and build asset manifest:</span></span><br><span class="line">      staticFileGlobsIgnorePatterns: [<span class="regexp">/\.map$/</span>, /asset-manifest\.json$/],</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// Moment.js is an extremely popular library that bundles large locale files</span></span><br><span class="line">    <span class="comment">// by default due to how Webpack interprets its code. This is a practical</span></span><br><span class="line">    <span class="comment">// solution that requires the user to opt into importing specific locales.</span></span><br><span class="line">    <span class="comment">// https://github.com/jmblog/how-to-optimize-momentjs-with-webpack</span></span><br><span class="line">    <span class="comment">// You can remove this if you don't use Moment.js:</span></span><br><span class="line">    <span class="keyword">new</span> webpack.IgnorePlugin(<span class="regexp">/^\.\/locale$/</span>, /moment$/),</span><br><span class="line">    <span class="keyword">new</span> LodashModuleReplacementPlugin(),</span><br><span class="line">    <span class="keyword">new</span> webpack.HashedModuleIdsPlugin(),</span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">      name: <span class="string">"main"</span>,</span><br><span class="line">      children: <span class="literal">true</span>,</span><br><span class="line">      <span class="comment">// minChunks: function (module, count) &#123;</span></span><br><span class="line">      <span class="comment">//   return module.context &amp;&amp; !module.context.includes("/src/containers");</span></span><br><span class="line">      <span class="comment">// &#125;,</span></span><br><span class="line">      <span class="keyword">async</span>: <span class="string">'components'</span>, <span class="comment">// 单独抽取公共模块的chunk</span></span><br><span class="line">      minChunks: <span class="number">3</span> </span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">      name: <span class="string">"vendors"</span>,</span><br><span class="line">      chunks: [<span class="string">"main"</span>],</span><br><span class="line">      minChunks: <span class="literal">Infinity</span>,</span><br><span class="line">      <span class="comment">// children: true,</span></span><br><span class="line">      <span class="comment">// minChunks: function (module) &#123;</span></span><br><span class="line">      <span class="comment">//   return module.context &amp;&amp; module.context.includes("node_modules");</span></span><br><span class="line">      <span class="comment">// &#125;,</span></span><br><span class="line">      <span class="comment">// minChunks: 3</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">      name: <span class="string">"manifest"</span>,</span><br><span class="line">      minChunks: <span class="literal">Infinity</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> BundleAnalyzerPlugin(), <span class="comment">// <span class="doctag">TODO:</span> debug</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// Some libraries import Node modules but don't use them in the browser.</span></span><br><span class="line">  <span class="comment">// Tell Webpack to provide empty mocks for them so importing them works.</span></span><br><span class="line">  node: &#123;</span><br><span class="line">    dgram: <span class="string">'empty'</span>,</span><br><span class="line">    fs: <span class="string">'empty'</span>,</span><br><span class="line">    net: <span class="string">'empty'</span>,</span><br><span class="line">    tls: <span class="string">'empty'</span>,</span><br><span class="line">    child_process: <span class="string">'empty'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/IMG_2704.JPG" alt="ICELI WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/IMG_2705.JPG" alt="ICELI Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/20/issues/Android 系统字体导致rem计算错误/" rel="next" title="Android 系统字体导致rem计算错误">
+                <i class="fa fa-chevron-left"></i> Android 系统字体导致rem计算错误
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/09/issues/Modal/" rel="prev" title="Modal">
+                Modal <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="ICELI">
+          <p class="site-author-name" itemprop="name">ICELI</p>
+           
+              <p class="site-description motion-element" itemprop="description">点滴积累~ 贵在坚持!</p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">101</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/iceli" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/iceli" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://github.com/jm-team" title="jm-team" target="_blank">jm-team</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#prod-config"><span class="nav-number">1.</span> <span class="nav-text">prod config</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div style="float: right; width:400px">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="298" height="52" src="//music.163.com/outchain/player?type=2&id=1344368486&auto=1&height=32"></iframe>
+</div>
+<div class="copyright">
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-ICELI"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ICELI</span>
+</div>
+<!--
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "f0c8dfc0ef2048c9abe489aed5aaeca3",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("G46AC9CPhmpwSCMnGAyj6vAT-gzGzoHsz", "Ez2AsQhLFv3K4QRL8aPC1jiW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
