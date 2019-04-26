@@ -9,16 +9,25 @@
     <title><![CDATA[小程序开发工具跨域接口403]]></title>
     <url>%2F2019%2F04%2F12%2Fissues%2F%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E8%B7%A8%E5%9F%9F%E6%8E%A5%E5%8F%A3403%2F</url>
     <content type="text"><![CDATA[开发工具中的Origin为http://127.0.0.1:36909 （端口每个人不一样） 排查原因：推手绑粉接口通过Origin白名单限制了跨域请求，所以返回了403 解决： 临时解决 去掉Origin参数（代理） 临时解决 后端添加Origin白名单http://127.0.0.1:36909 通用解决方案 接口支持通过Referer识别接口 参考：wx.request() Origin头跨域问题https://developers.weixin.qq.com/community/develop/doc/000eea07c84ca071e0b7aef8956400?highLine=%25E8%25B7%25A8%25E5%259F%259F%2520origin https://developers.weixin.qq.com/community/develop/doc/00024a5dfe4428b93c18cfc8551000?highLine=Origin%2520%25E8%25B7%25A8%25E5%259F%259F]]></content>
+      <tags>
+        <tag>小程序</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[App分享小程序]]></title>
     <url>%2F2019%2F04%2F10%2Fissues%2FApp%E5%88%86%E4%BA%AB%E5%B0%8F%E7%A8%8B%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[注意与移动应用拉起小程序功能的==区别== 注意： 发起分享的App与小程序属于同一微信开放平台帐号。 支持分享小程序类型消息至会话，暂不支持分享至朋友圈。 若客户端版本低于6.5.6或在iPad客户端接收，小程序类型分享将自动转成网页类型分享。开发者必须填写网页链接字段，确保低版本客户端能正常打开网页链接。 https://zhuanlan.zhihu.com/p/34090693 移动应用拉起小程序功能 https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&amp;t=resource/res_list&amp;verify=1&amp;id=21526646385rK1Bs&amp;token=&amp;lang=zh_CN]]></content>
+      <tags>
+        <tag>小程序</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[iOS iPhone X Max软键盘问题]]></title>
     <url>%2F2019%2F03%2F21%2Fissues%2FiOS%20iPhone%20X%20Max%E8%BD%AF%E9%94%AE%E7%9B%98%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[iPhone X Max 焦点输入框唤起软键盘时，如果输入框距离页面底部的距离不够同时展示输入框与软键盘，页面会往上拉高一段距离。当收起软键盘时，这段距离不会自动复原（拖动页面可恢复），导致自定义alert组件的确定按钮位置偏移。 解决：给页面容器加padding-bottom TODO：待排查原因是否与页面100vh有关？]]></content>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[代理NEI线上接口DELETE请求204 No Content]]></title>
@@ -54,6 +63,9 @@
     <title><![CDATA[tslint 校验ts语法错误]]></title>
     <url>%2F2019%2F01%2F09%2Fissues%2Ftslint%20%E6%A0%A1%E9%AA%8Cts%E8%AF%AD%E6%B3%95%E9%94%99%E8%AF%AF%2F</url>
     <content type="text"><![CDATA[tslint 校验ts语法错误1$ tslint -c tslint.json -p tsconfig.json --type-check 但是该参数即将废弃，官方建议使用tsc检查12$ tsc -p tsconfig.json --noEmit$ tslint -c tslint.json -p tsconfig.json 在使用git pre-commit + lint-staged 遇到新的问题 1error TS5042: Option 'project' cannot be mixed with source files on a command line. 无法使用–project参数，官方回复 lint-staged adds staged files as argument to your command, so there is a conflict of . and how lint-staged works. This is why you see this error. You should either do -p . and run it on precommit without lint-staged, or remove -p option. 总结： tslint官方的说法，在下一个大版本才可能废除--type-check。所以可以先继续用着: 1tslint -c tslint.json -p . --type-check 不使用--type-check，自己写shell实现ts语法检查 不使用lint-staged，自己写shell实现 参考：https://github.com/palantir/tslint/issues/3399https://github.com/okonet/lint-staged/issues/412]]></content>
+      <tags>
+        <tag>lint</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[H5 Video 视频编码格式H.264]]></title>
@@ -84,11 +96,18 @@
     <title><![CDATA[react-css-module import多个css的问题]]></title>
     <url>%2F2018%2F11%2F20%2Fissues%2Freact-css-module%20import%E5%A4%9A%E4%B8%AAcss%E7%9A%84%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[12345import &apos;./CoolList.css&apos;import utils from &apos;Utils.css&apos;&lt;ol styleName=&quot;cool-list utils.unstyled-list&quot;&gt;&lt;/ol&gt; P.S. When I reference to style like pageStyles.regForm or like this it works. But I cannot merge multiple styles in one to use it in default namespace, without any prefixes. Thats true, you cannot do that. You will need to use named imports or do the import from within the CSS. You can use a CSS preprocessor for that, such as SASS. 官方建议使用sass @import以避免在组件中同时依赖多个css文件https://github.com/gajus/babel-plugin-react-css-modules/issues/80]]></content>
+      <tags>
+        <tag>react</tag>
+        <tag>css-module</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[tsconfig.json exclude not working when allowjs is true]]></title>
     <url>%2F2018%2F11%2F16%2Fissues%2Ftsconfig.json%20exclude%20not%20working%20when%20allowjs%20is%20true%2F</url>
     <content type="text"></content>
+      <tags>
+        <tag>TS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[移动端背景图片固定 background-attachment fixed]]></title>
@@ -99,31 +118,50 @@
     <title><![CDATA[tslint error不终止webpack dev]]></title>
     <url>%2F2018%2F11%2F14%2Fissues%2Ftslint%20error%E4%B8%8D%E7%BB%88%E6%AD%A2webpack%20dev%2F</url>
     <content type="text"><![CDATA[12"defaultSeverity": "warning" will only work for tslint rules.If tsconfig.json has "noUnusedLocals": true then webpack will return error to UI regardless of tslint settings. Show warnings instead of compiler errorshttps://github.com/wmonk/create-react-app-typescript/issues/238]]></content>
+      <tags>
+        <tag>lint</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[prettier ternary formatting 三元 jsx格式化]]></title>
     <url>%2F2018%2F11%2F14%2Fissues%2Fprettier%20ternary%20formatting%20%E4%B8%89%E5%85%83%20jsx%E6%A0%BC%E5%BC%8F%E5%8C%96%2F</url>
     <content type="text"><![CDATA[https://github.com/prettier/prettier/issues/1009 https://github.com/prettier/prettier/issues/737]]></content>
+      <tags>
+        <tag>prettier</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React-router history报错 this.context.router]]></title>
     <url>%2F2018%2F11%2F11%2Fissues%2FReact-router%20history%E6%8A%A5%E9%94%99%20this.context.router%2F</url>
     <content type="text"><![CDATA[123456789101112131415161718192021222324252627282930*报警平台 报警项目：推手-FrontAg前端诊断 * 报警：本次报警监控从2018-11-11 13:50:00 到 2018-11-11 13:55:00, 共1条报警 报警内容为：2018-11-11 13:51:40 [Cannot read property &apos;history&apos; of undefined]【信息】： url: undefined option:undefined【referer】： https://wx.ts.163.com/x/mall/index?v=1541055337445【method】： e.render-----『设备信息』【ip】：171.210.60.80【traceId】： b49b16fe-1920-43d7-b17e-1d2e5de940aa【推手id】： ff24b00b96121245【ua】： Mozilla/5.0 (Linux; Android 5.1; OPPO R9tm Build/LMY47I; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.121 Mobile Safari/537.36 Dealer/Android/1.7.2.11 DealerD/DEVICE|T1BQTyBSOQ==/CHANNEL|update/DEVICE-ID|b49b16fe-1920-43d7-b17e-1d2e5de940aa/OS|QW5kcm9pZCA1LjE=-----『其他信息』【堆栈信息】： TypeError: Cannot read property &apos;history&apos; of undefined at e.render (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:382184) at f (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:32348) at beginWork (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:35795) at i (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:52069) at a (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:52342) at w (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:55293) at g (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:54833) at m (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:54670) at h (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:54048) at l (https://dealer.nosdn.127.net/dealer_webapp/static/js/vendor.a0f05610.js:1:53505)【urs】： 13551862517|1541029009|0|yanxuan_web|00&amp;99|sic&amp;1540377639&amp;yanxuan_web#sic&amp;null#10#0#0|&amp;0|null|13551862517【openId】： oozJX1DQ2CVFvEZ-cn2FVuKv0EP4【屏幕尺寸】：360x640 https://github.com/ReactTraining/react-router/blob/v4.3.1/packages/react-router/modules/Route.js#L114 https://www.crifan.com/reactjs_react_router_this_context_router_undefined/ 1234567static contextTypes = &#123; router: PropTypes.shape(&#123; history: PropTypes.object.isRequired, route: PropTypes.object.isRequired, staticContext: PropTypes.object &#125;)//.isRequired&#125;;]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[jsx-no-lambda]]></title>
     <url>%2F2018%2F11%2F11%2Fissues%2Fjsx-no-lambda%2F</url>
     <content type="text"><![CDATA[“jsx-no-lambda”在jsx中使用箭头函数，如果需要传参1customers.map( c =&gt; &lt;Btn onClick=&#123; () =&gt; this.deleteCust(c.id) &#125; /&gt; ); https://github.com/palantir/tslint-react/issues/96]]></content>
+      <tags>
+        <tag>react</tag>
+        <tag>lint</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[x5video Android全屏播放显示不全问题]]></title>
     <url>%2F2018%2F11%2F09%2Fissues%2Fx5video%20Android%E5%85%A8%E5%B1%8F%E6%92%AD%E6%94%BE%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%85%A8%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[问题 先忽略iOS 不支持H5同层播放器 Android下，X5内核浏览器（QQ浏览器，微信） 滚动至页面底部后 如果video的水平中心线在手机屏幕的水平中心线以下，点击播放video时窗口内容就会定位不准， demo12345678910111213141516171819202122232425&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt; &lt;head&gt; &lt;meta charset="UTF-8" /&gt; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt; &lt;meta http-equiv="X-UA-Compatible" content="ie=edge" /&gt; &lt;title&gt;Video test&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;video id="video" style="width:100%;margin: 1500px 0 50px" src="http://dealer.nosdn.127.net/2018-11-11/0571284dcfab225f/72894822494f6efd6aa17df560e230f3.mp4" controls="true" poster="http://dealer.nosdn.127.net/2018-11-11/0571284dcfab225f/72894822494f6efd6aa17df560e230f3.mp4?vframe&amp;type=png" preload="auto" webkit-playsinline="true" playsinline="true" x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" &gt;&lt;/video&gt; &lt;/body&gt;&lt;/html&gt; 解决 当video播放时，给video加下边距，使其 12345678const video = document.querySelector("#video");video.addEventListener("x5videoenterfullscreen", function() &#123; video.style.marginBottom = "1000px";&#125;);video.addEventListener("x5videoexitfullscreen", function() &#123; video.style.marginBottom = "";&#125;); 完整Demo1234567891011121314151617181920212223242526272829303132333435&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt; &lt;head&gt; &lt;meta charset="UTF-8" /&gt; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt; &lt;meta http-equiv="X-UA-Compatible" content="ie=edge" /&gt; &lt;title&gt;Video test&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;video id="video" style="width:100%;margin: 1500px 0 50px" src="http://dealer.nosdn.127.net/2018-11-11/0571284dcfab225f/72894822494f6efd6aa17df560e230f3.mp4" controls="true" poster="http://dealer.nosdn.127.net/2018-11-11/0571284dcfab225f/72894822494f6efd6aa17df560e230f3.mp4?vframe&amp;type=png" preload="auto" webkit-playsinline="true" playsinline="true" x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true" x5-video-orientation="portrait" &gt;&lt;/video&gt; &lt;script&gt; const video = document.querySelector("#video"); video.addEventListener("x5videoenterfullscreen", function() &#123; video.style.marginBottom = "1000px"; &#125;); video.addEventListener("x5videoexitfullscreen", function() &#123; video.style.marginBottom = ""; &#125;); &lt;/script&gt; &lt;/body&gt;&lt;/html&gt; 参考https://x5.tencent.com/tbs/guide/video.html 为什么用H5同层播放器https://www.jianshu.com/p/9dec20414bb8]]></content>
+      <tags>
+        <tag>移动端</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React defaultProps 设置window.innerHeigt 与 REM适配的坑]]></title>
     <url>%2F2018%2F11%2F05%2Fissues%2FReact%20defaultProps%20%E8%AE%BE%E7%BD%AEwindow.innerHeigt%20%E4%B8%8E%20REM%E9%80%82%E9%85%8D%E7%9A%84%E5%9D%91%2F</url>
     <content type="text"><![CDATA[123static defaultProps = &#123; offsetTop: window.innerHeigt&#125; REM适配会修改viewport 缩小0.5，实质为放大2倍 class的static属性在模块文件加载时即执行 所以，REM适配脚本必须在APP模块依赖前已经生效才行。 目前根据Dealer-x实践，即使调整了顺序（rem init在 pageInit之前），也不能保证REM脚本已经生效]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[scroll动画的坑]]></title>
@@ -139,16 +177,25 @@
     <title><![CDATA[React style background与backgroundSize]]></title>
     <url>%2F2018%2F10%2F30%2Fissues%2FReact%20style%20background%E4%B8%8EbackgroundSize%2F</url>
     <content type="text"><![CDATA[react组件行内样式1234var style = &#123; background: `#ffffff url($&#123;url&#125;)`, backgroundSize: &apos;cover&apos;&#125;; 在re-render时backgroundSize丢失，导致图片缩放 https://github.com/facebook/react/issues/5030]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[react-router]]></title>
     <url>%2F2018%2F10%2F17%2Fissues%2Freact-router%2F</url>
     <content type="text"><![CDATA[12345const &#123; history, location &#125; = this.propshistory.push(router.get('invitationPurchase'))console.log(history, locaiton) // 还是原来的值console.log(window.location) // 已经是最新的值 history调用.push .replace 方法后无法获取最新的search/query参数 因为history和location都是通过props下发到组件的，所以不能在调用方法后直接获取。组件props跟新会促发componentWillReceiveProps 原生location可以获取]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[iOS 11+ 轮播图片不显示]]></title>
     <url>%2F2018%2F09%2F25%2Fissues%2FiOS%2011%2B%20%E8%BD%AE%E6%92%AD%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%2F</url>
     <content type="text"><![CDATA[图片样式12345.m-banner-img &#123; display: block; width: 100%; height: 100%;&#125;]]></content>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[click 异步 回调trigger click 失效]]></title>
@@ -159,6 +206,9 @@
     <title><![CDATA[react 报错 this.context undefined]]></title>
     <url>%2F2018%2F09%2F19%2Fissues%2Freact%20%E6%8A%A5%E9%94%99%20this.context%20undefined%2F</url>
     <content type="text"><![CDATA[Uncaught TypeError: Cannot read property ‘history’ of undefined !! React router https://stackoverflow.com/questions/44941518/uncaught-typeerror-cannot-read-property-history-of-undefined-react-router]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Puppeteer babel不兼容]]></title>
@@ -169,11 +219,17 @@
     <title><![CDATA[global hash]]></title>
     <url>%2F2018%2F09%2F03%2Fissues%2Fglobal%20hash%2F</url>
     <content type="text"><![CDATA[bug analyzeCompare with APIPlugin.js and ExtendedAPIPlugin.js, we will find this line:ExtendedAPIPlugin.js#L351compilation.mainTemplate.plugin("global-hash", () =&gt; true); so, useChunkHash fn always return falseMainTemplate.js#L2291234useChunkHash(chunk) &#123; const paths = this.applyPluginsWaterfall("global-hash-paths", []); return !this.applyPluginsBailResult("global-hash", chunk, paths); // always return `false`&#125; then noChunkHash always trueCompilation.js#L12661234file = this.getPath(filenameTemplate, &#123; noChunkHash: !useChunkHash, chunk&#125;); then asset-path plugin will throw the error1Cannot use [chunkhash] for chunk in &apos;$&#123;path&#125;&apos; (use [hash] instead) TemplatedPathPlugin.js#L631234// replacePathVariablesif(data.noChunkHash &amp;&amp; REGEXP_CHUNKHASH_FOR_TEST.test(path)) &#123; throw new Error(`Cannot use [chunkhash] for chunk in '$&#123;path&#125;' (use [hash] instead)`);&#125; by commenting out the following line in the ExtendedAPIPlugin.js#L35, it works fine. hack fix: create ExtendedAPIPlugin.js 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647/* MIT License http://www.opensource.org/licenses/mit-license.php Author Tobias Koppers @sokra*/"use strict";const ConstDependency = require("webpack/lib/dependencies/ConstDependency");const ParserHelpers = require("webpack/lib/ParserHelpers");const NullFactory = require("webpack/lib/NullFactory");const REPLACEMENTS = &#123; __webpack_hash__: "__webpack_require__.h", // eslint-disable-line camelcase __webpack_chunkname__: "__webpack_require__.cn" // eslint-disable-line camelcase&#125;;const REPLACEMENT_TYPES = &#123; __webpack_hash__: "string", // eslint-disable-line camelcase __webpack_chunkname__: "string" // eslint-disable-line camelcase&#125;;class ExtendedAPIPlugin &#123; apply(compiler) &#123; compiler.plugin("compilation", (compilation, params) =&gt; &#123; compilation.dependencyFactories.set(ConstDependency, new NullFactory()); compilation.dependencyTemplates.set(ConstDependency, new ConstDependency.Template()); compilation.mainTemplate.plugin("require-extensions", function(source, chunk, hash) &#123; const buf = [source]; buf.push(""); buf.push("// __webpack_hash__"); buf.push(`$&#123;this.requireFn&#125;.h = $&#123;JSON.stringify(hash)&#125;;`); buf.push(""); buf.push("// __webpack_chunkname__"); buf.push(`$&#123;this.requireFn&#125;.cn = $&#123;JSON.stringify(chunk.name)&#125;;`); return this.asString(buf); &#125;); // compilation.mainTemplate.plugin("global-hash", () =&gt; true); params.normalModuleFactory.plugin("parser", (parser, parserOptions) =&gt; &#123; Object.keys(REPLACEMENTS).forEach(key =&gt; &#123; parser.plugin(`expression $&#123;key&#125;`, ParserHelpers.toConstantDependency(REPLACEMENTS[key])); parser.plugin(`evaluate typeof $&#123;key&#125;`, ParserHelpers.evaluateToString(REPLACEMENT_TYPES[key])); &#125;); &#125;); &#125;); &#125;&#125;module.exports = ExtendedAPIPlugin; import the custom plugin in webpack.config.prod.js 123456const ExtendedAPIPlugin = require(&apos;./ExtendedAPIPlugin&apos;);// ...plugins: [ // ... new ExtendedAPIPlugin()]]]></content>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[获取webpack 的 global hash]]></title>
     <url>%2F2018%2F09%2F03%2Fissues%2F%E8%8E%B7%E5%8F%96webpack%20%E7%9A%84%20global%20hash%2F</url>
     <content type="text"><![CDATA[ExtendedAPIPlugin 1new webpack.ExtendedAPIPlugin() Adds useful free vars to the bundle.__webpack_hash__ The hash of the compilation available as free var. 1var hash = __webpack_hash__; https://stackoverflow.com/questions/39082976/how-to-pass-the-build-hash-as-an-environment-variable-in-webpack https://github.com/webpack/webpack/issues/5337]]></content>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[git renaming-and-changing-files-in-git-without-losing-history]]></title>
@@ -189,36 +245,57 @@
     <title><![CDATA[react-router-difference-between-component-and-render]]></title>
     <url>%2F2018%2F08%2F30%2Fissues%2Freact-router-difference-between-component-and-render%2F</url>
     <content type="text"><![CDATA[https://stackoverflow.com/questions/48150567/react-router-difference-between-component-and-render]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[v16.2.0-fragment-support]]></title>
     <url>%2F2018%2F08%2F30%2Fissues%2Fv16.2.0-fragment-support%2F</url>
     <content type="text"><![CDATA[1234567891011121314const Fragment = React.Fragment;&lt;Fragment&gt; &lt;ChildA /&gt; &lt;ChildB /&gt; &lt;ChildC /&gt;&lt;/Fragment&gt;// This also works&lt;React.Fragment&gt; &lt;ChildA /&gt; &lt;ChildB /&gt; &lt;ChildC /&gt;&lt;/React.Fragment&gt; https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html 启发： https://developer.mozilla.org/en-US/docs/Archive/Web/E4X/E4X_for_templating]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[TypeScript 使用import() 动态加载模块报错]]></title>
     <url>%2F2018%2F08%2F28%2Fissues%2FTypeScript%20%E4%BD%BF%E7%94%A8import()%20%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9D%97%E6%8A%A5%E9%94%99%2F</url>
     <content type="text"><![CDATA[1import(&apos;./something&apos;) 结果typescript报错1[ts] 面向 ECMAScript 2015 模块时，不能使用动态导入。 解决办法： 将tsconfig.json中的module配置从es6改为esnext12345678&#123; "compilerOptions": &#123; "outDir": "./build/", "sourceMap": true, "module": "esnext", // 支持import() "target": "es5", &#125;&#125;]]></content>
+      <tags>
+        <tag>TS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[html2canvas 在iOS10.3+且https下加载base64 图片报错]]></title>
     <url>%2F2018%2F08%2F28%2Fissues%2Fhtml2canvas%20%20%E5%9C%A8iOS10.3%2B%E4%B8%94https%E4%B8%8B%E5%8A%A0%E8%BD%BDbase64%20%E5%9B%BE%E7%89%87%E6%8A%A5%E9%94%99%2F</url>
     <content type="text"><![CDATA[html2canvas版本 v0.5.0-alpha1 升级canves2html版本 不要使用base64图片 SecurityError when using Data URIs css backgrounds on iOS 10+ Safari/Chrome https://github.com/niklasvh/html2canvas/commit/8999c7618184e1564d19d9c367a488c22c0d65a3https://github.com/niklasvh/html2canvas/issues/1151]]></content>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Angular 4 插入html]]></title>
     <url>%2F2018%2F08%2F16%2Fissues%2FAngular%204%20%E6%8F%92%E5%85%A5html%2F</url>
     <content type="text"><![CDATA[[innerHTML]=”yourcomponentscopevar”]]></content>
+      <tags>
+        <tag>NG</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Angular form ngModule 交互失效]]></title>
     <url>%2F2018%2F08%2F10%2Fissues%2FAngular%20form%20ngModule%20%E4%BA%A4%E4%BA%92%E5%A4%B1%E6%95%88%2F</url>
     <content type="text"><![CDATA[form 表单元素如果使用了[(ngModel)]=”name”， 添加name=&quot;name&quot; 添加配置项[ngModelOptions]=&quot;{standalone: true}&quot; 123456789101112131415ERROR Error: If ngModel is used within a form tag, either the name attribute must be set or the form control must be defined as 'standalone' in ngModelOptions. Example 1: &lt;input [(ngModel)]="person.firstName" name="first"&gt; Example 2: &lt;input [(ngModel)]="person.firstName" [ngModelOptions]="&#123;standalone: true&#125;"&gt; at Function.TemplateDrivenErrors.missingNameException (forms.es5.js:4122) at NgModel._checkName (forms.es5.js:4440) at NgModel._checkForErrors (forms.es5.js:4419) at NgModel.ngOnChanges (forms.es5.js:4324) at checkAndUpdateDirectiveInline (core.es5.js:10840) at checkAndUpdateNodeInline (core.es5.js:12341) at checkAndUpdateNode (core.es5.js:12284) at debugCheckAndUpdateNode (core.es5.js:13141) at debugCheckDirectivesFn (core.es5.js:13082) at Object.eval [as updateDirectives] (RecommendCreateModalComponent.html:11)]]></content>
+      <tags>
+        <tag>NG</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React setState() on unmounted components Warning]]></title>
     <url>%2F2018%2F08%2F01%2Fissues%2FReact%20setState()%20on%20unmounted%20components%20Warning%2F</url>
     <content type="text"><![CDATA[解决方案有几个： 自己封装一个cancelable Promise，在unmount的时候cancel掉。 对于通用数据抽到redux的store里用connect传props。 使用rxjs对异步做subscribe，unmount的时候dispose掉。 在异步setState之前做mount判断。如果你确认这个异步setState没有侵入性，也可以不理它。 warning的目的在于让开发者确认自己的编码存在潜在的问题，在prod下是不报的。 https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html https://www.zhihu.com/question/61389307]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[异步setTitle导致切换页面标题显示错误]]></title>
@@ -229,41 +306,68 @@
     <title><![CDATA[iOS margin-bottom 失效]]></title>
     <url>%2F2018%2F07%2F30%2Fissues%2FiOS%20margin-bottom%20%E5%A4%B1%E6%95%88%2F</url>
     <content type="text"><![CDATA[在Safari浏览器下，当一个容器超过他所有父级容器高度时，该容器的内最后一个元素的margin-bottom将失效。 https://codepen.io/ICELI/pen/EpVxQX]]></content>
+      <tags>
+        <tag>CSS</tag>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Typescript 给setTimeout 的返回值定义为 number出错]]></title>
     <url>%2F2018%2F07%2F23%2Fissues%2FTypescript%20%E7%BB%99setTimeout%20%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC%E5%AE%9A%E4%B9%89%E4%B8%BA%20number%E5%87%BA%E9%94%99%2F</url>
     <content type="text"><![CDATA[12let scrollTimer: number = setTimeout(function () &#123;&#125;)// 不能将类型“Timer”分配给类型“number” 通过 cmd + 点击定位，发现setTimeout使用的是 Node.js 下的接口定义@types/node index.d.ts1declare function setTimeout(callback: (...args: any[]) =&gt; void, ms: number, ...args: any[]): NodeJS.Timer; 通过yarn.lock定位依赖，发现来源于@types/react-dom12@types/react-domdependencies @types/node 而在typescript中，window下的setTimeout返回的是number：12345678interface WindowTimers extends WindowTimersExtension &#123; clearInterval(handle?: number): void; clearTimeout(handle?: number): void; setInterval(handler: (...args: any[]) =&gt; void, timeout: number): number; setInterval(handler: any, timeout?: any, ...args: any[]): number; setTimeout(handler: (...args: any[]) =&gt; void, timeout: number): number; setTimeout(handler: any, timeout?: any, ...args: any[]): number;&#125; 解决： 移除对@type/node的依赖(不太可行) 使用window.setTimeout1let scrollTimer: number = window.setTimeout(function () &#123;&#125;) https://github.com/TypeStrong/atom-typescript/issues/1053]]></content>
+      <tags>
+        <tag>NG</tag>
+        <tag>TS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[regex 杠b]]></title>
     <url>%2F2018%2F07%2F11%2Fissues%2Fregex%20%E6%9D%A0b%2F</url>
     <content type="text"><![CDATA[\b与[\b] \b 单词边界 123456'/x/x/x'.replace(/\b\//g, '-')// "/x-x-x"// 更好的方法'/x/x/x'.replace(/([^\/]+)\//g, '$1-')// "/x-x-x" [\b] 退格符 123#命令行删除字符$ &gt; 123 + \b$ &gt; 12 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp]]></content>
+      <tags>
+        <tag>regex</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[sudo cat 追加文件报权限错误]]></title>
     <url>%2F2018%2F07%2F03%2Fissues%2Fsudo%20cat%20%E8%BF%BD%E5%8A%A0%E6%96%87%E4%BB%B6%E6%8A%A5%E6%9D%83%E9%99%90%E9%94%99%E8%AF%AF%2F</url>
     <content type="text"><![CDATA[1sudo cat hosts.patch &gt; /etc/hosts 系统提示Permission Denied 因为该命令会分成两步执行：1sudo cat hosts.patch #有sudo 1&gt; /etc/hosts #并没有sudo权限 解决：12345sudo sh -c "cat hosts.patch &gt; /etc/hosts"# 或者：echo "cat hosts.patch &gt; /etc/hosts" | sudo sh http://nigelzeng.iteye.com/blog/1696678]]></content>
+      <tags>
+        <tag>shell</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[flex justify-content]]></title>
     <url>%2F2018%2F07%2F02%2Fissues%2Fflex%20justify-content%2F</url>
     <content type="text"><![CDATA[12display: flex;justify-content: space-evenly; IE 及 mobile 兼容性问题 https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content 解决方案：12345678910.evenly-like &#123; display: flex; justify-content: space-between; &amp;:before, &amp;:after &#123; content: ''; display: block; &#125;&#125; https://stackoverflow.com/questions/47534216/how-to-make-css-justify-contentspace-evenly-fallback-to-space-between-on-safari]]></content>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Mac系统如何显示隐藏文件？]]></title>
     <url>%2F2018%2F06%2F08%2Fissues%2FMac%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E6%98%BE%E7%A4%BA%E9%9A%90%E8%97%8F%E6%96%87%E4%BB%B6%EF%BC%9F%2F</url>
     <content type="text"><![CDATA[以”.”开头的隐藏文件如何在MAC系统下显示？ Command+Shift+. 可以显示隐藏文件、文件夹，再按一次，恢复隐藏； finder下使用Command+Shift+G 可以前往任何文件夹，包括隐藏文件夹。 命令行123$ ls -la#or$ ls -all https://www.zhihu.com/question/24635640?from=profile_question_card]]></content>
+      <tags>
+        <tag>mac</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React list key]]></title>
     <url>%2F2018%2F06%2F07%2Fissues%2FReact%20list%20key%2F</url>
     <content type="text"><![CDATA[List key 唯一性 id,index 稳定性 key与数据保持稳定一致查询列表里的数据与索引index并不稳定]]></content>
+      <tags>
+        <tag>react</tag>
+        <tag>性能</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Element UI Table组件过多导致页面卡顿]]></title>
     <url>%2F2018%2F06%2F01%2Fissues%2FElement%20UI%20Table%E7%BB%84%E4%BB%B6%E8%BF%87%E5%A4%9A%E5%AF%BC%E8%87%B4%E9%A1%B5%E9%9D%A2%E5%8D%A1%E9%A1%BF%2F</url>
     <content type="text"><![CDATA[1234567.el-table__body,.el-table__footer,.el-table__header &#123; table-layout:fixed; -webkit-transform: translateZ(0); transform: translateZ(0);&#125;]]></content>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[html2canvas 图片跨域安全问题]]></title>
@@ -274,16 +378,26 @@
     <title><![CDATA[fetch 终止请求返回TypeError]]></title>
     <url>%2F2018%2F05%2F25%2Fissues%2Ffetch%20%E7%BB%88%E6%AD%A2%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9ETypeError%2F</url>
     <content type="text"><![CDATA[ios11+ 微信6.6.6+微信返回 TypeError: 已取消 ios10 微信6.6.6+微信返回 TypeError: type error 触发条件：当前页面发起fetch请求，a、location跳转离开当前页面，导致fetch失败。 https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch#%E6%A3%80%E6%B5%8B%E8%AF%B7%E6%B1%82%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F]]></content>
+      <tags>
+        <tag>移动端</tag>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[babel 转化+= await的问题]]></title>
     <url>%2F2018%2F05%2F24%2Fissues%2Fbabel%20%E8%BD%AC%E5%8C%96%2B%3D%20await%E7%9A%84%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[http://babeljs.io/repl/#?babili=false&amp;browsers=&amp;build=&amp;builtIns=false&amp;code_lz=DYUwLgBAHhC8EAYBQTSWAewOZwgMwFcA7AYzAEsMiAKASggG8kIISqBnDUAOky2qgAaCAHI-I2swgAncAWlEIAJgDcSAL4oAhuwCepfMTKVFYEOzB1GUgPQ3oEANTwtAdy3l02K3dY6QEACMUjDwMI4Qbh5e_PS-JP7KUmxEnDx8AsIiZhYSGig5lpJI4fDBKWkgvN5ColiYAEZawHlI8f7BvggQAER8PW32gb31GE3AA74AzL2FAyjt7CBKg4i9_avDPaPjk_ZKs-Zg80A&amp;debug=false&amp;forceAllTransforms=false&amp;shippedProposals=false&amp;circleciRepo=&amp;evaluate=true&amp;fileSize=false&amp;lineWrap=false&amp;presets=latest%2Creact%2Cstage-2&amp;prettier=false&amp;targets=&amp;version=6.26.0&amp;envVersion=]]></content>
+      <tags>
+        <tag>babel</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[inspect iOS 11 devices with Safari]]></title>
     <url>%2F2018%2F05%2F22%2Fissues%2Finspect%20iOS%2011%20devices%20with%20Safari%2F</url>
     <content type="text"><![CDATA[iOS 11 web检查器 被 https://developer.apple.com/safari/technology-preview/]]></content>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[ES6-模块与-CommonJS-模块的差异]]></title>
@@ -294,11 +408,17 @@
     <title><![CDATA[Vue render 为什么用 with]]></title>
     <url>%2F2018%2F05%2F14%2Fissues%2FVue%20render%20%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%20with%2F</url>
     <content type="text"><![CDATA[12345678910var aaa = &#123; data: &#123;s:1&#125;, render: function()&#123; with(this) &#123; console.log(data) // 无需this.data &#125; &#125;&#125;aaa.render() // &#123;s: 1&#125;]]></content>
+      <tags>
+        <tag>vue</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[重复径向渐变 repeating-radial-gradient]]></title>
     <url>%2F2018%2F05%2F11%2Fissues%2F%E9%87%8D%E5%A4%8D%E5%BE%84%E5%90%91%E6%B8%90%E5%8F%98%20repeating-radial-gradient%2F</url>
     <content type="text"><![CDATA[12345.dot-list &#123; height: .24rem; background: radial-gradient(circle closest-side, red, red .12rem, transparent .12rem, transparent .20rem) repeat; background-size: .30rem .24rem;&#125; 问题： 圆形有锯齿 宽度无法保证不截断最后一个圆 https://developer.mozilla.org/zh-CN/docs/Web/CSS/repeating-radial-gradient]]></content>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[window.name]]></title>
@@ -319,16 +439,26 @@
     <title><![CDATA[CommonsChunkPlugin]]></title>
     <url>%2F2018%2F04%2F26%2Fissues%2FCommonsChunkPlugin%2F</url>
     <content type="text"><![CDATA[123456789101112131415161718192021new webpack.optimize.CommonsChunkPlugin(&#123; name: "main", children: true, minChunks: function (module, count) &#123; return module.context &amp;&amp; (module.context.includes("/src/components") || module.context.includes("/src/service")) || count == 3; &#125;,&#125;),new webpack.optimize.CommonsChunkPlugin(&#123; name: "vendors", chunks: ["vendors", "main"], minChunks: Infinity, // children: true, // minChunks: function (module) &#123; // return module.context &amp;&amp; module.context.includes("node_modules"); // &#125;, // minChunks: 3&#125;),new webpack.optimize.CommonsChunkPlugin(&#123; name: "manifest", minChunks: Infinity&#125;), prod config123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193194195196197198199200201202203204205206207208209210211212213214215216217218219220221222223224225226227228229230231232233234235236237238239240241242243244245246247248249250251252253254255256257258259260261262263264265266267268269270271272273274275276277278279280281282283284285286287288289290291292293294295296297298299300301302303304305306307308309310311312313314315316317318319320321322323324325326327328329330331332333334335336337338339340341342343344345346347348349350351352353354355356357358359360361362363364365366367368369370371372373374375376377378379380381382383384385386387388389390391392393394395396397398399400401402403404405406407408409410411412413414415416417418419420421422423424425426427428429430431432433434435436437438439440441442443444445446447448449450451452453454455456457458459460461462463464465466467468469470471472473474475'use strict';const autoprefixer = require('autoprefixer');const path = require('path');const webpack = require('webpack');const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPluginconst HtmlWebpackPlugin = require('html-webpack-plugin');const ExtractTextPlugin = require('extract-text-webpack-plugin');const ManifestPlugin = require('webpack-manifest-plugin');const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');const eslintFormatter = require('react-dev-utils/eslintFormatter');const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');const paths = require('./paths');const getClientEnvironment = require('./env');// Webpack uses `publicPath` to determine where the app is being served from.// It requires a trailing slash, or the file assets will get an incorrect path.const publicPath = paths.servedPath;// Some apps do not use client-side routing with pushState.// For these, "homepage" can be set to "." to enable relative asset paths.const shouldUseRelativeAssetPaths = publicPath === './';// Source maps are resource heavy and can cause out of memory issue for large source files.// const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';const shouldUseSourceMap = false;// `publicUrl` is just like `publicPath`, but we will provide it to our app// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.const publicUrl = publicPath.slice(0, -1);// Get environment variables to inject into our app.const env = getClientEnvironment(publicUrl);// Assert this just to be safe.// Development builds of React are slow and not intended for production.if (env.stringified['process.env'].NODE_ENV !== '"production"') &#123; throw new Error('Production builds must have NODE_ENV=production.');&#125;// Note: defined here because it will be used more than once.const cssFilename = 'static/css/[name].[contenthash:8].css';// ExtractTextPlugin expects the build output to be flat.// (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)// However, our output is structured with css, js and media folders.// To have this structure working with relative paths, we have to use custom options.const extractTextPluginOptions = shouldUseRelativeAssetPaths ? // Making sure that the publicPath goes back to to build folder. &#123; publicPath: Array(cssFilename.split('/').length).join('../') &#125; : &#123;&#125;;// This is the production configuration.// It compiles slowly and is focused on producing a fast and minimal bundle.// The development configuration is different and lives in a separate file.module.exports = &#123; // Don't attempt to continue if there are any errors. bail: true, // We generate sourcemaps in production. This is slow but gives good results. // You can exclude the *.map files from the build during deployment. devtool: shouldUseSourceMap ? 'source-map' : false, // In production, we only want to load the polyfills and the app code. entry: &#123; // base: ["babel-polyfill", require.resolve('./polyfills')], // TODO: dll vendors: [ "babel-polyfill", require.resolve('./polyfills'), 'react', 'react-dom', 'react-router-dom', 'react-redux', 'redux-thunk', 'classnames', // 'lodash', 'moment', 'react-lazyload', 'react-addons-css-transition-group', 'react-redux-loading-bar', 'react-responsive-carousel', ], main: paths.appIndexJs &#125;, output: &#123; // The build folder. path: paths.appBuild, // Generated JS file names (with nested folders). // There will be one main bundle, and one file per asynchronous chunk. // We don't currently advertise code splitting but Webpack supports it. filename: 'static/js/[name].[chunkhash:8].js', chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js', // We inferred the "public path" (such as / or /my-project) from homepage. publicPath: publicPath, // Point sourcemap entries to original disk location (format as URL on Windows) devtoolModuleFilenameTemplate: info =&gt; path .relative(paths.appSrc, info.absoluteResourcePath) .replace(/\\/g, '/'), &#125;, resolve: &#123; // This allows you to set a fallback for where Webpack should look for modules. // We placed these paths second because we want `node_modules` to "win" // if there are any conflicts. This matches Node resolution mechanism. // https://github.com/facebookincubator/create-react-app/issues/253 modules: ['node_modules', paths.appNodeModules].concat( // It is guaranteed to exist because we tweak it in `env.js` process.env.NODE_PATH.split(path.delimiter).filter(Boolean) ), // These are the reasonable defaults supported by the Node ecosystem. // We also include JSX as a common component filename extension to support // some tools, although we do not recommend using it, see: // https://github.com/facebookincubator/create-react-app/issues/290 // `web` extension prefixes have been added for better support // for React Native Web. extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'], alias: &#123; "@": path.join(__dirname, '../src/'), // Support React Native Web // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/ 'react-native': 'react-native-web', 'utils': path.join(__dirname, '../src/utils'), 'configs': path.join(__dirname, '../src/config/') &#125;, plugins: [ // Prevents users from importing files from outside of src/ (or node_modules/). // This often causes confusion because we only process files within src/ with babel. // To fix this, we prevent you from importing files out of src/ -- if you'd like to, // please link the files into your node_modules/ and let module-resolution kick in. // Make sure your source files are compiled, as they will not be processed in any way. new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]), ], &#125;, module: &#123; strictExportPresence: true, rules: [ // TODO: Disable require.ensure as it's not a standard language feature. // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176. // &#123; parser: &#123; requireEnsure: false &#125; &#125;, // First, run the linter. // It's important to do this before Babel processes the JS. &#123; test: /\.(js|jsx|mjs)$/, enforce: 'pre', use: [ &#123; options: &#123; formatter: eslintFormatter, eslintPath: require.resolve('eslint'), &#125;, loader: require.resolve('eslint-loader'), &#125;, ], include: paths.appSrc, &#125;, &#123; // "oneOf" will traverse all following loaders until one will // match the requirements. When no loader matches it will fall // back to the "file" loader at the end of the loader list. oneOf: [ // "url" loader works just like "file" loader but it also embeds // assets smaller than specified size as data URLs to avoid requests. &#123; test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.woff$/], loader: require.resolve('url-loader'), options: &#123; limit: 10000, publicPath: "/x/", name: 'static/media/[name].[hash:8].[ext]', &#125;, &#125;, // Process JS with Babel. &#123; test: /\.(js|jsx|mjs)$/, include: paths.appSrc, loader: require.resolve('babel-loader'), options: &#123; plugins: [ 'lodash', 'transform-react-jsx', ["react-css-modules", &#123; "context": "./", "generateScopedName": "[hash:base64:15]", "filetypes": &#123; ".scss": &#123; "syntax": "postcss-scss" &#125; &#125; &#125;, "babel-plugin-webpack-alias", &#123; "config": "$&#123;PWD&#125;/webpack.config.prod.js" &#125;], // 为了解决react-css-modules中不识别别名的问题 ["module-resolver", &#123; "alias": &#123; "@": path.join(__dirname, '../src/') &#125; &#125;] ], compact: true, &#125;, &#125;, // The notation here is somewhat confusing. // "postcss" loader applies autoprefixer to our CSS. // "css" loader resolves paths in CSS and adds assets as dependencies. // "style" loader normally turns CSS into JS modules injecting &lt;style&gt;, // but unlike in development configuration, we do something different. // `ExtractTextPlugin` first applies the "postcss" and "css" loaders // (second argument), then grabs the result CSS and puts it into a // separate file in our build process. This way we actually ship // a single CSS file in production instead of JS code injecting &lt;style&gt; // tags. If you use code splitting, however, any async bundles will still // use the "style" loader inside the async code so CSS from them won't be // in the main CSS file. &#123; test: /\.(css|scss|sass)$/, exclude: /node_modules|external/, loader: ExtractTextPlugin.extract( Object.assign( &#123; fallback: &#123; loader: require.resolve('style-loader'), options: &#123; hmr: false, &#125;, &#125;, use: [ &#123; loader: require.resolve('css-loader'), options: &#123; modules: true, localIdentName: "[hash:base64:15]", importLoaders: 1, minimize: true, sourceMap: shouldUseSourceMap, &#125;, &#125;, &#123; loader: require.resolve('postcss-loader'), options: &#123; // Necessary for external CSS imports to work // https://github.com/facebookincubator/create-react-app/issues/2677 ident: 'postcss', plugins: () =&gt; [ require('postcss-flexbugs-fixes'), autoprefixer(&#123; browsers: [ '&gt;1%', 'last 4 versions', 'Firefox ESR', 'not ie &lt; 9', // React doesn't support IE8 anyway ], flexbox: 'no-2009', &#125;), ], &#125;, &#125;, 'sass-loader' ], &#125;, extractTextPluginOptions ) ), // Note: this won't work without `new ExtractTextPlugin()` in `plugins`. &#125;, &#123; test: /\.css$/, include: /node_modules|external/, loader: ExtractTextPlugin.extract( Object.assign( &#123; fallback: &#123; loader: require.resolve('style-loader'), options: &#123; hmr: false, &#125;, &#125;, use: [ &#123; loader: require.resolve('css-loader'), options: &#123; importLoaders: 1, minimize: true, sourceMap: shouldUseSourceMap, &#125;, &#125;, &#123; loader: require.resolve('postcss-loader'), options: &#123; // Necessary for external CSS imports to work // https://github.com/facebookincubator/create-react-app/issues/2677 ident: 'postcss', plugins: () =&gt; [ require('postcss-flexbugs-fixes'), autoprefixer(&#123; browsers: [ '&gt;1%', 'last 4 versions', 'Firefox ESR', 'not ie &lt; 9', // React doesn't support IE8 anyway ], flexbox: 'no-2009', &#125;), ], &#125;, &#125;, ], &#125;, extractTextPluginOptions ) ), // Note: this won't work without `new ExtractTextPlugin()` in `plugins`. &#125;, // "file" loader makes sure assets end up in the `build` folder. // When you `import` an asset, you get its filename. // This loader doesn't use a "test" so it will catch all modules // that fall through the other loaders. &#123; loader: require.resolve('file-loader'), // Exclude `js` files to keep "css" loader working as it injects // it's runtime that would otherwise processed through "file" loader. // Also exclude `html` and `json` extensions so they get processed // by webpacks internal loaders. exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/], options: &#123; name: 'static/media/[name].[hash:8].[ext]', &#125;, &#125;, // ** STOP ** Are you adding a new loader? // Make sure to add the new loader(s) before the "file" loader. ], &#125;, ], &#125;, plugins: [ // Makes some environment variables available in index.html. // The public URL is available as %PUBLIC_URL% in index.html, e.g.: // &lt;link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"&gt; // In production, it will be an empty string unless you specify "homepage" // in `package.json`, in which case it will be the pathname of that URL. new InterpolateHtmlPlugin(env.raw), // Generates an `index.html` file with the &lt;script&gt; injected. new HtmlWebpackPlugin(&#123; inject: true, template: paths.appHtml, minify: &#123; removeComments: true, collapseWhitespace: true, removeRedundantAttributes: true, useShortDoctype: true, removeEmptyAttributes: true, removeStyleLinkTypeAttributes: true, keepClosingSlash: true, minifyJS: true, minifyCSS: true, minifyURLs: true, &#125;, // // chunks: ['manifest', 'base', 'vendors', 'main'], // chunks: ['manifest', 'vendors', 'main'], // // chunk排序 'none' | 'auto' | 'dependency' | &#123;function&#125; - default: 'auto' // // 如果chunk之间无依赖关系（没有使用webpack的require），需要通过函数手动控制 // chunksSortMode: function (chunk1, chunk2) &#123; // // var order = ['manifest', 'base', 'vendors', 'main']; // 根据此数组索引进行排序 // var order = ['manifest', 'vendors', 'main']; // 根据此数组索引进行排序 // var order1 = order.indexOf(chunk1.names[0]); // var order2 = order.indexOf(chunk2.names[0]); // return order1 - order2; // &#125;, &#125;), // Makes some environment variables available to the JS code, for example: // if (process.env.NODE_ENV === 'production') &#123; ... &#125;. See `./env.js`. // It is absolutely essential that NODE_ENV was set to production here. // Otherwise React will be compiled in the very slow development mode. new webpack.DefinePlugin(env.stringified), // Minify the code. new webpack.optimize.UglifyJsPlugin(&#123; compress: &#123; warnings: false, // Disabled because of an issue with Uglify breaking seemingly valid code: // https://github.com/facebookincubator/create-react-app/issues/2376 // Pending further investigation: // https://github.com/mishoo/UglifyJS2/issues/2011 comparisons: false, &#125;, mangle: &#123; safari10: true, &#125;, output: &#123; comments: false, // Turned on because emoji and regex is not minified properly using default // https://github.com/facebookincubator/create-react-app/issues/2488 ascii_only: true, &#125;, sourceMap: shouldUseSourceMap, &#125;), // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`. new ExtractTextPlugin(&#123; filename: cssFilename, &#125;), // Generate a manifest file which contains a mapping of all asset filenames // to their corresponding output file so that tools can pick it up without // having to parse `index.html`. new ManifestPlugin(&#123; fileName: 'asset-manifest.json', &#125;), // Generate a service worker script that will precache, and keep up to date, // the HTML &amp; assets that are part of the Webpack build. new SWPrecacheWebpackPlugin(&#123; // By default, a cache-busting query parameter is appended to requests // used to populate the caches, to ensure the responses are fresh. // If a URL is already hashed by Webpack, then there is no concern // about it being stale, and the cache-busting can be skipped. dontCacheBustUrlsMatching: /\.\w&#123;8&#125;\./, filename: 'service-worker.js', logger(message) &#123; if (message.indexOf('Total precache size is') === 0) &#123; // This message occurs for every build and is a bit too noisy. return; &#125; if (message.indexOf('Skipping static resource') === 0) &#123; // This message obscures real errors so we ignore it. // https://github.com/facebookincubator/create-react-app/issues/2612 return; &#125; console.log(message); &#125;, minify: true, // For unknown URLs, fallback to the index page navigateFallback: publicUrl + '/index.html', // Ignores URLs starting from /__ (useful for Firebase): // https://github.com/facebookincubator/create-react-app/issues/2237#issuecomment-302693219 navigateFallbackWhitelist: [/^(?!\/__).*/], // Don't precache sourcemaps (they're large) and build asset manifest: staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/], &#125;), // Moment.js is an extremely popular library that bundles large locale files // by default due to how Webpack interprets its code. This is a practical // solution that requires the user to opt into importing specific locales. // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack // You can remove this if you don't use Moment.js: new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), new LodashModuleReplacementPlugin(), new webpack.HashedModuleIdsPlugin(), new webpack.optimize.CommonsChunkPlugin(&#123; name: "main", children: true, // minChunks: function (module, count) &#123; // return module.context &amp;&amp; !module.context.includes("/src/containers"); // &#125;, async: 'components', // 单独抽取公共模块的chunk minChunks: 3 &#125;), new webpack.optimize.CommonsChunkPlugin(&#123; name: "vendors", chunks: ["main"], minChunks: Infinity, // children: true, // minChunks: function (module) &#123; // return module.context &amp;&amp; module.context.includes("node_modules"); // &#125;, // minChunks: 3 &#125;), new webpack.optimize.CommonsChunkPlugin(&#123; name: "manifest", minChunks: Infinity &#125;), new BundleAnalyzerPlugin(), // TODO: debug ], // Some libraries import Node modules but don't use them in the browser. // Tell Webpack to provide empty mocks for them so importing them works. node: &#123; dgram: 'empty', fs: 'empty', net: 'empty', tls: 'empty', child_process: 'empty', &#125;,&#125;;]]></content>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Android 系统字体导致rem计算错误]]></title>
     <url>%2F2018%2F04%2F20%2Fissues%2FAndroid%20%E7%B3%BB%E7%BB%9F%E5%AD%97%E4%BD%93%E5%AF%BC%E8%87%B4rem%E8%AE%A1%E7%AE%97%E9%94%99%E8%AF%AF%2F</url>
     <content type="text"><![CDATA[12345&lt;!DOCTYPE html&gt;&lt;html style="font-size: 100px"&gt; &lt;!-- 取100是为了避免默认的16px被缩小后可能会有小数，浏览器对小数会四舍五入导致比例计算错误 --&gt;&lt;head&gt;&lt;/head&gt;... html初始取100是为了避免默认的16px被缩小后可能会有小数，浏览器对小数会四舍五入导致比例计算错误 123456789101112131415161718192021222324252627282930313233const computedSize = window.getComputedStyle(document.documentElement, null).getPropertyValue('font-size')const androidScale = 100 / computedSize.replace('px', '');(function (win) &#123; var doc = win.document, docElem = doc.documentElement, designDraftWidth = 750, //设计稿宽度 dpr = Math.min(win.devicePixelRatio, 3), resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize'; //设置dpr，安卓6以下不支持initial-scale小于1 var userAgent = navigator.userAgent.toLowerCase(); var check = userAgent.match(/android\s([0-9\.]*)/); if (check &amp;&amp; check[1] &amp;&amp; check[1].split(".")[0] - 6 &lt; 0) &#123; dpr = 1; &#125; var scale = 1 / dpr; docElem.dataset.dpr = dpr; var metaElem = doc.createElement('meta'); metaElem.name = 'viewport'; metaElem.content = 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ", user-scalable=no, viewport-fit=cover"; docElem.firstElementChild.appendChild(metaElem); var recalc = function () &#123; var width = docElem.clientWidth; var rw = 100 * (width / designDraftWidth) * androidScale; docElem.style.fontSize = rw + 'px'; window.htmlFontSize = rw &#125;; recalc(); win.addEventListener(resizeEvt, recalc, false); win.recalc = recalc;&#125;(window));]]></content>
+      <tags>
+        <tag>移动端</tag>
+        <tag>android</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[scss自动编译失效]]></title>
     <url>%2F2018%2F04%2F19%2Fissues%2Fscss%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E5%A4%B1%E6%95%88%2F</url>
     <content type="text"><![CDATA[123import styles form 'xxx.scss'// 将styles改为style后，修改scss文件，css-module 报错import style form 'xxx.scss']]></content>
+      <tags>
+        <tag>css-module</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[html高度百分百导致document.documentElement.scrollTop失效]]></title>
@@ -344,26 +474,43 @@
     <title><![CDATA[当多行省略遇上Autoprefixer]]></title>
     <url>%2F2018%2F04%2F09%2Fissues%2F%E5%BD%93%E5%A4%9A%E8%A1%8C%E7%9C%81%E7%95%A5%E9%81%87%E4%B8%8AAutoprefixer%2F</url>
     <content type="text"><![CDATA[1234text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2; Autoprefixer 7.1.6 会将-webkit-box-orient:vertical;移除。解决： remove: false 无效 12345display:-webkit-box;/* autoprefixer: off */-webkit-box-orient: vertical;/* autoprefixer: on */-webkit-line-clamp:2;]]></content>
+      <tags>
+        <tag>postcss</tag>
+        <tag>autoprefixer</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React css modules global小坑]]></title>
     <url>%2F2018%2F04%2F03%2Fissues%2FReact%20css%20modules%20global%E5%B0%8F%E5%9D%91%2F</url>
     <content type="text"><![CDATA[基本用法：123:global(.classname) &#123; background: #fff&#125; 预处理：如果用了预处理工具, 可以支持块级写法12345:global &#123; .classname &#123; background: #fff &#125;&#125; 因为经过sass-loader等预处理器转译后，嵌套将会自动展开为：123:global .classname &#123; background: #fff&#125; 动画@keyframes1234567891011121314@keyframes :global(zoomBounceIn) &#123; 0% &#123; transform: scale(0); &#125; 50%&#123; transform: scale(1.1); &#125; 70% &#123; transform: scale(0.9); &#125; 100% &#123; transform: scale(1); &#125;&#125; https://github.com/css-modules/css-modules#usage-with-preprocessors https://github.com/css-modules/css-modules/issues/115]]></content>
+      <tags>
+        <tag>css-module</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Fetch post with multipart form data]]></title>
     <url>%2F2018%2F03%2F31%2Fissues%2FFetch%20post%20with%20multipart%20form%20data%2F</url>
     <content type="text"><![CDATA[上传文件不需要设置content-type 将formData直接放于响应体，提交时浏览器会自动设置。12345678fetch.postJSON(&apos;/sharer/certificate/upload&apos;, &#123; // ...data&#125;, &#123; headers: new Headers(), body: fromData &#125;) 1234567891011121314151617181920212223Request HeadersAccept:*/*Accept-Encoding:gzip, deflate, brAccept-Language:zh-CN,zh;q=0.8Cache-Control:no-cacheConnection:keep-aliveContent-Length:1945Content-Type:multipart/form-data; boundary=----WebKitFormBoundary9g72c9Pkoq83YA4xHost:localhost:3000Origin:http://localhost:3000Pragma:no-cacheReferer:http://localhost:3000/x/sharer/certificate/clientUser-Agent:Dealer/iOS /1.0.0.1Request Payload------WebKitFormBoundary9g72c9Pkoq83YA4xContent-Disposition: form-data; name=&quot;file&quot;; filename=&quot;锁.png&quot;Content-Type: image/png------WebKitFormBoundary9g72c9Pkoq83YA4x-- https://stackoverflow.com/questions/35192841/fetch-post-with-multipart-form-data/35206069 上传文件multipart form-data boundary 说明 http://www.cnblogs.com/yydcdut/p/3736667.html]]></content>
+      <tags>
+        <tag>fetch</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[CSS Module 与 ReactCSSTransitionGroup 的小坑]]></title>
     <url>%2F2018%2F03%2F30%2Fissues%2FCSS%20Module%20%E4%B8%8E%20ReactCSSTransitionGroup%20%E7%9A%84%E5%B0%8F%E5%9D%91%2F</url>
     <content type="text"><![CDATA[首先一个选择器如果没有任何内容（包括注释）css module 将不会存在该key123456789101112131415161718.modalAppear &#123;&#125;.modalAppear.modalAppearActive &#123;&#125;.modalEnter &#123; /* opacity: 0.01; */&#125;.modalEnter.modalEnterActive &#123; opacity: 1; transition: opacity 200ms ease-in;&#125;.modalLeave &#123; opacity: 1;&#125;.modalLeave.modalLeaveActive &#123; opacity: 0.01; transition: opacity 200ms ease-in;&#125; css module123456&#123; modalEnter: 'xxx_hash_xxx', modalEnterActive: 'xxx_hash_xxx', modalLeave: 'xxx_hash_xxx', modalLeaveActive: 'xxx_hash_xxx'&#125; Appear 与 Enter ReactCSSTransitionGroup 组件初始化挂载触发Appear ReactCSSTransitionGroup 内部如有新增子组件则触发Enter]]></content>
+      <tags>
+        <tag>react</tag>
+        <tag>css-module</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[判断React 16 const IS_REACT_16 = !!ReactDOM.createPortal;]]></title>
     <url>%2F2018%2F03%2F29%2Fissues%2F%E5%88%A4%E6%96%ADReact%2016%20const%20IS_REACT_16%20%3D%20!!ReactDOM.createPortal%3B%2F</url>
     <content type="text"><![CDATA[1const IS_REACT_16 = !!ReactDOM.createPortal; https://github.com/ant-design/ant-design/blob/master/components/modal/confirm.tsx#L14]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[scrollIntoView React 锚点链接]]></title>
@@ -374,21 +521,34 @@
     <title><![CDATA[Warning Cannot update during an existing state transition (such as within `rende]]></title>
     <url>%2F2018%2F03%2F23%2Fissues%2FWarning%20Cannot%20update%20during%20an%20existing%20state%20transition%20(such%20as%20within%20%60rende%2F</url>
     <content type="text"><![CDATA[Warning: Cannot update during an existing state transition (such as within render or another component’s constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to componentWillMount. https://github.com/acdlite/redux-router/issues/171]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Typescript React-css-module]]></title>
     <url>%2F2018%2F03%2F21%2Fissues%2FTypescript%20React-css-module%2F</url>
     <content type="text"><![CDATA[使用awesome-typescript-loader时，react-css-modules出错。12345678910111213141516171819&#123; "compilerOptions": &#123; "outDir": "./build/", "sourceMap": true, "noImplicitAny": true, "module": "es2015", // 为`commonjs`时出错 "target": "es5", "jsx": "preserve", "baseUrl": "./", "paths": &#123; "utils/*": ["src/utils/*"], "configs/*": ["src/config/*"] &#125;, "allowJs": true &#125;, "include": [ "./src/**/*" ]&#125; https://qiita.com/terrierscript/items/56d2cc15f76df50dfee7 https://github.com/s-panferov/awesome-typescript-loader/issues/146#issuecomment-248808206]]></content>
+      <tags>
+        <tag>TS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[reducer default 返回 state]]></title>
     <url>%2F2018%2F03%2F20%2Fissues%2Freducer%20default%20%E8%BF%94%E5%9B%9E%20state%2F</url>
     <content type="text"><![CDATA[123456789101112131415161718192021222324import &#123; resetShare &#125; from 'utils/wxUtil'const initialData = &#123; shareStatus: false, goods: &#123;&#125;&#125;export default function (state = initialData, action) &#123; switch (action.type) &#123; case 'SHARE_SHOW': return &#123; shareStatus: true, goods: action.goods &#125; case 'SHARE_HIDE': resetShare() return &#123; shareStatus: false, goods: &#123;&#125; &#125; default: return state &#125;&#125; 所有action都会进入default，此时一定要回传state]]></content>
+      <tags>
+        <tag>react</tag>
+        <tag>redux</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React 区分路由跳转与浏览器后退]]></title>
     <url>%2F2018%2F03%2F16%2Fissues%2FReact%20%E5%8C%BA%E5%88%86%E8%B7%AF%E7%94%B1%E8%B7%B3%E8%BD%AC%E4%B8%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E5%90%8E%E9%80%80%2F</url>
     <content type="text"><![CDATA[可以通过this.props.history.action来进行判断：就我所知action分为push和pop两种，push是通过路由，pop是通过goback；浏览器的前进后退按钮似乎都是pop PS: history change 事件 与 组件渲染生命周期 浏览器后退 先走组件渲染再执行history监听事件回调 SPA路由跳转 与上面刚好相反 https://segmentfault.com/q/1010000010183753]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Apollo type error Apolo]]></title>
@@ -399,21 +559,34 @@
     <title><![CDATA[iPhone X 高度100百分百失效]]></title>
     <url>%2F2018%2F03%2F13%2Fissues%2FiPhone%20X%20%E9%AB%98%E5%BA%A6100%E7%99%BE%E5%88%86%E7%99%BE%E5%A4%B1%E6%95%88%2F</url>
     <content type="text"><![CDATA[height: 100vh; env(safe-area-inset-bottom)表示iphoneX底部的安全距离，仅当viewport-fit=cover的时候有效 https://developer.mozilla.org/zh-CN/docs/Web/CSS/length https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/adaptivity-and-layout/]]></content>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[React列表由全部切换至小集合时lazyload不触发]]></title>
     <url>%2F2018%2F03%2F13%2Fissues%2FReact%E5%88%97%E8%A1%A8%E7%94%B1%E5%85%A8%E9%83%A8%E5%88%87%E6%8D%A2%E8%87%B3%E5%B0%8F%E9%9B%86%E5%90%88%E6%97%B6lazyload%E4%B8%8D%E8%A7%A6%E5%8F%91%2F</url>
     <content type="text"><![CDATA[设置组件key=type+id]]></content>
+      <tags>
+        <tag>react</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[避免git 菱形提交]]></title>
     <url>%2F2018%2F03%2F10%2Fissues%2F%E9%81%BF%E5%85%8Dgit%20%E8%8F%B1%E5%BD%A2%E6%8F%90%E4%BA%A4%2F</url>
     <content type="text"><![CDATA[1git stash &amp;&amp; git pull -r &amp;&amp; git stash pop]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[MAC OS查看端口占用情况及杀死进程]]></title>
     <url>%2F2018%2F03%2F09%2Fissues%2FMAC%20OS%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3%E5%8D%A0%E7%94%A8%E6%83%85%E5%86%B5%E5%8F%8A%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%2F</url>
     <content type="text"><![CDATA[终端命令 sudo lsof -i :9000 COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME java 716 a 313u IPv6 0x1111111111111 0t0 TCP *:cslistener (LISTEN) 然后根据PID杀进程： sudo kill -9 716]]></content>
+      <tags>
+        <tag>shell</tag>
+        <tag>mac</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[nvm设置Node.js默认版本 nvm alias default v8.9.4]]></title>
@@ -424,6 +597,9 @@
     <title><![CDATA[input pattern解决手机端数字软键盘]]></title>
     <url>%2F2018%2F03%2F08%2Fissues%2Finput%20pattern%E8%A7%A3%E5%86%B3%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%95%B0%E5%AD%97%E8%BD%AF%E9%94%AE%E7%9B%98%20%2F</url>
     <content type="text"><![CDATA[12345Text: &lt;input type="text"&gt;&lt;/input&gt;Telephone: &lt;input type="tel"&gt;&lt;/input&gt;URL: &lt;input type="url"&gt;&lt;/input&gt;Email: &lt;input type="email"&gt;&lt;/input&gt;Zip code: &lt;input type="text" pattern="[0-9]*"&gt;&lt;/input&gt; https://developer.apple.com/library/content/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/KeyboardManagement/KeyboardManagement.html https://stackoverflow.com/questions/6178556/phone-numeric-keyboard-for-text-input]]></content>
+      <tags>
+        <tag>移动端</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[根据Node 环境变量实现不同环境下模块依赖的问题]]></title>
@@ -470,8 +646,8 @@
     <url>%2F2017%2F06%2F03%2Fvue2%2Fvuex%2F</url>
     <content type="text"><![CDATA[store每个应用将仅仅包含一个 store 实例 123456789// 创建一个 Counter 组件const Counter = &#123; template: `&lt;div&gt;&#123;&#123; count &#125;&#125;&lt;/div&gt;`, computed: &#123; count () &#123; return store.state.count &#125; &#125;&#125; 然而，这种模式导致组件依赖的全局状态单例。在模块化的构建系统中，在每个需要使用 state 的组件中需要频繁地导入，并且在测试组件时需要模拟状态。（ng-seed里的服务:cry:） 通过Vue的store配置项，可以实现全局注入，直接通过this.$store获取store state如果我们使用一个纯对象来声明模块的状态，那么这个状态对象会通过引用被共享，导致状态对象被修改时会 store 或模块间数据互相污染的问题。 实际上这和 Vue 组件内的 data 是同样的问题。因此解决办法也是相同的——使用一个函数来声明模块状态（==仅 2.3.0+ 支持==）：12345678const MyReusableModule = &#123; state () &#123; return &#123; foo: 'bar' &#125; &#125;, // mutation, action 和 getter 等等...&#125; 如何在 Vue 组件中展示状态呢？由于 Vuex 的状态存储是响应式的，从 store 实例中读取状态最简单的方法就是在计算属性中返回某个状态123456789// 创建一个 Counter 组件const Counter = &#123; template: `&lt;div&gt;&#123;&#123; count &#125;&#125;&lt;/div&gt;`, computed: &#123; count () &#123; return store.state.count &#125; &#125;&#125; mapState Helper（辅助函数） =&gt; computed getters『getters』（可以认为是 store 的计算属性） 12345 computed: &#123; doneTodosCount () &#123; return this.$store.getters.doneTodosCount &#125;&#125; mapGetters Helper（辅助函数） =&gt; computed 1234 mapGetters(&#123; // 映射 this.doneCount 为 this.$store.getters.doneTodosCount doneCount: 'doneTodosCount'&#125;) Mutations commit在 Vuex 中，mutation 都是同步事务 每个 mutation 都有一个字符串的 事件类型 (type) 和 一个 回调函数 (handler)。这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数 Mutations 需遵守 Vue 的响应规则 mapMutations Helper（辅助函数） =&gt; methods 映射为 store.committhis.increment() 为 this.$store.commit(‘increment’) Actions dispatchAction 类似于 mutation，不同在于： Action 提交的是 mutation，而不是直接变更状态。Action 可以包含任意异步操作。 通过提交 mutation 来记录 action 产生的副作用（即状态变更）。 mapActions Helper（辅助函数） =&gt; methods 映射为 store.dispatch ModulesVuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块 对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象。 命名空间 namespaced: true123456789101112131415161718192021222324252627282930313233343536const store = new Vuex.Store(&#123; modules: &#123; account: &#123; namespaced: true, // 模块内容（module assets） state: &#123; ... &#125;, // 模块内的状态已经是嵌套的了，使用 `namespaced` 属性不会对其产生影响 getters: &#123; isAdmin () &#123; ... &#125; // -&gt; getters['account/isAdmin'] &#125;, actions: &#123; login () &#123; ... &#125; // -&gt; dispatch('account/login') &#125;, mutations: &#123; login () &#123; ... &#125; // -&gt; commit('account/login') &#125;, // 嵌套模块 modules: &#123; // 继承父模块的命名空间 myPage: &#123; state: &#123; ... &#125;, getters: &#123; profile () &#123; ... &#125; // -&gt; getters['account/profile'] &#125; &#125;, // 进一步嵌套命名空间 posts: &#123; namespaced: true, state: &#123; ... &#125;, getters: &#123; popular () &#123; ... &#125; // -&gt; getters['account/posts/popular'] &#125; &#125; &#125; &#125; &#125;&#125;) 模块动态注册 store.registerModulevuex-router-sync 插件就是通过动态注册模块将 vue-router 和 vuex 结合在一起，实现应用的路由状态管理。 其它在发布阶段，你需要使用 Webpack 的 DefinePlugin 或者是 Browserify 的 envify 使 process.env.NODE_ENV !== ‘production’ 为 false 内置 Logger 插件如果正在使用 vue-devtools，你可能不需要此插件。]]></content>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
         <tag>vuex</tag>
       </tags>
   </entry>
@@ -480,8 +656,8 @@
     <url>%2F2017%2F06%2F03%2Fvue2%2Fvuex-source%2F</url>
     <content type="text"><![CDATA[阅读源码须知： 熟悉vuex用法 至少阅读过vuex的官方文档 vuex 与 vue差不太多 都用了rollup进行打包 但是 vuex 没有用到flow 从代码构建入手package.json123scripts: &#123; "build:main": "node build/build.main.js"&#125; build/build.main.js1build(Object.keys(configs).map(key =&gt; configs[key])) build/configs.js123456789101112131415161718192021222324const configs = &#123; umdDev: &#123; entry: resolve('src/index.js'), dest: resolve('dist/vuex.js'), format: 'umd', env: 'development' &#125;, umdProd: &#123; entry: resolve('src/index.js'), dest: resolve('dist/vuex.min.js'), format: 'umd', env: 'production' &#125;, commonjs: &#123; entry: resolve('src/index.js'), dest: resolve('dist/vuex.common.js'), format: 'cjs' &#125;, esm: &#123; entry: resolve('src/index.esm.js'), dest: resolve('dist/vuex.esm.js'), format: 'es' &#125;&#125; vue2 采用webpack2，所以对应的是module属性的值”dist/vuex.esm.js” ，对应configs那入口文件就是index.esm.js了package.json1234"main": "dist/vuex.common.js","module": "dist/vuex.esm.js","unpkg": "dist/vuex.js","typings": "types/index.d.ts", 对比index.esm.js与index.j就是多了一段代码12345678export &#123; Store, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers&#125; 提供了按需import模块的接口 进入Storeinstall如果是浏览器环境，就自动安装Vuex1234// auto install in dist modeif (typeof window !== 'undefined' &amp;&amp; window.Vue) &#123; install(window.Vue)&#125; 通过判断变量Vue来是否已经安装过，因为Vue是在此处赋值的。12345if (Vue) &#123; return&#125;Vue =_VueapplyMixin(Vue) applyMixin(Vue) 1234567891011121314if (version &gt;= 2) &#123; const usesInit = Vue.config._lifecycleHooks.indexOf('init') &gt; -1 Vue.mixin(usesInit ? &#123; init: vuexInit &#125; : &#123; beforeCreate: vuexInit &#125;)&#125; else &#123; // override init and inject vuex init procedure // for 1.x backwards compatibility. const _init = Vue.prototype._init Vue.prototype._init = function (options = &#123;&#125;) &#123; options.init = options.init ? [vuexInit].concat(options.init) : vuexInit _init.call(this, options) &#125;&#125; Vue.mixinVue2的通过beforeCreate钩子将vuex注入到Vue实例上this.$store。在v2.0.0-alpha.7之前beforeCreate钩子对应为init注：在2.3.0以后，options.store可以为function，目的是解决store为对象时引起的副作用问题。123this.$store = typeof options.store === 'function' ? options.store() : options.store version 占位符构建时会替换为package.json里的version1version: '__VERSION__', 辅助函数 mapState mapMutations mapGetters mapActions createNamespacedHelperscreateNamespacedHelpers(‘foo/‘) 修改命名空间 12345678910111213141516171819202122232425262728const &#123; mapState, mapGetters, mapMutations, mapActions&#125; = createNamespacedHelpers('foo/')const vm = new Vue(&#123; store, computed: &#123; ...mapState(['count']), ...mapGetters(['isEven']) &#125;, methods: &#123; ...mapMutations(['inc', 'dec']), ...mapActions(['actionA', 'actionB']) &#125;&#125;)expect(vm.count).toBe(0)expect(vm.isEven).toBe(true)store.state.foo.count++expect(vm.count).toBe(1)expect(vm.isEven).toBe(false)vm.inc()expect(store.state.foo.count).toBe(2)expect(store.getters['foo/isEven']).toBe(true)vm.dec()expect(store.state.foo.count).toBe(1)expect(store.getters['foo/isEven']).toBe(false)]]></content>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
         <tag>vuex</tag>
       </tags>
   </entry>
@@ -503,8 +679,8 @@
         <category>Angular</category>
       </categories>
       <tags>
-        <tag>spa</tag>
         <tag>angular</tag>
+        <tag>spa</tag>
         <tag>pv</tag>
       </tags>
   </entry>
@@ -516,8 +692,8 @@
         <category>vue2</category>
       </categories>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
       </tags>
   </entry>
   <entry>
@@ -528,8 +704,8 @@
         <category>vue2</category>
       </categories>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
       </tags>
   </entry>
   <entry>
@@ -551,8 +727,8 @@
         <category>vue2</category>
       </categories>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
       </tags>
   </entry>
   <entry>
@@ -563,8 +739,8 @@
         <category>vue2</category>
       </categories>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
       </tags>
   </entry>
   <entry>
@@ -575,8 +751,8 @@
         <category>vue2</category>
       </categories>
       <tags>
-        <tag>vue2</tag>
         <tag>vue</tag>
+        <tag>vue2</tag>
       </tags>
   </entry>
   <entry>
@@ -588,8 +764,8 @@
       </categories>
       <tags>
         <tag>FE</tag>
-        <tag>angular</tag>
         <tag>ng</tag>
+        <tag>angular</tag>
         <tag>url</tag>
       </tags>
   </entry>
