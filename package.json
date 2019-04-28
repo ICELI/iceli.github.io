@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "hexo": {
-    "version": "3.3.1"
+    "version": "3.8.0"
+  },
+  "scripts": {
+    "blog": "node scripts/gitcommit.js"
   },
   "dependencies": {
     "hexo": "^3.2.0",

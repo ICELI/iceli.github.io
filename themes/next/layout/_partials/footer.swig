@@ -1,5 +1,5 @@
 <div style="float: right; width:400px">
-  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=1&id=34923303&auto=1&height=32"></iframe>
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=1344368486&auto=1&height=32"></iframe>
 </div>
 <div class="copyright" >
   {% set current = date(Date.now(), "YYYY") %}
